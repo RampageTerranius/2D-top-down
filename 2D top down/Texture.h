@@ -18,21 +18,18 @@ public:
 	std::string Name() { return name; };
 	SDL_Texture* Tex() { return tex; };
 	SDL_Rect Rect() { return rect; };
-	int W() { return w; };
-	int H() { return h; };
-
+	SDL_Point Center() { SDL_Point centerPoint; centerPoint.y = rect.h / 2; centerPoint.x = rect.w / 2; return centerPoint; }
 
 private:
 	std::string name;
 	SDL_Texture* tex;
 	SDL_Rect rect;
-	int w, h;
 };
 
 class Textures
 {
 private:
-	std::vector<Texture> textureList;
+	std::vector<Texture*> textureList;
 
 public:
 	void Cleanup();

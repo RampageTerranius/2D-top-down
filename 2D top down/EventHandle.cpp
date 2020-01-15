@@ -476,8 +476,36 @@ void EventHandle(SDL_Event& event)
 	// Update all our structures handling what buttons are held down currently first.
 	UpdateEventStructs(event);
 
-	pl.dir = GetAngle(pl.point.x, pl.point.y, mouse.x, mouse.y);
+	pl.dir = GetAngleAsDegrees(pl.point.x, pl.point.y, mouse.x, mouse.y);
 
 	if (keyboard.escape)
 		running = false;
+
+	if (keyboard.w)
+	{
+		pl.point.y--;
+		if (pl.point.y < 0)
+			pl.point.y = 0;
+	}
+
+	if (keyboard.s)
+	{
+		pl.point.y++;
+		if (pl.point.y > windowHeight - 1)
+			pl.point.y = windowHeight - 1;
+	}
+
+	if (keyboard.a)
+	{
+		pl.point.x--;
+		if (pl.point.x < 0)
+			pl.point.x = 0;
+	}
+
+	if (keyboard.d)
+	{
+		pl.point.x++;
+		if (pl.point.x > windowWidth - 1)
+			pl.point.x = windowWidth - 1;
+	}
 }

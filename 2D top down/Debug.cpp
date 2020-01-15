@@ -1,11 +1,10 @@
 #include "Debug.h"
 
-DebugMessage::DebugMessage(std::string fileName, std::string functionName, std::string coderMessage, std::string programMessage)
+DebugMessage::DebugMessage(std::string fileName, std::string functionName, std::string coderMessage)
 {
 	this->fileName = fileName;
 	this->functionName = functionName;
 	this->coderMessage = coderMessage;
-	this->programMessage = programMessage;
 }
 
 Debug::Debug()
@@ -13,10 +12,10 @@ Debug::Debug()
 	showMessagesOnConsole = false;
 }
 
-void Debug::LogError(std::string fileName, std::string functionName, std::string coderMessage, std::string programMessage)
+void Debug::Log(std::string fileName, std::string functionName, std::string coderMessage)
 {
-	DebugMessage newMessage(fileName, functionName, coderMessage, programMessage);
+	DebugMessage newMessage(fileName, functionName, coderMessage);
 
 	if (showMessagesOnConsole)
-		std::cout << fileName + ":" + functionName + " | " + coderMessage + ":" + programMessage;
+		std::cout << fileName + ":" + functionName + " | " + coderMessage + "\n";
 }

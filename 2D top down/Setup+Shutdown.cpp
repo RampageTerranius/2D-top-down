@@ -2,25 +2,55 @@
 
 #include <SDL.h>
 #include <SDL_ttf.h>
+#include <Windows.h>
+#include <PathCch.h>
 
 #include "Globals.h"
 #include "Texture.h"
+
+std::string GetEXEPath()
+{
+	char exePath[MAX_PATH];
+
+	GetModuleFileName(NULL, exePath, sizeof(exePath));
+
+	std::string tempStr = exePath;
+
+	size_t pos = tempStr.find_last_of("\\");
+
+	if (pos != std::string::npos)
+		return tempStr.substr(0, pos + 1);
+
+	return "";
+}
 
 bool Setup()
 {
 	debug.showMessagesOnConsole = true;
 
+	debug.Log("Setup+Shutdown", "Setup", "Starting setup...");
+
+	debug.Log("Setup+Shutdown", "Setup", "Initializing SDL sub-routines...");
+
 	if (SDL_Init(SDL_INIT_EVERYTHING) != 0)
 	{
-		debug.LogError("Setup+Shutdown", "Setup", "SDL failed to initialize", SDL_GetError());
+		std::string str = SDL_GetError();
+		debug.Log("Setup+Shutdown", "Setup", "SDL failed to initialize" + str);
 		return false;
 	}
 
+	debug.Log("Setup+Shutdown", "Setup", "Initializing SDL_TTF sub-routines...");
+
 	if (TTF_Init() != 0)
 	{
-		debug.LogError("Setup+Shutdown", "Setup", "TTF failed to initialize", SDL_GetError());
+		std::string str = SDL_GetError();
+
+		debug.Log("Setup+Shutdown", "Setup", "TTF failed to initialize" + str);
 		return false;
 	}
+	
+	debug.Log("Setup+Shutdown", "Setup", "Preparing SDL renderer and creating main window...");
+
 
 	// Create main window.
 	const int WINDOW_WIDTH = windowWidth;
@@ -34,13 +64,22 @@ bool Setup()
 	Uint32 renderFlags = SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC;
 	mainRenderer = SDL_CreateRenderer(mainWindow, -1, renderFlags);	
 
-	Texture* tempTex = textures.CreateTexture("\\2D Top Down\\Resources\\Direction Marker.png", "DirMarker");
+	debug.Log("Setup+Shutdown", "Setup", "Loading textures...");	
 
-	if (tempTex == nullptr)
+	pl.texture = textures.CreateTexture(GetEXEPath() + "\\Direction Marker.png", "DirMarker");
+
+	if (pl.texture == nullptr)
 	{
-		debug.LogError("Setup+Shutdown", "Setup", "failed to load Direction Marker.png", SDL_GetError());
+		debug.Log("Setup+Shutdown", "Setup", "failed to load Direction Marker.png");
 		return false;
 	}
+
+	pl.point.x = (windowWidth / 2) - (pl.texture->Rect().w / 2);
+	pl.point.y = (windowHeight / 2) - (pl.texture->Rect().h / 2);
+
+	debug.Log("Setup+Shutdown", "Setup", "Setup completed");
+
+
 
 	return true;
 }
@@ -67,8 +106,6 @@ void Shutdown()
 		SDL_DestroyRenderer(mainRenderer);
 		mainRenderer = nullptr;
 	}
-
-
-
+	   
 	SDL_Quit();
 }

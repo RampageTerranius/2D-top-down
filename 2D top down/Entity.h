@@ -6,6 +6,7 @@
 class Entity
 {
 public:
+	bool Render();
 	SDL_Point point;
 	int ID;
 
@@ -17,3 +18,4 @@ class Player : public Entity
 public:
 	double dir;
 };
+

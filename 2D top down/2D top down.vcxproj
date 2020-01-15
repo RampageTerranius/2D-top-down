@@ -71,7 +71,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <IncludePath>$(ProjectDir)SDL\SDL2-2.0.9\include;$(ProjectDir)SDL\SDL2_image-2.0.5\include;$(ProjectDir)SDL\SDL2_ttf-2.0.15\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(ProjectDir)SDL\SDL2_image-2.0.5\lib\x86;$(ProjectDir)SDL\SDL2-2.0.9\lib\x86;$(ProjectDir)SDL\SDL2_ttf-2.0.15\lib\x86;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(ProjectDir)SDL\SDL2_image-2.0.4\lib\x86;$(ProjectDir)SDL\SDL2-2.0.9\lib\x86;$(ProjectDir)SDL\SDL2_ttf-2.0.15\lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <IncludePath>$(ProjectDir)SDL\SDL2-2.0.9\include;$(ProjectDir)SDL\SDL2_image-2.0.5\include;$(ProjectDir)SDL\SDL2_ttf-2.0.15\include;$(IncludePath)</IncludePath>
@@ -133,6 +133,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Debug.cpp" />
+    <ClCompile Include="Entity.cpp" />
     <ClCompile Include="EventHandle.cpp" />
     <ClCompile Include="Globals.cpp" />
     <ClCompile Include="Main.cpp" />
