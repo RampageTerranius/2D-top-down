@@ -11,6 +11,4 @@ void Render()
 	pl.Render();
 
 	SDL_RenderPresent(mainRenderer);
-
-	SDL_Delay(100);
 }
