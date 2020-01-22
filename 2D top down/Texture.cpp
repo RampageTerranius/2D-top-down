@@ -73,6 +73,24 @@ bool Texture::Load(std::string fileLoc, std::string name)
 	return true;
 }
 
+bool Texture::SetTexture(SDL_Texture* texture, std::string name)
+{
+	if (texture == nullptr)
+		return false;
+
+	if (name.empty())
+		return false;
+
+	this->name = name;
+	this->tex = texture;
+
+	SDL_QueryTexture(texture, nullptr, nullptr, &this->rect.w, &this->rect.h);
+
+	return true;
+}
+
+
+
 void Textures::Cleanup()
 {
 	for (auto& texture : textureList)
@@ -101,6 +119,24 @@ Texture* Textures::CreateTexture(std::string fileLoc, std::string name)
 
 	return textureList.back();
 }
+
+bool Textures::AddTexture(SDL_Texture* texture, std::string name)
+{
+	Texture* tex = new Texture();
+
+	if (texture == nullptr)
+	{
+		debug.Log("Texture", "Textures::AddTexture", "given texture was nullptr, can not add a blank texture");
+		return false;
+	}
+
+	tex->SetTexture(texture, name);
+
+	textureList.push_back(tex);
+
+	return true;
+}
+
 
 void Textures::DeleteTexture(std::string name)
 {

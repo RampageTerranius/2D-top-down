@@ -14,6 +14,7 @@ public:
 
 	void Clear();
 	bool Load(std::string fileLoc, std::string name);
+	bool SetTexture(SDL_Texture* texture, std::string name);
 
 	std::string Name() { return name; };
 	SDL_Texture* Tex() { return tex; };
@@ -35,5 +36,6 @@ public:
 	void Cleanup();
 	Texture* GetTexture(std::string name);
 	Texture* CreateTexture(std::string fileLoc, std::string name);
+	bool AddTexture(SDL_Texture* texture, std::string name);
 	void DeleteTexture(std::string name);
 };

@@ -55,8 +55,8 @@ void Entity::MoveObjectTo(int x, int y)
 // The entities hold their direction as an angle, not as radian so we need to convert it back.
 void Object::MoveObjectAccoringToVel()
 {
-	point.x += cos(directionFacing * M_PI / 180) * velocity;
-	point.y += sin(directionFacing * M_PI / 180) * velocity;
+	point.x += (int)(cos(directionFacing * M_PI / 180) * velocity);
+	point.y += (int)(sin(directionFacing * M_PI / 180) * velocity);
 
 	if (point.x <= 0)
 		point.x = 0;
