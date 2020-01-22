@@ -11,6 +11,7 @@ private:
 	std::string functionName;
 	std::string coderMessage;
 	std::string programMessage;
+
 public:
 	DebugMessage(std::string fileName, std::string functionName, std::string coderMessage);
 	std::string FileName() { return fileName; }

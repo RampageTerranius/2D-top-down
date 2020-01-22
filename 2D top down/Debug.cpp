@@ -18,4 +18,5 @@ void Debug::Log(std::string fileName, std::string functionName, std::string code
 
 	if (showMessagesOnConsole)
 		std::cout << fileName + ":" + functionName + " | " + coderMessage + "\n";
+	
 }

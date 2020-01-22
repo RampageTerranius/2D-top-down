@@ -2,28 +2,12 @@
 
 #include <SDL.h>
 #include <SDL_ttf.h>
-#include <Windows.h>
-#include <PathCch.h>
 
 #include "Globals.h"
 #include "Texture.h"
+#include "MiscFunctions.h"
 
-std::string GetEXEPath()
-{
-	char exePath[MAX_PATH];
-
-	GetModuleFileName(NULL, exePath, sizeof(exePath));
-
-	std::string tempStr = exePath;
-
-	size_t pos = tempStr.find_last_of("\\");
-
-	if (pos != std::string::npos)
-		return tempStr.substr(0, pos + 1);
-
-	return "";
-}
-
+// Setup the engine, preparing everything required.
 bool Setup()
 {
 	debug.showMessagesOnConsole = true;
@@ -79,11 +63,10 @@ bool Setup()
 
 	debug.Log("Setup+Shutdown", "Setup", "Setup completed");
 
-
-
 	return true;
 }
 
+// Shutdown the engine, cleaning up everything as required.
 void Shutdown()
 {
 	// Destroy the main window before shutdown.

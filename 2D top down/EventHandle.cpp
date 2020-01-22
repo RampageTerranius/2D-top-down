@@ -476,7 +476,7 @@ void EventHandle(SDL_Event& event)
 	// Update all our structures handling what buttons are held down currently first.
 	UpdateEventStructs(event);
 
-	pl.dir = GetAngleAsDegrees(pl.point.x, pl.point.y, mouse.x, mouse.y);
+	pl.directionFacing = GetAngleAsDegrees(pl.point.x, pl.point.y, mouse.x, mouse.y);
 
 	if (keyboard.escape)
 		running = false;

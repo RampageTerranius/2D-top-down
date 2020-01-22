@@ -7,15 +7,57 @@ class Entity
 {
 public:
 	bool Render();
+	void MoveObjectBy(int x, int y);
+	void MoveObjectTo(int x, int y);
 	SDL_Point point;
 	int ID;
 
 	Texture* texture;
 };
 
-class Player : public Entity
+Entity* CreateEntity()
+{
+
+}
+
+
+
+class Object : public Entity
 {
 public:
-	double dir;
+	void MoveObjectAccoringToVel();
+
+	double velocity;
+	double directionFacing;
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+class Player : public Object
+{
+public:
 };
 

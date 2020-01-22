@@ -137,6 +137,8 @@
     <ClCompile Include="EventHandle.cpp" />
     <ClCompile Include="Globals.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Math Functions.cpp" />
+    <ClCompile Include="MiscFunctions.cpp" />
     <ClCompile Include="Setup+Shutdown.cpp" />
     <ClCompile Include="Texture.cpp" />
   </ItemGroup>
@@ -148,10 +150,12 @@
     <ClInclude Include="Keyboard.h" />
     <ClInclude Include="Main.h" />
     <ClInclude Include="Math functions.h" />
+    <ClInclude Include="MiscFunctions.h" />
     <ClInclude Include="Mouse.h" />
     <ClInclude Include="Render.h" />
     <ClInclude Include="Setup+Shutdown.h" />
     <ClInclude Include="Texture.h" />
+    <ClInclude Include="TTF.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="resources\Direction Marker.png" />
