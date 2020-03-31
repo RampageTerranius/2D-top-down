@@ -9,8 +9,8 @@ class Weapon
 public:
 	std::string name;
 	int damage;
-	int impact;
 	int totalAmmo;
+	float fireRate;
 	float reloadTime;
 	float projectileSpeed;
 	int projectileDistance;

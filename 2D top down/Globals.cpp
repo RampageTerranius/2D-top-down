@@ -17,3 +17,5 @@ Textures allTextures = Textures();
 Projectiles allProjectiles = Projectiles();
 
 Player pl = Player();
+
+std::vector<Weapon> weaponList;

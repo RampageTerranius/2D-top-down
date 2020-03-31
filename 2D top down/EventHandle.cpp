@@ -509,7 +509,7 @@ void EventHandle(SDL_Event& event)
 		plPoint.x = pl.xLoc;
 		plPoint.y = pl.yLoc;
 		allProjectiles.CreateProjectile(plPoint, point);
-		mouse.left = false;
+		//mouse.left = false;
 	}
 
 	// calculate all physics for all currently existing projectiles.

@@ -49,7 +49,7 @@ bool Character::Render()
 		rect.x -= (rect.w / 2);
 		rect.y -= (rect.h / 2);
 
-		if (SDL_RenderCopyEx(mainRenderer, pl.texture->Tex(), NULL, &rect, directionFacing, NULL, SDL_FLIP_NONE) >= 0)
+		if (SDL_RenderCopyEx(mainRenderer, pl.texture->Tex(), NULL, &rect, directionFacing + 90, NULL, SDL_FLIP_NONE) >= 0)
 			return true;
 	}
 

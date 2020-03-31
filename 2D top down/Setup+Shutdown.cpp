@@ -61,6 +61,20 @@ bool SetupEngine()
 	pl.xLoc = (windowWidth / 2) - (pl.texture->Rect().w / 2);
 	pl.yLoc = (windowHeight / 2) - (pl.texture->Rect().h / 2);
 
+	// TODO: weapon array etc.
+	Weapon wep;
+
+	wep.damage = 5;
+	wep.name = "Smg";
+	wep.projectileDistance = 200;
+	wep.projectileSpeed = 20;
+	wep.fireRate = 6;
+	wep.reloadTime = 150;
+	wep.totalAmmo = 30;
+	// TODO
+
+	pl.weapon = wep;
+
 	debug.Log("Setup+Shutdown", "Setup", "Setup completed");
 
 	return true;

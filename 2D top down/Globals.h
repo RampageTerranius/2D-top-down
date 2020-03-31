@@ -7,6 +7,7 @@
 #include "Texture.h"
 #include "Character.h"
 #include "Projectile.h"
+#include "Weapon.h"
 
 // Debugging stuff.
 extern Debug debug;
@@ -26,4 +27,5 @@ extern bool running;
 
 extern Textures allTextures;
 extern Projectiles allProjectiles;
+extern std::vector<Weapon> weaponList;
 extern Player pl;

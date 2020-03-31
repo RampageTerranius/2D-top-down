@@ -17,7 +17,7 @@ bool Projectile::CalcProjectile()
 	return true;
 }
 
-Projectile* Projectiles::CreateProjectile(SDL_Point start, SDL_Point end)
+Projectile* Projectiles::CreateProjectile(SDL_Point start, SDL_Point end, Weapon wep)
 {
 	Projectile* proj = new Projectile();
 
@@ -25,14 +25,15 @@ Projectile* Projectiles::CreateProjectile(SDL_Point start, SDL_Point end)
 	proj->yLoc = start.y;
 
 	proj->directionFacing = GetAngleAsDegrees(start.x, start.y, end.x, end.y);
-	proj->distanceLeft = GetDistance(start.x, start.y, end.x, end.y);;
 
 	// TODO: automate texture and velocity
 	proj->texture = allTextures.GetTexture("Bullet");
-	proj->velocity = 5;
 	// TODO
 
-
+	proj->velocity = wep.projectileSpeed;
+	proj->distanceLeft = GetDistance(start.x, start.y, end.x, end.y);
+	if (proj->distanceLeft > wep.projectileDistance)
+		proj->distanceLeft = wep.projectileDistance;
 
 	projectileList.push_back(proj);
 
