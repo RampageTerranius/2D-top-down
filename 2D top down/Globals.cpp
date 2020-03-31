@@ -13,5 +13,7 @@ SDL_Window* mainWindow = nullptr;
 SDL_Renderer* mainRenderer = nullptr;
 SDL_Surface* mainSurface = nullptr;
 
-Textures textures = Textures();
+Textures allTextures = Textures();
+Projectiles allProjectiles = Projectiles();
+
 Player pl = Player();

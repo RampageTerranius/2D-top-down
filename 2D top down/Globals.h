@@ -5,6 +5,8 @@
 #include "Debug.h"
 #include "Entity.h"
 #include "Texture.h"
+#include "Character.h"
+#include "Projectile.h"
 
 // Debugging stuff.
 extern Debug debug;
@@ -22,5 +24,6 @@ extern SDL_Surface* mainSurface;
 // 
 extern bool running;
 
-extern Textures textures;
+extern Textures allTextures;
+extern Projectiles allProjectiles;
 extern Player pl;

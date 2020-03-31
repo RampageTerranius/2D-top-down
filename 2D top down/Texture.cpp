@@ -89,8 +89,6 @@ bool Texture::SetTexture(SDL_Texture* texture, std::string name)
 	return true;
 }
 
-
-
 void Textures::Cleanup()
 {
 	for (auto& texture : textureList)
@@ -112,7 +110,7 @@ Texture* Textures::CreateTexture(std::string fileLoc, std::string name)
 	if (!tex->Load(fileLoc, name))
 	{
 		delete tex;
-		return false;
+		return nullptr;
 	}
 
 	textureList.push_back(tex);
@@ -136,7 +134,6 @@ bool Textures::AddTexture(SDL_Texture* texture, std::string name)
 
 	return true;
 }
-
 
 void Textures::DeleteTexture(std::string name)
 {

@@ -77,6 +77,10 @@
     <IncludePath>$(ProjectDir)SDL\SDL2-2.0.9\include;$(ProjectDir)SDL\SDL2_image-2.0.5\include;$(ProjectDir)SDL\SDL2_ttf-2.0.15\include;$(IncludePath)</IncludePath>
     <LibraryPath>$(ProjectDir)SDL\SDL2-2.0.9\lib\x86;$(ProjectDir)SDL\SDL2_image-2.0.5\lib\x86;$(ProjectDir)SDL\SDL2_ttf-2.0.15\lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IncludePath>$(ProjectDir)SDL\SDL2-2.0.9\include;$(ProjectDir)SDL\SDL2_image-2.0.5\include;$(ProjectDir)SDL\SDL2_ttf-2.0.15\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(ProjectDir)SDL\SDL2_image-2.0.4\lib\x64;$(ProjectDir)SDL\SDL2-2.0.9\lib\x64;$(ProjectDir)SDL\SDL2_ttf-2.0.15\lib\x64;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -98,6 +102,7 @@
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
+      <AdditionalDependencies>sdl2.lib;sdl2main.lib;sdl2_image.lib;sdl2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -132,6 +137,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Character.cpp" />
     <ClCompile Include="Debug.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="EventHandle.cpp" />
@@ -139,10 +145,13 @@
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Math Functions.cpp" />
     <ClCompile Include="MiscFunctions.cpp" />
+    <ClCompile Include="Projectile.cpp" />
+    <ClCompile Include="Render.cpp" />
     <ClCompile Include="Setup+Shutdown.cpp" />
     <ClCompile Include="Texture.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Character.h" />
     <ClInclude Include="Debug.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="EventHandle.h" />
@@ -152,10 +161,12 @@
     <ClInclude Include="Math functions.h" />
     <ClInclude Include="MiscFunctions.h" />
     <ClInclude Include="Mouse.h" />
+    <ClInclude Include="Projectile.h" />
     <ClInclude Include="Render.h" />
     <ClInclude Include="Setup+Shutdown.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="TTF.h" />
+    <ClInclude Include="Weapon.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="resources\Direction Marker.png" />

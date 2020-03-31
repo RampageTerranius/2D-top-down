@@ -8,7 +8,7 @@
 #include "MiscFunctions.h"
 
 // Setup the engine, preparing everything required.
-bool Setup()
+bool SetupEngine()
 {
 	debug.showMessagesOnConsole = true;
 
@@ -35,7 +35,6 @@ bool Setup()
 	
 	debug.Log("Setup+Shutdown", "Setup", "Preparing SDL renderer and creating main window...");
 
-
 	// Create main window.
 	const int WINDOW_WIDTH = windowWidth;
 	const int WINDOW_HEIGHT = windowHeight;
@@ -50,7 +49,8 @@ bool Setup()
 
 	debug.Log("Setup+Shutdown", "Setup", "Loading textures...");	
 
-	pl.texture = textures.CreateTexture(GetEXEPath() + "\\Direction Marker.png", "DirMarker");
+	pl.texture = allTextures.CreateTexture(GetEXEPath() + "\\Direction Marker.png", "DirMarker");
+	allTextures.CreateTexture(GetEXEPath() + "\\Bullet.png", "Bullet");
 
 	if (pl.texture == nullptr)
 	{
@@ -67,28 +67,23 @@ bool Setup()
 }
 
 // Shutdown the engine, cleaning up everything as required.
-void Shutdown()
+void ShutdownEngine()
 {
-	// Destroy the main window before shutdown.
-	if (mainWindow != nullptr)
-	{
-		SDL_DestroyWindow(mainWindow);
-		mainWindow = nullptr;
-	}
-
-	// Destroy the surface used for drawing particles.
-	if (mainSurface != nullptr)
-	{
-		SDL_FreeSurface(mainSurface);
-		mainSurface = nullptr;
-	}
+	debug.Log("Setup+Shutdown", "Shutdown", "Shutting down engine...");
+	   
+	SDL_Quit();
 
 	// Destroy the main renderer before shutdown.
 	if (mainRenderer != nullptr)
-	{
 		SDL_DestroyRenderer(mainRenderer);
-		mainRenderer = nullptr;
-	}
-	   
-	SDL_Quit();
+
+	// Destroy the main window before shutdown.
+	if (mainWindow != nullptr)
+		SDL_DestroyWindow(mainWindow);
+
+	// Destroy the surface used for drawing particles.
+	if (mainSurface != nullptr)
+		SDL_FreeSurface(mainSurface);
+
+	debug.Log("Setup+Shutdown", "Shutdown", "Shutdown completed");
 }

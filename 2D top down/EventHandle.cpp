@@ -4,6 +4,7 @@
 #include "Mouse.h"
 #include "Keyboard.h"
 #include "Entity.h"
+#include "Projectile.h"
 
 #include "Math functions.h"
 
@@ -476,36 +477,40 @@ void EventHandle(SDL_Event& event)
 	// Update all our structures handling what buttons are held down currently first.
 	UpdateEventStructs(event);
 
-	pl.directionFacing = GetAngleAsDegrees(pl.point.x, pl.point.y, mouse.x, mouse.y);
-
 	if (keyboard.escape)
 		running = false;
 
-	if (keyboard.w)
+	if ((!keyboard.w && !keyboard.s) || (keyboard.w && keyboard.s))
+		pl.yVel = 0;
+	else if (keyboard.w)
+		pl.yVel = -1;
+	else if (keyboard.s)
+		pl.yVel = 1;	
+
+	if ((!keyboard.a && !keyboard.d) || (keyboard.a && keyboard.d))
+		pl.xVel = 0;
+	else if (keyboard.a)
+		pl.xVel = -1;
+	else if (keyboard.d)
+		pl.xVel = 1;
+
+	pl.sprinting = keyboard.lShift;
+
+	pl.MovePlayerAccordingToInput();
+
+	pl.directionFacing = GetAngleAsDegrees(pl.point.x, pl.point.y, mouse.x, mouse.y);
+
+	if (mouse.left)
 	{
-		pl.point.y--;
-		if (pl.point.y < 0)
-			pl.point.y = 0;
+		SDL_Point point;
+		point.x = mouse.x;
+		point.y = mouse.y;
+		allProjectiles.CreateProjectile(pl.point, point);
+		mouse.left = false;
+
+
 	}
 
-	if (keyboard.s)
-	{
-		pl.point.y++;
-		if (pl.point.y > windowHeight - 1)
-			pl.point.y = windowHeight - 1;
-	}
-
-	if (keyboard.a)
-	{
-		pl.point.x--;
-		if (pl.point.x < 0)
-			pl.point.x = 0;
-	}
-
-	if (keyboard.d)
-	{
-		pl.point.x++;
-		if (pl.point.x > windowWidth - 1)
-			pl.point.x = windowWidth - 1;
-	}
+	// calculate all physics for all currently existing projectiles.
+	allProjectiles.CalcAllProjectiles();
 }

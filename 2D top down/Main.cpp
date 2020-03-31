@@ -7,7 +7,7 @@
 int main(int argc, char* argv[])
 {
 	// Run setup.
-	running = Setup();
+	running = SetupEngine();
 
 	SDL_Event event;
 
@@ -18,7 +18,7 @@ int main(int argc, char* argv[])
 		Render();
 	}
 
-	Shutdown();
+	ShutdownEngine();
 
 	return 1;
 }

@@ -16,7 +16,7 @@ bool Entity::Render()
 		rect.x -= (rect.w / 2);
 		rect.y -= (rect.h / 2);
 
-		if (SDL_RenderCopyEx(mainRenderer, pl.texture->Tex(), NULL, &rect, pl.directionFacing, NULL, SDL_FLIP_NONE) >= 0)
+		if (SDL_RenderCopyEx(mainRenderer, pl.texture->Tex(), NULL, &rect, NULL, NULL, SDL_FLIP_NONE) >= 0)
 			return true;
 	}
 
@@ -52,11 +52,14 @@ void Entity::MoveObjectTo(int x, int y)
 }
 
 // Automatically move the object according to its velocity and facing direction
-// The entities hold their direction as an angle, not as radian so we need to convert it back.
+// The objects hold their direction as an angle, not as radian so we need to convert it back.
 void Object::MoveObjectAccoringToVel()
 {
-	point.x += (int)(cos(directionFacing * M_PI / 180) * velocity);
-	point.y += (int)(sin(directionFacing * M_PI / 180) * velocity);
+	double i = (cos(directionFacing * M_PI / 180) * velocity);
+	double n = (sin(directionFacing * M_PI / 180) * velocity);
+
+	point.x += i;
+	point.y += n;
 
 	if (point.x <= 0)
 		point.x = 0;

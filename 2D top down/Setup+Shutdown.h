@@ -1,4 +1,4 @@
 #pragma once
 
-bool Setup();
-void Shutdown();
+bool SetupEngine();
+void ShutdownEngine();

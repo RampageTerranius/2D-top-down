@@ -6,7 +6,7 @@
 class Entity
 {
 public:
-	bool Render();
+	virtual bool Render();
 	void MoveObjectBy(int x, int y);
 	void MoveObjectTo(int x, int y);
 
@@ -23,34 +23,3 @@ public:
 	double velocity;
 	double directionFacing;
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-class Player : public Object
-{
-public:
-};
-
