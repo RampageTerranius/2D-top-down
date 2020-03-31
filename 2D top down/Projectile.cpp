@@ -21,7 +21,9 @@ Projectile* Projectiles::CreateProjectile(SDL_Point start, SDL_Point end)
 {
 	Projectile* proj = new Projectile();
 
-	proj->point = start;
+	proj->xLoc = start.x;
+	proj->yLoc = start.y;
+
 	proj->directionFacing = GetAngleAsDegrees(start.x, start.y, end.x, end.y);
 	proj->distanceLeft = GetDistance(start.x, start.y, end.x, end.y);;
 
@@ -34,7 +36,7 @@ Projectile* Projectiles::CreateProjectile(SDL_Point start, SDL_Point end)
 
 	projectileList.push_back(proj);
 
-	debug.Log("Projectile", "CreateProjectile", "Created a Projectile start point x/y " + std::to_string(proj->point.x) + "/" + std::to_string(proj->point.y) + " going angle: " + std::to_string(proj->directionFacing) + " Distance of: " + std::to_string(proj->distanceLeft));
+	debug.Log("Projectile", "CreateProjectile", "Created a Projectile start point x/y " + std::to_string(proj->xLoc) + "/" + std::to_string(proj->yLoc) + " going angle: " + std::to_string(proj->directionFacing) + " Distance of: " + std::to_string(proj->distanceLeft));
 
 	return projectileList.back();
 }

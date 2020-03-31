@@ -42,8 +42,8 @@ bool Character::Render()
 	{
 		SDL_Rect rect;
 
-		rect.x = point.x;
-		rect.y = point.y;
+		rect.x = xLoc;
+		rect.y = yLoc;
 		rect.w = texture->Rect().w;
 		rect.h = texture->Rect().h;
 		rect.x -= (rect.w / 2);

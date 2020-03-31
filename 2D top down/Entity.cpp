@@ -9,8 +9,8 @@ bool Entity::Render()
 	{
 		SDL_Rect rect;
 
-		rect.x = point.x;
-		rect.y = point.y;
+		rect.x = xLoc;
+		rect.y = yLoc;
 		rect.w = texture->Rect().w;
 		rect.h = texture->Rect().h;
 		rect.x -= (rect.w / 2);
@@ -28,27 +28,27 @@ bool Entity::Render()
 // Move the entity from its point of origin by the given X/Y.
 void Entity::MoveObjectBy(int x, int y)
 {
-	point.x += x;
-	point.y += y;
+	xLoc += x;
+	yLoc += y;
 
-	if (point.x <= 0)
-		point.x = 0;
+	if (xLoc <= 0)
+		xLoc = 0;
 
-	if (point.y > windowHeight)
-		point.y = windowHeight - 1;
+	if (yLoc > windowHeight)
+		yLoc = windowHeight - 1;
 }
 
 // Move the entity DIRECTLY to the given X/Y coords
 void Entity::MoveObjectTo(int x, int y)
 {
-	point.x = x;
-	point.y = y;
+	xLoc = x;
+	yLoc = y;
 
-	if (point.x <= 0)
-		point.x = 0;
+	if (xLoc <= 0)
+		xLoc = 0;
 
-	if (point.y > windowHeight)
-		point.y = windowHeight - 1;
+	if (yLoc > windowHeight)
+		yLoc = windowHeight - 1;
 }
 
 // Automatically move the object according to its velocity and facing direction
@@ -58,12 +58,12 @@ void Object::MoveObjectAccoringToVel()
 	double i = (cos(directionFacing * M_PI / 180) * velocity);
 	double n = (sin(directionFacing * M_PI / 180) * velocity);
 
-	point.x += i;
-	point.y += n;
+	xLoc += i;
+	yLoc += n;
 
-	if (point.x <= 0)
-		point.x = 0;
+	if (xLoc <= 0)
+		xLoc = 0;
 
-	if (point.y > windowHeight)
-		point.y = windowHeight - 1;
+	if (yLoc > windowHeight)
+		yLoc = windowHeight - 1;
 }

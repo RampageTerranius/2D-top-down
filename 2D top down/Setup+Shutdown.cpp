@@ -58,8 +58,8 @@ bool SetupEngine()
 		return false;
 	}
 
-	pl.point.x = (windowWidth / 2) - (pl.texture->Rect().w / 2);
-	pl.point.y = (windowHeight / 2) - (pl.texture->Rect().h / 2);
+	pl.xLoc = (windowWidth / 2) - (pl.texture->Rect().w / 2);
+	pl.yLoc = (windowHeight / 2) - (pl.texture->Rect().h / 2);
 
 	debug.Log("Setup+Shutdown", "Setup", "Setup completed");
 

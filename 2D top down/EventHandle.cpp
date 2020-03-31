@@ -498,17 +498,18 @@ void EventHandle(SDL_Event& event)
 
 	pl.MovePlayerAccordingToInput();
 
-	pl.directionFacing = GetAngleAsDegrees(pl.point.x, pl.point.y, mouse.x, mouse.y);
+	pl.directionFacing = GetAngleAsDegrees(pl.xLoc, pl.yLoc, mouse.x, mouse.y);
 
 	if (mouse.left)
 	{
 		SDL_Point point;
 		point.x = mouse.x;
 		point.y = mouse.y;
-		allProjectiles.CreateProjectile(pl.point, point);
+		SDL_Point plPoint;
+		plPoint.x = pl.xLoc;
+		plPoint.y = pl.yLoc;
+		allProjectiles.CreateProjectile(plPoint, point);
 		mouse.left = false;
-
-
 	}
 
 	// calculate all physics for all currently existing projectiles.

@@ -10,7 +10,8 @@ public:
 	void MoveObjectBy(int x, int y);
 	void MoveObjectTo(int x, int y);
 
-	SDL_Point point;
+	double xLoc;
+	double yLoc;
 	int ID;
 	Texture* texture;
 };
