@@ -4,4 +4,6 @@ struct Mouse
 {
 	bool left, middle, right;
 	int x, y;
-}mouse;
+};
+
+extern Mouse mouse;

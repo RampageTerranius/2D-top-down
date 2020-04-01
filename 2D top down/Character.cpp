@@ -103,6 +103,13 @@ void Player::FireWeapon(SDL_Point aimLoc)
 			ReloadWeapon();// Player had no ammo, goto reload logic.		
 }
 
+void Player::RenderAimer()
+{
+	Texture* tex = allTextures.GetTexture("AimMarker");
+
+	
+}
+
 // Start maknig the player reload their weapon.
 void Player::ReloadWeapon()
 {

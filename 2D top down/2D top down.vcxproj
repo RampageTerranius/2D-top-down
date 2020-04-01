@@ -145,10 +145,13 @@
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Math Functions.cpp" />
     <ClCompile Include="MiscFunctions.cpp" />
+    <ClCompile Include="Mouse.cpp" />
     <ClCompile Include="Projectile.cpp" />
     <ClCompile Include="Render.cpp" />
     <ClCompile Include="Setup+Shutdown.cpp" />
     <ClCompile Include="Texture.cpp" />
+    <ClCompile Include="TTF.cpp" />
+    <ClCompile Include="UI.cpp" />
     <ClCompile Include="Weapon.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -168,6 +171,7 @@
     <ClInclude Include="Setup+Shutdown.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="TTF.h" />
+    <ClInclude Include="UI.h" />
     <ClInclude Include="Weapon.h" />
   </ItemGroup>
   <ItemGroup>

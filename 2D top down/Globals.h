@@ -5,6 +5,7 @@
 #include "Debug.h"
 #include "Entity.h"
 #include "Texture.h"
+#include "TTF.h"
 #include "Character.h"
 #include "Projectile.h"
 #include "Weapon.h"
@@ -31,3 +32,6 @@ extern Weapons allWeapons;
 extern Players allPlayers;
 
 extern Player* testPlayer;
+
+extern TTF ttfFPS;
+extern TTF ttfAmmo;

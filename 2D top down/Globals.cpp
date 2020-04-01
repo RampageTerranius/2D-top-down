@@ -19,3 +19,6 @@ Weapons allWeapons = Weapons();
 Players allPlayers = Players();
 Player* testPlayer;
 
+extern TTF ttfFPS = TTF();
+extern TTF ttfAmmo = TTF();
+

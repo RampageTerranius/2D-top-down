@@ -55,14 +55,22 @@ bool SetupEngine()
 
 	allTextures.CreateTexture(GetEXEPath() + "\\Direction Marker.png", "DirMarker");
 	allTextures.CreateTexture(GetEXEPath() + "\\Bullet.png", "Bullet");
+	allTextures.CreateTexture(GetEXEPath() + "\\Aim Marker.png", "AimMarker");
 
-	if (allTextures.GetTexture("DirMarker") == nullptr || allTextures.GetTexture("Bullet") == nullptr)
+	if (allTextures.GetTexture("DirMarker") == nullptr || allTextures.GetTexture("Bullet") == nullptr || allTextures.GetTexture("AimMarker") == nullptr)
 	{
 		debug.Log("Setup+Shutdown", "Setup", "failed to load textures");
 		return false;
 	}
 
+	if (!ttfFPS.SetFont(GetEXEPath() + "\\pxl.ttf", 20) || !ttfAmmo.SetFont(GetEXEPath() + "\\pxl.ttf", 20))
+	{
+		debug.Log("Setup+Shutdown", "Setup", "failed to load fonts");
+		return false;
+	}
 
+	ttfFPS.SetColor(255, 255, 0);
+	ttfAmmo.SetColor(255, 255, 0);
 
 	// TODO: weapon array etc.
 	Weapon* wep = new Weapon;
@@ -94,7 +102,7 @@ bool SetupEngine()
 	wep2->recoil = 40;
 	wep2->recoilControlRate = 5;
 	wep2->totalAmmo = 20;
-	wep2->fireType = FIRETYPE_SEMIAUTO;
+	wep2->fireType = FIRETYPE_FULLAUTO;
 	allWeapons.AddWeapon(wep2);
 	// TODO
 
@@ -104,7 +112,7 @@ bool SetupEngine()
 	testPlayer->texture = allTextures.GetTexture("DirMarker");
 	testPlayer->xLoc = (windowWidth / 2) - (testPlayer->texture->Rect().w / 2);
 	testPlayer->yLoc = (windowHeight / 2) - (testPlayer->texture->Rect().h / 2);
-	testPlayer->weapon = allWeapons.GetWeapon("Battle Rifle");	 
+	testPlayer->weapon = allWeapons.GetWeapon("Smg");	 
 
 	debug.Log("Setup+Shutdown", "Setup", "Setup completed");
 

@@ -37,6 +37,7 @@ public:
 	void MovePlayerAccordingToInput();	
 	void FireWeapon(SDL_Point aimLoc);
 	void ReloadWeapon();
+	void RenderAimer();
 };
 
 class Players
