@@ -9,14 +9,14 @@ bool Entity::Render()
 	{
 		SDL_Rect rect;
 
-		rect.x = xLoc;
-		rect.y = yLoc;
+		rect.x = (int)std::round(xLoc);
+		rect.y = (int)std::round(yLoc);
 		rect.w = texture->Rect().w;
 		rect.h = texture->Rect().h;
 		rect.x -= (rect.w / 2);
 		rect.y -= (rect.h / 2);
 
-		if (SDL_RenderCopyEx(mainRenderer, pl.texture->Tex(), NULL, &rect, NULL, NULL, SDL_FLIP_NONE) >= 0)
+		if (SDL_RenderCopyEx(mainRenderer, texture->Tex(), NULL, &rect, NULL, NULL, SDL_FLIP_NONE) >= 0)
 			return true;
 	}
 
@@ -55,8 +55,8 @@ void Entity::MoveObjectTo(int x, int y)
 // The objects hold their direction as an angle, not as radian so we need to convert it back.
 void Object::MoveObjectAccoringToVel()
 {
-	double i = (cos(directionFacing * M_PI / 180) * velocity);
-	double n = (sin(directionFacing * M_PI / 180) * velocity);
+	float i = (cos(directionFacing * M_PI / 180) * velocity);
+	float n = (sin(directionFacing * M_PI / 180) * velocity);
 
 	xLoc += i;
 	yLoc += n;

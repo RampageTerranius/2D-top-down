@@ -1,6 +1,7 @@
 #include "Render.h"
 
 #include "Projectile.h"
+#include "Globals.h"
 
 void Render()
 {
@@ -8,7 +9,7 @@ void Render()
 
 	SDL_RenderClear(mainRenderer);
 
-	pl.Render();
+	allPlayers.RenderAllPlayers();
 	allProjectiles.RenderAllProjectiles();
 
 	SDL_RenderPresent(mainRenderer);

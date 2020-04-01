@@ -481,37 +481,46 @@ void EventHandle(SDL_Event& event)
 		running = false;
 
 	if ((!keyboard.w && !keyboard.s) || (keyboard.w && keyboard.s))
-		pl.yVel = 0;
+		testPlayer->yVel = 0;
 	else if (keyboard.w)
-		pl.yVel = -1;
+		testPlayer->yVel = -1;
 	else if (keyboard.s)
-		pl.yVel = 1;	
+		testPlayer->yVel = 1;
 
 	if ((!keyboard.a && !keyboard.d) || (keyboard.a && keyboard.d))
-		pl.xVel = 0;
+		testPlayer->xVel = 0;
 	else if (keyboard.a)
-		pl.xVel = -1;
+		testPlayer->xVel = -1;
 	else if (keyboard.d)
-		pl.xVel = 1;
+		testPlayer->xVel = 1;
 
-	pl.sprinting = keyboard.lShift;
+	testPlayer->sprinting = keyboard.lShift;
 
-	pl.MovePlayerAccordingToInput();
+	testPlayer->MovePlayerAccordingToInput();
 
-	pl.directionFacing = GetAngleAsDegrees(pl.xLoc, pl.yLoc, mouse.x, mouse.y);
+	testPlayer->directionFacing = GetAngleAsDegrees(testPlayer->xLoc, testPlayer->yLoc, mouse.x, mouse.y);
 
+	// Fire weapon if needed.
 	if (mouse.left)
-	{
-		SDL_Point point;
-		point.x = mouse.x;
-		point.y = mouse.y;
-		SDL_Point plPoint;
-		plPoint.x = pl.xLoc;
-		plPoint.y = pl.yLoc;
-		allProjectiles.CreateProjectile(plPoint, point);
-		//mouse.left = false;
+	{		
+		SDL_Point mouseLoc;
+		mouseLoc.x = mouse.x;
+		mouseLoc.y = mouse.y;
+		testPlayer->FireWeapon(mouseLoc);
+		if (testPlayer->weapon->fireType == FIRETYPE_SEMIAUTO)
+		{
+			mouse.left = false;
+			testPlayer->isFiring = false;
+		}
+		else
+			testPlayer->isFiring = true;
 	}
+	else	
+		testPlayer->isFiring = false;
 
 	// calculate all physics for all currently existing projectiles.
 	allProjectiles.CalcAllProjectiles();
+
+	// handle all player based events (reloading, recoil etc...)
+	allPlayers.HandlePlayerEvents();
 }

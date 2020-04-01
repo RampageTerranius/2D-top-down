@@ -27,5 +27,7 @@ extern bool running;
 
 extern Textures allTextures;
 extern Projectiles allProjectiles;
-extern std::vector<Weapon> weaponList;
-extern Player pl;
+extern Weapons allWeapons;
+extern Players allPlayers;
+
+extern Player* testPlayer;

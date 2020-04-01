@@ -138,13 +138,12 @@ bool Textures::AddTexture(SDL_Texture* texture, std::string name)
 void Textures::DeleteTexture(std::string name)
 {
 	int i = 0;
-	for (auto& tex : textureList)
-	{
+	for (auto& tex : textureList)	
 		if (tex->Name() == name)
 		{
 			textureList.erase(textureList.begin() + i);
 			break;
 		}
-		i++;
-	}
+		else
+			i++;	
 }

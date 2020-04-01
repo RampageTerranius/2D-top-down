@@ -149,6 +149,7 @@
     <ClCompile Include="Render.cpp" />
     <ClCompile Include="Setup+Shutdown.cpp" />
     <ClCompile Include="Texture.cpp" />
+    <ClCompile Include="Weapon.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Character.h" />
@@ -162,6 +163,7 @@
     <ClInclude Include="MiscFunctions.h" />
     <ClInclude Include="Mouse.h" />
     <ClInclude Include="Projectile.h" />
+    <ClInclude Include="ProjectileType.h" />
     <ClInclude Include="Render.h" />
     <ClInclude Include="Setup+Shutdown.h" />
     <ClInclude Include="Texture.h" />

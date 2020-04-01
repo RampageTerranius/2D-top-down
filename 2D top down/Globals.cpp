@@ -15,7 +15,7 @@ SDL_Surface* mainSurface = nullptr;
 
 Textures allTextures = Textures();
 Projectiles allProjectiles = Projectiles();
+Weapons allWeapons = Weapons();
+Players allPlayers = Players();
+Player* testPlayer;
 
-Player pl = Player();
-
-std::vector<Weapon> weaponList;

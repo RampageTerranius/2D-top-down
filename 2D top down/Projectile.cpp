@@ -17,7 +17,7 @@ bool Projectile::CalcProjectile()
 	return true;
 }
 
-Projectile* Projectiles::CreateProjectile(SDL_Point start, SDL_Point end, Weapon wep)
+Projectile* Projectiles::CreateProjectile(SDL_Point start, SDL_Point end, Weapon* weapon)
 {
 	Projectile* proj = new Projectile();
 
@@ -30,10 +30,10 @@ Projectile* Projectiles::CreateProjectile(SDL_Point start, SDL_Point end, Weapon
 	proj->texture = allTextures.GetTexture("Bullet");
 	// TODO
 
-	proj->velocity = wep.projectileSpeed;
+	proj->velocity = weapon->projectileSpeed;
 	proj->distanceLeft = GetDistance(start.x, start.y, end.x, end.y);
-	if (proj->distanceLeft > wep.projectileDistance)
-		proj->distanceLeft = wep.projectileDistance;
+	if (proj->distanceLeft > weapon->projectileDistance)
+		proj->distanceLeft = weapon->projectileDistance;
 
 	projectileList.push_back(proj);
 
@@ -46,11 +46,11 @@ void Projectiles::DestroyProjectile(Projectile* proj)
 {
 	int i = 0;
 
-	for (Projectile* listProj : allProjectiles.projectileList)
+	for (Projectile* listProj : projectileList)
 	{
 		if (listProj == proj)
 		{
-			allProjectiles.projectileList.erase(projectileList.begin() + i);
+			projectileList.erase(projectileList.begin() + i);
 			debug.Log("Projectile", "DestroyProjectile", "Deleted a projectile");
 			return;
 		}
@@ -59,7 +59,6 @@ void Projectiles::DestroyProjectile(Projectile* proj)
 	}
 
 	debug.Log("Projectile", "DestroyProjectile", "Call to destroy a projectile has failed!");
-
 }
 
 void Projectiles::CalcAllProjectiles()

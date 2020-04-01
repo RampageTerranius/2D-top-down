@@ -2,6 +2,8 @@
 
 #include <SDL.h>
 #include <SDL_ttf.h>
+#include <cstdlib>
+#include <ctime>
 
 #include "Globals.h"
 #include "Texture.h"
@@ -15,6 +17,8 @@ bool SetupEngine()
 	debug.Log("Setup+Shutdown", "Setup", "Starting setup...");
 
 	debug.Log("Setup+Shutdown", "Setup", "Initializing SDL sub-routines...");
+
+	srand(static_cast <unsigned> (time(0)));
 
 	if (SDL_Init(SDL_INIT_EVERYTHING) != 0)
 	{
@@ -49,31 +53,41 @@ bool SetupEngine()
 
 	debug.Log("Setup+Shutdown", "Setup", "Loading textures...");	
 
-	pl.texture = allTextures.CreateTexture(GetEXEPath() + "\\Direction Marker.png", "DirMarker");
+	allTextures.CreateTexture(GetEXEPath() + "\\Direction Marker.png", "DirMarker");
 	allTextures.CreateTexture(GetEXEPath() + "\\Bullet.png", "Bullet");
 
-	if (pl.texture == nullptr)
+	if (allTextures.GetTexture("DirMarker") == nullptr || allTextures.GetTexture("Bullet") == nullptr)
 	{
-		debug.Log("Setup+Shutdown", "Setup", "failed to load Direction Marker.png");
+		debug.Log("Setup+Shutdown", "Setup", "failed to load textures");
 		return false;
 	}
 
-	pl.xLoc = (windowWidth / 2) - (pl.texture->Rect().w / 2);
-	pl.yLoc = (windowHeight / 2) - (pl.texture->Rect().h / 2);
+
 
 	// TODO: weapon array etc.
-	Weapon wep;
+	Weapon* wep = new Weapon;
 
-	wep.damage = 5;
-	wep.name = "Smg";
-	wep.projectileDistance = 200;
-	wep.projectileSpeed = 20;
-	wep.fireRate = 6;
-	wep.reloadTime = 150;
-	wep.totalAmmo = 30;
+	wep->damage = 5;
+	wep->name = "Smg";
+	wep->projectileDistance = 500;
+	wep->projectileSpeed = 20;
+	wep->fireRate = 6;
+	wep->reloadTime = 30;
+	wep->deviation = 30;
+	wep->maxDeviation = 80;
+	wep->recoil = 8;
+	wep->recoilControlRate = 15;
+	wep->totalAmmo = 30;
+	wep->fireType = FIRETYPE_FULLAUTO;
 	// TODO
 
-	pl.weapon = wep;
+	allWeapons.AddWeapon(wep);
+
+	testPlayer = allPlayers.CreatePlayer("TestPlayer");
+	testPlayer->texture = allTextures.GetTexture("DirMarker");
+	testPlayer->xLoc = (windowWidth / 2) - (testPlayer->texture->Rect().w / 2);
+	testPlayer->yLoc = (windowHeight / 2) - (testPlayer->texture->Rect().h / 2);
+	testPlayer->weapon = allWeapons.GetWeapon("Smg");	 
 
 	debug.Log("Setup+Shutdown", "Setup", "Setup completed");
 

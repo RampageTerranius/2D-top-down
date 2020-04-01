@@ -10,8 +10,8 @@ public:
 	void MoveObjectBy(int x, int y);
 	void MoveObjectTo(int x, int y);
 
-	double xLoc;
-	double yLoc;
+	float xLoc;
+	float yLoc;
 	int ID;
 	Texture* texture;
 };
@@ -21,6 +21,6 @@ class Object : public Entity
 public:
 	void MoveObjectAccoringToVel();
 
-	double velocity;
-	double directionFacing;
+	float velocity;
+	float directionFacing;
 };
