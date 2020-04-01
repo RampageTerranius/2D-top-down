@@ -76,18 +76,35 @@ bool SetupEngine()
 	wep->deviation = 30;
 	wep->maxDeviation = 80;
 	wep->recoil = 8;
-	wep->recoilControlRate = 15;
+	wep->recoilControlRate = 6;
 	wep->totalAmmo = 30;
 	wep->fireType = FIRETYPE_FULLAUTO;
+	allWeapons.AddWeapon(wep);
+
+	Weapon* wep2 = new Weapon;
+
+	wep2->damage = 20;
+	wep2->name = "Battle Rifle";
+	wep2->projectileDistance = 1000;
+	wep2->projectileSpeed = 30;
+	wep2->fireRate = 15;
+	wep2->reloadTime = 30;
+	wep2->deviation = 5;
+	wep2->maxDeviation = 120;
+	wep2->recoil = 40;
+	wep2->recoilControlRate = 5;
+	wep2->totalAmmo = 20;
+	wep2->fireType = FIRETYPE_SEMIAUTO;
+	allWeapons.AddWeapon(wep2);
 	// TODO
 
-	allWeapons.AddWeapon(wep);
+	
 
 	testPlayer = allPlayers.CreatePlayer("TestPlayer");
 	testPlayer->texture = allTextures.GetTexture("DirMarker");
 	testPlayer->xLoc = (windowWidth / 2) - (testPlayer->texture->Rect().w / 2);
 	testPlayer->yLoc = (windowHeight / 2) - (testPlayer->texture->Rect().h / 2);
-	testPlayer->weapon = allWeapons.GetWeapon("Smg");	 
+	testPlayer->weapon = allWeapons.GetWeapon("Battle Rifle");	 
 
 	debug.Log("Setup+Shutdown", "Setup", "Setup completed");
 
