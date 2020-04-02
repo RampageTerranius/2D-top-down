@@ -23,8 +23,8 @@ extern SDL_Window* mainWindow;
 extern SDL_Renderer* mainRenderer;
 extern SDL_Surface* mainSurface;
 
-// 
 extern bool running;
+extern bool HardwareCursor;
 
 extern Textures allTextures;
 extern Projectiles allProjectiles;
@@ -34,4 +34,5 @@ extern Players allPlayers;
 extern Player* testPlayer;
 
 extern TTF ttfFPS;
+extern TTF ttfWeapon;
 extern TTF ttfAmmo;

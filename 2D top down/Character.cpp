@@ -1,4 +1,6 @@
 #include "Character.h"
+#include "UI.h"
+#include "Mouse.h"
 #include "globals.h"
 #include "Math functions.h"
 
@@ -8,12 +10,12 @@ bool Character::Render()
 	{
 		SDL_Rect rect;
 
-		rect.x = (int)std::round(xLoc);
-		rect.y = (int)std::round(yLoc);
+		rect.x = (int)round(xLoc);
+		rect.y = (int)round( yLoc);
 		rect.w = texture->Rect().w;
 		rect.h = texture->Rect().h;
-		rect.x -= (rect.w / 2);
-		rect.y -= (rect.h / 2);
+		rect.x -= round((float)rect.w / 2);
+		rect.y -= round((float)rect.h / 2);
 
 		if (SDL_RenderCopyEx(mainRenderer, texture->Tex(), NULL, &rect, (directionFacing + 90), NULL, SDL_FLIP_NONE) >= 0)
 			return true;
@@ -70,8 +72,8 @@ void Player::FireWeapon(SDL_Point aimLoc)
 			{
 				// Get the point of the player.
 				SDL_Point plPoint;
-				plPoint.x = (int)std::round(testPlayer->xLoc);
-				plPoint.y = (int)std::round(testPlayer->yLoc);
+				plPoint.x = (int)round(testPlayer->xLoc);
+				plPoint.y = (int)round(testPlayer->yLoc);
 
 				// Calculate deviation/recoil etc.
 				float calcDeviation = weapon->deviation + currentRecoil;
@@ -105,9 +107,35 @@ void Player::FireWeapon(SDL_Point aimLoc)
 
 void Player::RenderAimer()
 {
-	Texture* tex = allTextures.GetTexture("AimMarker");
+	// Render the test players aimer.
+	UI aimer = UI();
 
-	
+	// TODO: bottom and right aimer are 1 pixel off and need to be minused by 1, fix this.
+
+	aimer.texture = allTextures.GetTexture("AimMarkerTop");
+	aimer.xLoc = mouse.x;
+	aimer.yLoc = ((float)mouse.y - ((testPlayer->currentRecoil + testPlayer->weapon->deviation) / 2)) - (aimer.texture->Rect().h);
+	aimer.Render(0);
+
+	aimer.texture = allTextures.GetTexture("AimMarkerBottom");
+	aimer.xLoc = mouse.x;
+	aimer.yLoc = ((float)mouse.y + ((testPlayer->currentRecoil + testPlayer->weapon->deviation) / 2)) + (aimer.texture->Rect().h) - 1;
+	aimer.Render(0);
+
+	aimer.texture = allTextures.GetTexture("AimMarkerLeft");
+	aimer.xLoc = ((float)mouse.x - ((testPlayer->currentRecoil + testPlayer->weapon->deviation) / 2)) - (aimer.texture->Rect().w);
+	aimer.yLoc = mouse.y;
+	aimer.Render(0);
+
+	aimer.texture = allTextures.GetTexture("AimMarkerRight");
+	aimer.xLoc = ((float)mouse.x + ((testPlayer->currentRecoil + testPlayer->weapon->deviation) / 2)) + (aimer.texture->Rect().w) - 1;
+	aimer.yLoc = mouse.y;
+	aimer.Render(0);
+
+	aimer.texture = allTextures.GetTexture("RedDot");
+	aimer.xLoc = mouse.x;
+	aimer.yLoc = mouse.y;
+	aimer.Render(0);
 }
 
 // Start maknig the player reload their weapon.

@@ -518,6 +518,10 @@ void EventHandle(SDL_Event& event)
 	else	
 		testPlayer->isFiring = false;
 
+	// If player hits reload then reload weapon.
+	if (keyboard.r)
+		testPlayer->ReloadWeapon();
+
 	// calculate all physics for all currently existing projectiles.
 	allProjectiles.CalcAllProjectiles();
 

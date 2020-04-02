@@ -55,9 +55,13 @@ bool SetupEngine()
 
 	allTextures.CreateTexture(GetEXEPath() + "\\Direction Marker.png", "DirMarker");
 	allTextures.CreateTexture(GetEXEPath() + "\\Bullet.png", "Bullet");
-	allTextures.CreateTexture(GetEXEPath() + "\\Aim Marker.png", "AimMarker");
+	allTextures.CreateTexture(GetEXEPath() + "\\Aim Marker Top.png", "AimMarkerTop");
+	allTextures.CreateTexture(GetEXEPath() + "\\Aim Marker Bottom.png", "AimMarkerBottom");
+	allTextures.CreateTexture(GetEXEPath() + "\\Aim Marker Left.png", "AimMarkerLeft");
+	allTextures.CreateTexture(GetEXEPath() + "\\Aim Marker Right.png", "AimMarkerRight");
+	allTextures.CreateTexture(GetEXEPath() + "\\Red Dot.png", "RedDot");
 
-	if (allTextures.GetTexture("DirMarker") == nullptr || allTextures.GetTexture("Bullet") == nullptr || allTextures.GetTexture("AimMarker") == nullptr)
+	if (allTextures.GetTexture("DirMarker") == nullptr || allTextures.GetTexture("Bullet") == nullptr || allTextures.GetTexture("AimMarkerTop") == nullptr || allTextures.GetTexture("AimMarkerBottom") == nullptr || allTextures.GetTexture("AimMarkerLeft") == nullptr || allTextures.GetTexture("AimMarkerRight") == nullptr || allTextures.GetTexture("RedDot") == nullptr)
 	{
 		debug.Log("Setup+Shutdown", "Setup", "failed to load textures");
 		return false;
@@ -71,16 +75,16 @@ bool SetupEngine()
 
 	ttfFPS.SetColor(255, 255, 0);
 	ttfAmmo.SetColor(255, 255, 0);
+	ttfWeapon.SetColor(255, 255, 0);
 
 	// TODO: weapon array etc.
 	Weapon* wep = new Weapon;
-
 	wep->damage = 5;
 	wep->name = "Smg";
 	wep->projectileDistance = 500;
 	wep->projectileSpeed = 20;
 	wep->fireRate = 6;
-	wep->reloadTime = 30;
+	wep->reloadTime = 90;
 	wep->deviation = 30;
 	wep->maxDeviation = 80;
 	wep->recoil = 8;
@@ -90,13 +94,12 @@ bool SetupEngine()
 	allWeapons.AddWeapon(wep);
 
 	Weapon* wep2 = new Weapon;
-
 	wep2->damage = 20;
 	wep2->name = "Battle Rifle";
 	wep2->projectileDistance = 1000;
-	wep2->projectileSpeed = 30;
+	wep2->projectileSpeed = 50;
 	wep2->fireRate = 15;
-	wep2->reloadTime = 30;
+	wep2->reloadTime = 110;
 	wep2->deviation = 5;
 	wep2->maxDeviation = 120;
 	wep2->recoil = 40;
@@ -104,17 +107,52 @@ bool SetupEngine()
 	wep2->totalAmmo = 20;
 	wep2->fireType = FIRETYPE_FULLAUTO;
 	allWeapons.AddWeapon(wep2);
+
+	Weapon* wep3 = new Weapon;
+	wep3->damage = 4;
+	wep3->name = "Lmg";
+	wep3->projectileDistance = 400;
+	wep3->projectileSpeed = 30;
+	wep3->fireRate = 3;
+	wep3->reloadTime = 180;
+	wep3->deviation = 30;
+	wep3->maxDeviation = 160;
+	wep3->recoil = 13;
+	wep3->recoilControlRate = 4;
+	wep3->totalAmmo = 100;
+	wep3->fireType = FIRETYPE_FULLAUTO;
+	allWeapons.AddWeapon(wep3);
+
+	Weapon* wep4 = new Weapon;
+	wep4->damage = 50;
+	wep4->name = "Bolt Rifle";
+	wep4->projectileDistance = 1000;
+	wep4->projectileSpeed = 50;
+	wep4->fireRate = 30;
+	wep4->reloadTime = 120;
+	wep4->deviation = 3;
+	wep4->maxDeviation = 120;
+	wep4->recoil = 60;
+	wep4->recoilControlRate = 5;
+	wep4->totalAmmo = 10;
+	wep4->fireType = FIRETYPE_SEMIAUTO;
+	allWeapons.AddWeapon(wep4);
 	// TODO
 
 	
 
 	testPlayer = allPlayers.CreatePlayer("TestPlayer");
 	testPlayer->texture = allTextures.GetTexture("DirMarker");
-	testPlayer->xLoc = (windowWidth / 2) - (testPlayer->texture->Rect().w / 2);
-	testPlayer->yLoc = (windowHeight / 2) - (testPlayer->texture->Rect().h / 2);
-	testPlayer->weapon = allWeapons.GetWeapon("Smg");	 
+	testPlayer->xLoc = round((float)windowWidth / 2 - ((float)testPlayer->texture->Rect().w / 2));
+	testPlayer->yLoc = round((float)windowHeight / 2 - ((float)testPlayer->texture->Rect().h / 2));
+	testPlayer->weapon = allWeapons.GetWeapon("Bolt Rifle");
 
 	debug.Log("Setup+Shutdown", "Setup", "Setup completed");
+
+	if (HardwareCursor)
+		SDL_ShowCursor(SDL_ENABLE);
+	else
+		SDL_ShowCursor(SDL_DISABLE);
 
 	return true;
 }

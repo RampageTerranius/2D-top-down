@@ -25,7 +25,7 @@ public:
 	float recoil;
 	float recoilControlRate;
 	int projectileDistance;
-	ProjectileType BulletType;
+	ProjectileType bulletType;
 	FireType fireType;
 };
 

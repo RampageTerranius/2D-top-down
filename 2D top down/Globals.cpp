@@ -5,6 +5,7 @@ Debug debug = Debug();
 std::string programName = "Test";
 
 bool running = false;
+bool HardwareCursor = false;
 
 int windowWidth = 800;
 int windowHeight = 600;
@@ -20,5 +21,5 @@ Players allPlayers = Players();
 Player* testPlayer;
 
 extern TTF ttfFPS = TTF();
+extern TTF ttfWeapon = TTF();
 extern TTF ttfAmmo = TTF();
-
