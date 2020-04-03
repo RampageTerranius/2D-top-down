@@ -17,8 +17,8 @@ public:
 	std::string name;
 	int damage;
 	int totalAmmo;
-	float fireRate;
-	float reloadTime;
+	int fireRate;
+	int reloadTime;
 	float projectileSpeed;
 	float deviation;
 	float maxDeviation;

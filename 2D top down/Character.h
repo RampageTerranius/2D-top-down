@@ -6,6 +6,10 @@
 class Character : public Entity
 {
 public:
+	Weapon* weapon;
+	int reloadTimer;
+	int ammoLeft;
+	int fireTimer;
 	float directionFacing;
 	bool Render();
 };
@@ -17,10 +21,6 @@ public:
 
 	int health;
 
-	Weapon* weapon;
-	int reloadTimer;
-	int ammoLeft;
-	int fireTimer;
 	float currentRecoil;
 	bool isFiring;
 
@@ -31,8 +31,6 @@ public:
 	int sprintVel = 5;
 
 	bool sprinting;
-	
-	float velDropWhenOverMaxVel;
 
 	void MovePlayerAccordingToInput();	
 	void FireWeapon(SDL_Point aimLoc);

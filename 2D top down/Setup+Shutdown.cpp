@@ -145,7 +145,7 @@ bool SetupEngine()
 	testPlayer->texture = allTextures.GetTexture("DirMarker");
 	testPlayer->xLoc = round((float)windowWidth / 2 - ((float)testPlayer->texture->Rect().w / 2));
 	testPlayer->yLoc = round((float)windowHeight / 2 - ((float)testPlayer->texture->Rect().h / 2));
-	testPlayer->weapon = allWeapons.GetWeapon("Bolt Rifle");
+	testPlayer->weapon = allWeapons.GetWeapon("Lmg");
 
 	debug.Log("Setup+Shutdown", "Setup", "Setup completed");
 

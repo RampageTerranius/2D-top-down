@@ -14,10 +14,10 @@ bool Character::Render()
 		rect.y = (int)round( yLoc);
 		rect.w = texture->Rect().w;
 		rect.h = texture->Rect().h;
-		rect.x -= round((float)rect.w / 2);
-		rect.y -= round((float)rect.h / 2);
+		rect.x -= (int)round((float)rect.w / 2);
+		rect.y -= (int)round((float)rect.h / 2);
 
-		if (SDL_RenderCopyEx(mainRenderer, texture->Tex(), NULL, &rect, (directionFacing + 90), NULL, SDL_FLIP_NONE) >= 0)
+		if (SDL_RenderCopyEx(mainRenderer, texture->Tex(), NULL, &rect, ((double)directionFacing + 90), NULL, SDL_FLIP_NONE) >= 0)
 			return true;
 	}
 
@@ -33,15 +33,15 @@ void Player::MovePlayerAccordingToInput()
 	{
 	case -1:
 		if (sprinting)
-			MoveObjectBy(-sprintVel, 0);
+			MoveObjectBy(-(float)sprintVel, 0);
 		else
-			MoveObjectBy(-walkVel, 0);
+			MoveObjectBy(-(float)walkVel, 0);
 		break;
 	case 1:
 		if (sprinting)
-			MoveObjectBy(sprintVel, 0);
+			MoveObjectBy((float)sprintVel, 0);
 		else
-			MoveObjectBy(walkVel, 0);
+			MoveObjectBy((float)walkVel, 0);
 		break;
 	}
 
@@ -49,15 +49,15 @@ void Player::MovePlayerAccordingToInput()
 	{
 	case -1:
 		if (sprinting)
-			MoveObjectBy(0, -sprintVel);
+			MoveObjectBy(0, -(float)sprintVel);
 		else
-			MoveObjectBy(0, -walkVel);
+			MoveObjectBy(0, -(float)walkVel);
 		break;
 	case 1:
 		if (sprinting)
-			MoveObjectBy(0, sprintVel);
+			MoveObjectBy(0, (float)sprintVel);
 		else
-			MoveObjectBy(0, walkVel);
+			MoveObjectBy(0, (float)walkVel);
 		break;
 	}
 }
@@ -113,28 +113,28 @@ void Player::RenderAimer()
 	// TODO: bottom and right aimer are 1 pixel off and need to be minused by 1, fix this.
 
 	aimer.texture = allTextures.GetTexture("AimMarkerTop");
-	aimer.xLoc = mouse.x;
+	aimer.xLoc = (float)mouse.x;
 	aimer.yLoc = ((float)mouse.y - ((testPlayer->currentRecoil + testPlayer->weapon->deviation) / 2)) - (aimer.texture->Rect().h);
 	aimer.Render(0);
 
 	aimer.texture = allTextures.GetTexture("AimMarkerBottom");
-	aimer.xLoc = mouse.x;
+	aimer.xLoc = (float)mouse.x;
 	aimer.yLoc = ((float)mouse.y + ((testPlayer->currentRecoil + testPlayer->weapon->deviation) / 2)) + (aimer.texture->Rect().h) - 1;
 	aimer.Render(0);
 
 	aimer.texture = allTextures.GetTexture("AimMarkerLeft");
 	aimer.xLoc = ((float)mouse.x - ((testPlayer->currentRecoil + testPlayer->weapon->deviation) / 2)) - (aimer.texture->Rect().w);
-	aimer.yLoc = mouse.y;
+	aimer.yLoc = (float)mouse.y;
 	aimer.Render(0);
 
 	aimer.texture = allTextures.GetTexture("AimMarkerRight");
 	aimer.xLoc = ((float)mouse.x + ((testPlayer->currentRecoil + testPlayer->weapon->deviation) / 2)) + (aimer.texture->Rect().w) - 1;
-	aimer.yLoc = mouse.y;
+	aimer.yLoc = (float)mouse.y;
 	aimer.Render(0);
 
 	aimer.texture = allTextures.GetTexture("RedDot");
-	aimer.xLoc = mouse.x;
-	aimer.yLoc = mouse.y;
+	aimer.xLoc = (float)mouse.x;
+	aimer.yLoc = (float)mouse.y;
 	aimer.Render(0);
 }
 

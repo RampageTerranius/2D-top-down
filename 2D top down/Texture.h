@@ -19,7 +19,7 @@ public:
 	std::string Name() { return name; };
 	SDL_Texture* Tex() { return tex; };
 	SDL_Rect Rect() { return rect; };
-	SDL_Point Center() { SDL_Point centerPoint; centerPoint.y = round((float)rect.h / 2); centerPoint.x = round((float)rect.w / 2); return centerPoint; }
+	SDL_Point Center() { SDL_Point centerPoint; centerPoint.y = (int)round((float)rect.h / 2); centerPoint.x = (int)round((float)rect.w / 2); return centerPoint; }
 
 private:
 	std::string name;

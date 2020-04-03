@@ -7,7 +7,7 @@ class Entity
 {
 public:
 	virtual bool Render();
-	void MoveObjectBy(int x, int y);
+	void MoveObjectBy(float x, float y);
 	void MoveObjectTo(int x, int y);
 
 	float xLoc;

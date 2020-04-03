@@ -12,8 +12,8 @@ bool UI::Render(int rotationAngle)
 		rect.y = (int)round(yLoc);
 		rect.w = texture->Rect().w;
 		rect.h = texture->Rect().h;
-		rect.x -= round((float)rect.w / 2);
-		rect.y -= round((float)rect.h / 2);
+		rect.x -= (int)round((float)rect.w / 2);
+		rect.y -= (int)round((float)rect.h / 2);
 
 		if (xRotLoc < 0 || yRotLoc < 0)
 		{

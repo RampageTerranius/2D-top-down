@@ -21,19 +21,19 @@ Projectile* Projectiles::CreateProjectile(SDL_Point start, SDL_Point end, Weapon
 {
 	Projectile* proj = new Projectile();
 
-	proj->xLoc = start.x;
-	proj->yLoc = start.y;
+	proj->xLoc = (float)start.x;
+	proj->yLoc = (float)start.y;
 
-	proj->directionFacing = GetAngleAsDegrees(start.x, start.y, end.x, end.y);
+	proj->directionFacing = (float)GetAngleAsDegrees(start.x, start.y, end.x, end.y);
 
 	// TODO: automate texture and velocity
 	proj->texture = allTextures.GetTexture("Bullet");
 	// TODO
 
 	proj->velocity = weapon->projectileSpeed;
-	proj->distanceLeft = GetDistance(start.x, start.y, end.x, end.y);
-	if (proj->distanceLeft > weapon->projectileDistance)
-		proj->distanceLeft = weapon->projectileDistance;
+	proj->distanceLeft = (float)GetDistance(start.x, start.y, end.x, end.y);
+	if (proj->distanceLeft > (float)weapon->projectileDistance)
+		proj->distanceLeft = (float)weapon->projectileDistance;
 
 	projectileList.push_back(proj);
 
