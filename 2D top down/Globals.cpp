@@ -23,3 +23,4 @@ Player* testPlayer;
 extern TTF ttfFPS = TTF();
 extern TTF ttfWeapon = TTF();
 extern TTF ttfAmmo = TTF();
+extern TTF ttfDodges = TTF();

@@ -27,11 +27,17 @@ public:
 	int xVel;// -1 = left 0 = none 1 = right
 	int yVel;// -1 = up 0 = none 1 = down
 	
-	int walkVel = 2;
-	int sprintVel = 5;
+	float baseMovementVel = 4;
+	float dodgeVel = 24;
+	float dodgeVelDrop = 2;
 
-	bool sprinting;
+	float currentMovementVel = baseMovementVel;
 
+	int dodgesLeft = 3;
+	int totalDodges = 3;
+	int dodgeBaseRechargeTime = 120;
+	int dodgeChargeTimer;
+	
 	void MovePlayerAccordingToInput();	
 	void FireWeapon(SDL_Point aimLoc);
 	void ReloadWeapon();

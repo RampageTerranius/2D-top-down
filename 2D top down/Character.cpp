@@ -32,32 +32,20 @@ void Player::MovePlayerAccordingToInput()
 	switch (xVel)
 	{
 	case -1:
-		if (sprinting)
-			MoveObjectBy(-(float)sprintVel, 0);
-		else
-			MoveObjectBy(-(float)walkVel, 0);
+		MoveObjectBy(-(float)currentMovementVel, 0);
 		break;
 	case 1:
-		if (sprinting)
-			MoveObjectBy((float)sprintVel, 0);
-		else
-			MoveObjectBy((float)walkVel, 0);
+		MoveObjectBy((float)currentMovementVel, 0);
 		break;
 	}
 
 	switch (yVel)
 	{
 	case -1:
-		if (sprinting)
-			MoveObjectBy(0, -(float)sprintVel);
-		else
-			MoveObjectBy(0, -(float)walkVel);
+		MoveObjectBy(0, -(float)currentMovementVel);
 		break;
 	case 1:
-		if (sprinting)
-			MoveObjectBy(0, (float)sprintVel);
-		else
-			MoveObjectBy(0, (float)walkVel);
+		MoveObjectBy(0, (float)currentMovementVel);
 		break;
 	}
 }
@@ -206,7 +194,7 @@ void Players::HandlePlayerEvents()
 		if (pl->fireTimer > 0)
 			pl->fireTimer--;
 
-		if ((pl->currentRecoil > 0 && !pl->isFiring && pl->fireTimer == 0) || pl->reloadTimer != 0)
+		if (pl->currentRecoil > 0/* && !pl->isFiring && pl->fireTimer == 0*/)
 		{
 			pl->currentRecoil-= pl->weapon->recoilControlRate;
 
@@ -215,6 +203,24 @@ void Players::HandlePlayerEvents()
 
 			if (pl->isFiring)
 				pl->currentRecoil = pl->currentRecoil;
+		}
+
+		if (pl->currentMovementVel > pl->baseMovementVel)
+		{
+			pl->currentMovementVel -= pl->dodgeVelDrop;
+			if (pl->currentMovementVel < pl->baseMovementVel)
+				pl->currentMovementVel = pl->baseMovementVel;
+		}
+
+		if (pl->dodgesLeft < pl->totalDodges)
+		{
+			pl->dodgeChargeTimer++;
+
+			if (pl->dodgeChargeTimer >= pl->dodgeBaseRechargeTime)
+			{
+				pl->dodgesLeft++;
+				pl->dodgeChargeTimer = 0;
+			}
 		}
 	}
 }

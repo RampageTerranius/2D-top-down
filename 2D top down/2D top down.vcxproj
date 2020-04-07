@@ -142,6 +142,7 @@
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="EventHandle.cpp" />
     <ClCompile Include="Globals.cpp" />
+    <ClCompile Include="Keyboard.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Math Functions.cpp" />
     <ClCompile Include="MiscFunctions.cpp" />

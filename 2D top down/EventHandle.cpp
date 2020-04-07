@@ -10,6 +10,7 @@
 
 #include <SDL.h>
 
+
 // Handles all key/mouse events.
 void UpdateEventStructs(SDL_Event event)
 {
@@ -494,7 +495,16 @@ void EventHandle(SDL_Event& event)
 	else if (keyboard.d)
 		testPlayer->xVel = 1;
 
-	testPlayer->sprinting = keyboard.lShift;
+	if (keyboard.lShift)
+	{
+		if (testPlayer->dodgesLeft > 0)
+		{
+			testPlayer->currentMovementVel = testPlayer->dodgeVel;
+			testPlayer->dodgesLeft--;
+		}
+
+		keyboard.lShift = false;
+	}
 
 	testPlayer->MovePlayerAccordingToInput();
 

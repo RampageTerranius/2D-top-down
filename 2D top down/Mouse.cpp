@@ -1,3 +1,3 @@
 #include "Mouse.h"
 
-Mouse mouse = Mouse();
+extern Mouse mouse = Mouse();

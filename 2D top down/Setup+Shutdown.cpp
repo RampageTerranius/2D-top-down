@@ -67,7 +67,7 @@ bool SetupEngine()
 		return false;
 	}
 
-	if (!ttfFPS.SetFont(GetEXEPath() + "\\pxl.ttf", 20) || !ttfAmmo.SetFont(GetEXEPath() + "\\pxl.ttf", 20))
+	if (!ttfWeapon.SetFont(GetEXEPath() + "\\pxl.ttf", 20) || !ttfAmmo.SetFont(GetEXEPath() + "\\pxl.ttf", 20) || !ttfFPS.SetFont(GetEXEPath() + "\\pxl.ttf", 20) || !ttfDodges.SetFont(GetEXEPath() + "\\pxl.ttf", 20))
 	{
 		debug.Log("Setup+Shutdown", "Setup", "failed to load fonts");
 		return false;
@@ -76,6 +76,7 @@ bool SetupEngine()
 	ttfFPS.SetColor(255, 255, 0);
 	ttfAmmo.SetColor(255, 255, 0);
 	ttfWeapon.SetColor(255, 255, 0);
+	ttfDodges.SetColor(255, 255, 0);
 
 	// TODO: weapon array etc.
 	Weapon* wep = new Weapon;

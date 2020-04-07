@@ -22,7 +22,7 @@ void Render()
 
 	// Render the ammo count.
 	if (testPlayer->reloadTimer == 0)
-		ttfAmmo.SetText(mainRenderer, std::to_string(testPlayer->ammoLeft));
+		ttfAmmo.SetText(mainRenderer, "Ammo: " + std::to_string(testPlayer->ammoLeft));
 	else
 		ttfAmmo.SetText(mainRenderer, "Reloading");
 
@@ -30,9 +30,14 @@ void Render()
 
 	// Render the weapon name.
 	if (testPlayer->weapon != nullptr)
-		ttfWeapon.SetText(mainRenderer, testPlayer->weapon->name);
+		ttfWeapon.SetText(mainRenderer, "Weapon: " + testPlayer->weapon->name);
 
 	ttfWeapon.Draw(mainRenderer, 5, windowHeight - 50);
+
+	// Render the dodges count.
+	ttfDodges.SetText(mainRenderer, "Dodges: " + std::to_string(testPlayer->dodgesLeft));
+
+	ttfDodges.Draw(mainRenderer, 5, windowHeight - 75);
 	
 	SDL_RenderPresent(mainRenderer);
 }

@@ -70,6 +70,8 @@ bool Texture::Load(std::string fileLoc, std::string name)
 
 	this->name = name;
 
+	debug.Log("Texture", "Texture::Load", "Success loading texture at location : " + fileLoc);
+
 	return true;
 }
 

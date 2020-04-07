@@ -1,5 +1,7 @@
 #include "TTF.h"
 
+#include "Globals.h"
+
 #include <string>
 
 //sdl
@@ -27,23 +29,19 @@ void TTF::Clear()
 //set the currently in use font
 bool TTF::SetFont(std::string fontLocation, int size)
 {
-	if (font == nullptr)
+	if (font != nullptr)
+		TTF_CloseFont(font);
+	
+	font = TTF_OpenFont(fontLocation.c_str(), size);
+	if (font != nullptr)
 	{
-		font = TTF_OpenFont(fontLocation.c_str(), size);
-		if (font != nullptr)
-			return true;
-		else
-			return false;
+		debug.Log("TTF", "SetFont", "TTF object loaded font into memory at : " + fontLocation + " at font size : " + std::to_string(size));
+		return true;
 	}
 	else
 	{
-		//close the current font first THEN open the new one
-		TTF_CloseFont(font);
-		font = TTF_OpenFont(fontLocation.c_str(), size);
-		if (font != nullptr)
-			return true;
-		else
-			return false;
+		debug.Log("TTF", "SetFont", "Failed to load font : " + fontLocation + " at font size : " + std::to_string(size));
+		return false;
 	}
 }
 
@@ -90,5 +88,7 @@ void TTF::Draw(SDL_Renderer* renderer, int x, int y)
 
 		//render the texture of the words to the given renderer
 		SDL_RenderCopy(renderer, texture, nullptr, &rect);
-	};
+	}
+	else	
+		debug.Log("TTF", "Draw", "Failed to draw TTF surface with text :" + text);	
 }

@@ -36,3 +36,4 @@ extern Player* testPlayer;
 extern TTF ttfFPS;
 extern TTF ttfWeapon;
 extern TTF ttfAmmo;
+extern TTF ttfDodges;
