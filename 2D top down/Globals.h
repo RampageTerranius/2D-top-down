@@ -4,6 +4,7 @@
 #include <string>
 #include "Debug.h"
 #include "Entity.h"
+#include "Map.h"
 #include "Texture.h"
 #include "TTF.h"
 #include "Character.h"
@@ -17,22 +18,30 @@ extern Debug debug;
 extern std::string programName;
 extern int windowWidth;
 extern int windowHeight;
+extern bool HardwareCursor;
 
 // SDL renderer/window.
 extern SDL_Window* mainWindow;
 extern SDL_Renderer* mainRenderer;
 extern SDL_Surface* mainSurface;
 
+// Other stuff.
 extern bool running;
-extern bool HardwareCursor;
 
+// Lists.
 extern Textures allTextures;
 extern Projectiles allProjectiles;
 extern Weapons allWeapons;
 extern Players allPlayers;
 
+// Test Player.
 extern Player* testPlayer;
+extern SDL_Rect camera;
 
+// Map data;
+extern Map map;
+
+// TTF Fonts.
 extern TTF ttfFPS;
 extern TTF ttfWeapon;
 extern TTF ttfAmmo;

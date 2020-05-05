@@ -51,6 +51,8 @@ bool SetupEngine()
 	Uint32 renderFlags = SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC;
 	mainRenderer = SDL_CreateRenderer(mainWindow, -1, renderFlags);	
 
+	SDL_SetRenderDrawColor(mainRenderer, 0, 0, 0, 255);
+
 	debug.Log("Setup+Shutdown", "Setup", "Loading textures...");	
 
 	allTextures.CreateTexture(GetEXEPath() + "\\Direction Marker.png", "DirMarker");
@@ -144,8 +146,10 @@ bool SetupEngine()
 
 	testPlayer = allPlayers.CreatePlayer("TestPlayer");
 	testPlayer->texture = allTextures.GetTexture("DirMarker");
-	testPlayer->xLoc = round((float)windowWidth / 2 - ((float)testPlayer->texture->Rect().w / 2));
-	testPlayer->yLoc = round((float)windowHeight / 2 - ((float)testPlayer->texture->Rect().h / 2));
+	//testPlayer->xLoc = round((float)windowWidth / 2);
+	//testPlayer->yLoc = round((float)windowHeight / 2);
+	testPlayer->xLoc = 0;
+	testPlayer->yLoc = 0;
 	testPlayer->weapon = allWeapons.GetWeapon("Lmg");
 
 	debug.Log("Setup+Shutdown", "Setup", "Setup completed");
@@ -154,6 +158,65 @@ bool SetupEngine()
 		SDL_ShowCursor(SDL_ENABLE);
 	else
 		SDL_ShowCursor(SDL_DISABLE);
+
+	for (int i = 0; i < map.GetSizeX(); i++)
+		for (int n = 0; n < map.GetSizeY(); n++)
+			if ((n == 0 || n == map.GetSizeY() - 1) || (i == 0 || i == map.GetSizeX() - 1))
+				map.SetDataAt(i, n, MAPDATATYPE_WALL);
+
+	map.SetDataAt(499, 500, MAPDATATYPE_WALL);
+	map.SetDataAt(499, 499, MAPDATATYPE_WALL);
+	map.SetDataAt(500, 500, MAPDATATYPE_WALL);
+	map.SetDataAt(500, 499, MAPDATATYPE_WALL);
+
+	// Map test data.
+	map.SetDataAt(50, 100, MAPDATATYPE_WALL);
+	map.SetDataAt(51, 100, MAPDATATYPE_WALL);
+	map.SetDataAt(52, 100, MAPDATATYPE_WALL);
+	map.SetDataAt(53, 100, MAPDATATYPE_WALL);
+	map.SetDataAt(54, 100, MAPDATATYPE_WALL);
+	map.SetDataAt(55, 100, MAPDATATYPE_WALL);
+	map.SetDataAt(56, 100, MAPDATATYPE_WALL);
+	map.SetDataAt(57, 100, MAPDATATYPE_WALL);
+	map.SetDataAt(58, 100, MAPDATATYPE_WALL);
+	map.SetDataAt(59, 100, MAPDATATYPE_WALL);
+	map.SetDataAt(60, 100, MAPDATATYPE_WALL);
+	map.SetDataAt(61, 100, MAPDATATYPE_WALL);
+
+	map.SetDataAt(51, 99, MAPDATATYPE_WALL);
+	map.SetDataAt(51, 101, MAPDATATYPE_WALL);
+	map.SetDataAt(52, 98, MAPDATATYPE_WALL);
+	map.SetDataAt(52, 102, MAPDATATYPE_WALL);
+	map.SetDataAt(53, 97, MAPDATATYPE_WALL);
+	map.SetDataAt(53, 103, MAPDATATYPE_WALL);
+	map.SetDataAt(54, 96, MAPDATATYPE_WALL);
+	map.SetDataAt(54, 104, MAPDATATYPE_WALL);
+	map.SetDataAt(55, 95, MAPDATATYPE_WALL);
+	map.SetDataAt(55, 105, MAPDATATYPE_WALL);
+
+	map.SetDataAt(100, 50, MAPDATATYPE_WALL);
+	map.SetDataAt(100, 51, MAPDATATYPE_WALL);
+	map.SetDataAt(100, 52, MAPDATATYPE_WALL);
+	map.SetDataAt(100, 53, MAPDATATYPE_WALL);
+	map.SetDataAt(100, 54, MAPDATATYPE_WALL);
+	map.SetDataAt(100, 55, MAPDATATYPE_WALL);
+	map.SetDataAt(100, 56, MAPDATATYPE_WALL);
+	map.SetDataAt(100, 57, MAPDATATYPE_WALL);
+	map.SetDataAt(100, 58, MAPDATATYPE_WALL);
+	map.SetDataAt(100, 59, MAPDATATYPE_WALL);
+	map.SetDataAt(100, 60, MAPDATATYPE_WALL);
+	map.SetDataAt(100, 61, MAPDATATYPE_WALL);
+
+	map.SetDataAt(99, 51, MAPDATATYPE_WALL);
+	map.SetDataAt(101, 51, MAPDATATYPE_WALL);
+	map.SetDataAt(98, 52, MAPDATATYPE_WALL);
+	map.SetDataAt(102, 52, MAPDATATYPE_WALL);
+	map.SetDataAt(97, 53, MAPDATATYPE_WALL);
+	map.SetDataAt(103, 53, MAPDATATYPE_WALL);
+	map.SetDataAt(96, 54, MAPDATATYPE_WALL);
+	map.SetDataAt(104, 54, MAPDATATYPE_WALL);
+	map.SetDataAt(95, 55, MAPDATATYPE_WALL);
+	map.SetDataAt(105, 55, MAPDATATYPE_WALL);
 
 	return true;
 }

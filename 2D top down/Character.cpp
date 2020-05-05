@@ -10,25 +10,25 @@ bool Character::Render()
 	{
 		SDL_Rect rect;
 
-		rect.x = (int)round(xLoc);
-		rect.y = (int)round( yLoc);
+		rect.x = (int)round(windowWidth / 2);
+		rect.y = (int)round(windowHeight / 2);
 		rect.w = texture->Rect().w;
 		rect.h = texture->Rect().h;
 		rect.x -= (int)round((float)rect.w / 2);
 		rect.y -= (int)round((float)rect.h / 2);
 
-		if (SDL_RenderCopyEx(mainRenderer, texture->Tex(), NULL, &rect, ((double)directionFacing + 90), NULL, SDL_FLIP_NONE) >= 0)
+		if (SDL_RenderCopyEx(mainRenderer, texture->Tex(), NULL, &rect, 0, NULL, SDL_FLIP_NONE) >= 0)
 			return true;
 	}
 
-	debug.Log("Entity", "Render", "failed to render entity (" + std::to_string(ID) + ") : " + SDL_GetError());
+	debug.Log("Character", "Render", "failed to render entity (" + std::to_string(ID) + ") : " + SDL_GetError());
 
 	return false;
 }
 
 // Logic for determining how the player is moving, refer to EventHandle for how xVel and yVel is determined.
 void Player::MovePlayerAccordingToInput()
-{
+{	
 	switch (xVel)
 	{
 	case -1:
@@ -48,6 +48,10 @@ void Player::MovePlayerAccordingToInput()
 		MoveObjectBy(0, (float)currentMovementVel);
 		break;
 	}
+
+	// TODO: camera is currently calculating ALL palyers, this will need to be udpated in the future.
+	camera.x = testPlayer->xLoc - (windowWidth / 2);
+	camera.y = testPlayer->yLoc - (windowHeight / 2);
 }
 
 // Logic for the player firign their weapon.

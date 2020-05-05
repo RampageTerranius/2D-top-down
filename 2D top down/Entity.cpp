@@ -33,13 +33,13 @@ void Entity::MoveObjectBy(float x, float y)
 
 	if (xLoc <= 0)
 		xLoc = 0;
-	else if (xLoc > (float)windowWidth)
-		xLoc = (float)windowWidth - 1;
+	else if (xLoc >= (float)map.GetSizeX())
+		xLoc = (float)map.GetSizeX() - 1;
 
 	if (yLoc <= 0)
 		yLoc = 0;
-	if (yLoc > (float)windowHeight)
-		yLoc = (float)(windowHeight - 1);
+	if (yLoc >= (float)map.GetSizeY())
+		yLoc = (float)(map.GetSizeY() - 1);
 }
 
 // Move the entity DIRECTLY to the given X/Y coords

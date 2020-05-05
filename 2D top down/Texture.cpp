@@ -36,7 +36,7 @@ bool Texture::Load(std::string fileLoc, std::string name)
 
 	SDL_Surface* surface;
 
-	// Use base SDL_Image loadign function
+	// Use base SDL_Image loading function.
 	surface = IMG_Load(fileLoc.c_str());
 
 	if (surface == nullptr)
@@ -58,7 +58,7 @@ bool Texture::Load(std::string fileLoc, std::string name)
 	// Create the new texture
 	tex = SDL_CreateTextureFromSurface(mainRenderer, surface);
 
-	// Clear out the old surface
+	// Clear out the old surface.
 	SDL_FreeSurface(surface);
 
 	if (tex == nullptr)

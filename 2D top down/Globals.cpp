@@ -8,7 +8,7 @@ bool running = false;
 bool HardwareCursor = false;
 
 int windowWidth = 800;
-int windowHeight = 600;
+int windowHeight = 800;
 
 SDL_Window* mainWindow = nullptr;
 SDL_Renderer* mainRenderer = nullptr;
@@ -18,9 +18,15 @@ Textures allTextures = Textures();
 Projectiles allProjectiles = Projectiles();
 Weapons allWeapons = Weapons();
 Players allPlayers = Players();
-Player* testPlayer;
 
-extern TTF ttfFPS = TTF();
-extern TTF ttfWeapon = TTF();
-extern TTF ttfAmmo = TTF();
-extern TTF ttfDodges = TTF();
+Player* testPlayer;
+SDL_Rect camera = {0, 0, windowWidth, windowHeight};
+
+
+// Map data;
+Map map = Map(1000, 1000);
+
+TTF ttfFPS = TTF();
+TTF ttfWeapon = TTF();
+TTF ttfAmmo = TTF();
+TTF ttfDodges = TTF();

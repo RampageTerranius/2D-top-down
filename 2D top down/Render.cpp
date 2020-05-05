@@ -9,16 +9,17 @@
 
 void Render()
 {
-	SDL_SetRenderDrawColor(mainRenderer, 0, 0, 0, 255);
-
 	SDL_RenderClear(mainRenderer);
+
+	//Render the map to the screen.
+	map.Render();
 
 	// Render all players.
 	allPlayers.RenderAllPlayers();
 	// Render all projectiles.
 	allProjectiles.RenderAllProjectiles();
 
-	testPlayer->RenderAimer();	
+	testPlayer->RenderAimer();
 
 	// Render the ammo count.
 	if (testPlayer->reloadTimer == 0)
