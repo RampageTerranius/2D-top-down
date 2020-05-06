@@ -516,7 +516,7 @@ void EventHandle(SDL_Event& event)
 		SDL_Point mouseLoc;
 		mouseLoc.x = mouse.x;
 		mouseLoc.y = mouse.y;
-		testPlayer->FireWeapon(mouseLoc);
+		testPlayer->FireWeapon();
 		if (testPlayer->weapon->fireType == FIRETYPE_SEMIAUTO)
 		{
 			mouse.left = false;

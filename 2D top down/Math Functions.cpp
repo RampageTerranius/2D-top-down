@@ -1,4 +1,6 @@
 #include "Math functions.h"
+#include "Globals.h"
+#include "Mouse.h"
 
 #include <SDL.h>
 
@@ -27,4 +29,29 @@ double GetAngleAsDegrees(double x1, double y1, double x2, double y2)
 float RandomFloat(float min, float max)
 {
 	return (((float)rand() / (float)RAND_MAX) * (max - min)) + min;
+}
+
+// Gets the X/Y coordinate on the map of where the cursor is pointing.
+SDL_Point GetMapCoordFromCursor()
+{
+	SDL_Point mapCoord = { 0, 0 };
+
+	// Convert mouse and camera into the location on the map we are pointing at.
+	mapCoord.x = mouse.x - camera.x;
+	mapCoord.y = mouse.y - camera.y;
+
+	return mapCoord;
+}
+
+// Gets the X/Y coordinate on the screen where the given point would be.
+// This does not factor for the coord potentially being off the screen, it is up to the user to determine this.
+SDL_Point GetScreenCoordFromMapPoint(SDL_Point point)
+{
+	SDL_Point mapCoord = { 0, 0 };
+
+	// Convert mouse and camera into the location on the map we are pointing at.
+	mapCoord.x = point.x - camera.x;
+	mapCoord.y = point.y - camera.y;
+
+	return mapCoord;
 }

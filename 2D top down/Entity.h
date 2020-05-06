@@ -3,6 +3,8 @@
 
 #include "Texture.h"
 
+// Entity is non-relative to the map.
+// this means that setting something to 200/200 will make it exist at 200/200 on the SCREEN.
 class Entity
 {
 public:
@@ -16,10 +18,13 @@ public:
 	Texture* texture;
 };
 
+// Object is relative to the map.
+// this means that setting something to 200/200 will make it exist at 200/200 on the MAP but potentially elsewhere on the SCREEN.
 class Object : public Entity
 {
 public:
 	void MoveObjectAccoringToVel();
+	virtual bool Render();
 
 	float velocity;
 	float directionFacing;

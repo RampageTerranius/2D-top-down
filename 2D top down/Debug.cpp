@@ -17,6 +17,5 @@ void Debug::Log(std::string fileName, std::string functionName, std::string code
 	DebugMessage newMessage(fileName, functionName, coderMessage);
 
 	if (showMessagesOnConsole)
-		std::cout << fileName + ":" + functionName + " | " + coderMessage + "\n";
-	
+		std::cout << fileName + ":" + functionName + " | " + coderMessage + "\n";	
 }

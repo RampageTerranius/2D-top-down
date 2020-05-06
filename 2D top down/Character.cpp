@@ -55,8 +55,10 @@ void Player::MovePlayerAccordingToInput()
 }
 
 // Logic for the player firign their weapon.
-void Player::FireWeapon(SDL_Point aimLoc)
+void Player::FireWeapon()
 {
+	SDL_Point aimLoc = GetMapCoordFromCursor();
+
 	if (weapon != nullptr)
 		if (ammoLeft > 0)
 		{

@@ -39,7 +39,7 @@ public:
 	int dodgeChargeTimer;
 	
 	void MovePlayerAccordingToInput();	
-	void FireWeapon(SDL_Point aimLoc);
+	void FireWeapon();
 	void ReloadWeapon();
 	void RenderAimer();
 };
