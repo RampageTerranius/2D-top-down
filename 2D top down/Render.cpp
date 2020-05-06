@@ -11,14 +11,16 @@ void Render()
 {
 	SDL_RenderClear(mainRenderer);
 
-	//Render the map to the screen.
+	// Render the map to the screen.
 	map.Render();
 
 	// Render all players.
 	allPlayers.RenderAllPlayers();
+
 	// Render all projectiles.
 	allProjectiles.RenderAllProjectiles();
 
+	// Render the players aimer
 	testPlayer->RenderAimer();
 
 	// Render the ammo count.

@@ -10,14 +10,12 @@ bool Character::Render()
 	{
 		SDL_Rect rect;
 
-		rect.x = (int)round(windowWidth / 2);
-		rect.y = (int)round(windowHeight / 2);
 		rect.w = texture->Rect().w;
 		rect.h = texture->Rect().h;
-		rect.x -= (int)round((float)rect.w / 2);
-		rect.y -= (int)round((float)rect.h / 2);
+		rect.x = (int)round((windowWidth / 2) - (rect.w / 2));
+		rect.y = (int)round((windowHeight / 2) - (rect.h / 2));
 
-		if (SDL_RenderCopyEx(mainRenderer, texture->Tex(), NULL, &rect, 0, NULL, SDL_FLIP_NONE) >= 0)
+		if (SDL_RenderCopyEx(mainRenderer, texture->Tex(), NULL, &rect, directionFacing + 90, NULL, SDL_FLIP_NONE) >= 0)
 			return true;
 	}
 
