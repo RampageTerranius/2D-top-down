@@ -7,8 +7,8 @@ std::string programName = "Test";
 bool running = false;
 bool HardwareCursor = false;
 
-int windowWidth = 800;
-int windowHeight = 800;
+int windowWidth = 640;
+int windowHeight = 480;
 
 SDL_Window* mainWindow = nullptr;
 SDL_Renderer* mainRenderer = nullptr;

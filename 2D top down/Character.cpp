@@ -49,9 +49,11 @@ void Player::MovePlayerAccordingToInput()
 		break;
 	}
 
-	// TODO: camera is currently calculating ALL palyers, this will need to be udpated in the future.
-	camera.x = testPlayer->xLoc - (windowWidth / 2);
-	camera.y = testPlayer->yLoc - (windowHeight / 2);
+	// TODO: camera is currently calculating ALL players, this will need to be updated in the future.
+	camera.x = (windowWidth/2) - testPlayer->xLoc;
+	camera.w = map.GetSizeX();
+	camera.y = (windowHeight/2) - testPlayer->yLoc;
+	camera.h = map.GetSizeY();
 }
 
 // Logic for the player firign their weapon.

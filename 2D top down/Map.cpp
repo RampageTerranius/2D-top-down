@@ -83,7 +83,7 @@ void EditPixel(SDL_Surface* surface, int x, int y, Uint32 pixel)
 // This is done BEFORE anything else so as such it will always be the back layer.
 void Map::Render()
 {
-	SDL_Surface* tempSurf;
+	SDL_Surface* tempSurf = nullptr;
 
 	tempSurf = SDL_CreateRGBSurface(0, sizeX, sizeY, 32, 0, 0, 0, 0);
 
@@ -100,18 +100,13 @@ void Map::Render()
 				break;
 			}
 
-	SDL_Texture* tempTex = SDL_CreateTextureFromSurface(mainRenderer, tempSurf);	
-
-	SDL_Rect destination;
-	destination.x = (testPlayer->xLoc + testPlayer->texture->Rect().w / 2) - windowWidth / 2;
-	destination.y = (testPlayer->yLoc + testPlayer->texture->Rect().h / 2) - windowHeight / 2;
-	
-	destination.w = sizeX;
-	destination.h = sizeY;
-
+	SDL_Texture* tempTex = SDL_CreateTextureFromSurface(mainRenderer, tempSurf);
 	SDL_FreeSurface(tempSurf);	
 
-	SDL_RenderCopy(mainRenderer, tempTex, &camera, NULL);
+	SDL_Rect src = { 0, 0, 0, 0 };
+	SDL_QueryTexture(tempTex, NULL, NULL, &src.w, &src.h);
+
+	SDL_RenderCopy(mainRenderer, tempTex, &src, &camera);
 
 	SDL_DestroyTexture(tempTex);
 	tempTex = nullptr;
