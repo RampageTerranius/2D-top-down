@@ -50,8 +50,8 @@ SDL_Point GetScreenCoordFromMapPoint(SDL_Point point)
 	SDL_Point mapCoord = { 0, 0 };
 
 	// Convert mouse and camera into the location on the map we are pointing at.
-	mapCoord.x = point.x - camera.x;
-	mapCoord.y = point.y - camera.y;
+	mapCoord.x = camera.x + point.x;
+	mapCoord.y = camera.y + point.y;
 
 	return mapCoord;
 }

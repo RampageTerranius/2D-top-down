@@ -140,6 +140,21 @@ bool SetupEngine()
 	wep4->totalAmmo = 10;
 	wep4->fireType = FIRETYPE_SEMIAUTO;
 	allWeapons.AddWeapon(wep4);
+
+	Weapon* wep5 = new Weapon;
+	wep5->damage = 50;
+	wep5->name = "Test - No speed";
+	wep5->projectileDistance = 100;
+	wep5->projectileSpeed = 0;
+	wep5->fireRate = 30;
+	wep5->reloadTime = 1;
+	wep5->deviation = 1;
+	wep5->maxDeviation = 1;
+	wep5->recoil = 1;
+	wep5->recoilControlRate = 1;
+	wep5->totalAmmo = 30;
+	wep5->fireType = FIRETYPE_FULLAUTO;
+	allWeapons.AddWeapon(wep5);
 	// TODO
 
 	
@@ -150,7 +165,7 @@ bool SetupEngine()
 	//testPlayer->yLoc = round((float)windowHeight / 2);
 	testPlayer->xLoc = 499;
 	testPlayer->yLoc = 499;
-	testPlayer->weapon = allWeapons.GetWeapon("Lmg");
+	testPlayer->weapon = allWeapons.GetWeapon("Test - No speed");
 
 	debug.Log("Setup+Shutdown", "Setup", "Setup completed");
 

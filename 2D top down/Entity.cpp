@@ -92,18 +92,21 @@ bool Object::Render()
 			dstRect.h = texture->Rect().h;
 			SDL_Point p;
 			p.x = xLoc;
-			p.y = yLoc;		
+			p.y = yLoc;
+			
 			SDL_Point p2 = GetScreenCoordFromMapPoint(p);
 
-			
+			if ((p2.x >= 0 && p2.x <= windowWidth) && (p2.y >= 0 && p2.y <= windowHeight))
+			{
+				dstRect.x = p2.x - (dstRect.w / 2);
+				dstRect.y = p2.y - (dstRect.h / 2);
 
-			dstRect.x = p2.x - (dstRect.w / 2);
-			dstRect.y = p2.y - (dstRect.h / 2);
-
-			if (SDL_RenderCopyEx(mainRenderer, texture->Tex(), &srcRect, &dstRect, NULL, NULL, SDL_FLIP_NONE) >= 0)
+				if (SDL_RenderCopyEx(mainRenderer, texture->Tex(), &srcRect, &dstRect, NULL, NULL, SDL_FLIP_NONE) >= 0)
+					return true;
+			}
+			else			
 				return true;
 		}
-
 	}
 
 	return false;
