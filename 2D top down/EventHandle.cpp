@@ -513,9 +513,6 @@ void EventHandle(SDL_Event& event)
 	// Fire weapon if needed.
 	if (mouse.left)
 	{		
-		SDL_Point mouseLoc;
-		mouseLoc.x = mouse.x;
-		mouseLoc.y = mouse.y;
 		testPlayer->FireWeapon();
 		if (testPlayer->weapon->fireType == FIRETYPE_SEMIAUTO)
 		{
@@ -527,6 +524,13 @@ void EventHandle(SDL_Event& event)
 	}
 	else	
 		testPlayer->isFiring = false;
+
+	if (mouse.right)
+	{
+		SDL_Point mapPoint = GetMapCoordFromCursor();
+		if ((mapPoint.x >= 0 && mapPoint.x < map.GetSizeX()) && (mapPoint.y >= 0 && mapPoint.x < map.GetSizeY()))		
+			map.SetDataAt(mapPoint.x, mapPoint.y, MAPDATATYPE_WALL);		
+	}
 
 	// If player hits reload then reload weapon.
 	if (keyboard.r)

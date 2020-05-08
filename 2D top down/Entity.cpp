@@ -69,11 +69,17 @@ void Object::MoveObjectAccoringToVel()
 	xLoc += i;
 	yLoc += n;
 
-	if (xLoc <= 0)
+	if (xLoc < 0)
 		xLoc = 0;
 
-	if ((int)round(yLoc) > windowHeight)
-		yLoc = (float)(windowHeight - 1);
+	if (yLoc < 0)
+		yLoc = 0;
+
+	if (xLoc >= map.GetSizeX())
+		xLoc = map.GetSizeX() - 1;
+
+	if (yLoc >= map.GetSizeY())
+		yLoc = map.GetSizeY() - 1;
 }
 
 bool Object::Render()
