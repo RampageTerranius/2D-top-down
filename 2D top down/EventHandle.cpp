@@ -469,6 +469,20 @@ void UpdateEventStructs(SDL_Event event)
 				break;
 			}
 			break;
+
+		case SDL_MOUSEWHEEL:
+			if (event.wheel.x < 0)			
+				mouse.scrollLeft = true;
+			
+			else if (event.wheel.x > 0)
+				mouse.scrollRight = true;
+
+			if (event.wheel.y < 0)			
+				mouse.scrollDown = true;
+			else if (event.wheel.y > 0)			
+				mouse.scrollUp = true;
+
+			break;
 		}
 	}
 }
@@ -478,9 +492,11 @@ void EventHandle(SDL_Event& event)
 	// Update all our structures handling what buttons are held down currently first.
 	UpdateEventStructs(event);
 
+	// Exit program on esc push.
 	if (keyboard.escape)
 		running = false;
 
+	// User movement
 	if ((!keyboard.w && !keyboard.s) || (keyboard.w && keyboard.s))
 		testPlayer->yVel = 0;
 	else if (keyboard.w)
@@ -495,6 +511,7 @@ void EventHandle(SDL_Event& event)
 	else if (keyboard.d)
 		testPlayer->xVel = 1;
 
+	// Sprint dodge etc...
 	if (keyboard.lShift)
 	{
 		if (testPlayer->dodgesLeft > 0)
@@ -525,12 +542,26 @@ void EventHandle(SDL_Event& event)
 	else	
 		testPlayer->isFiring = false;
 
+	// Draw/place land.
 	if (mouse.right)
 	{
 		SDL_Point mapPoint = GetMapCoordFromCursor();
 		if ((mapPoint.x >= 0 && mapPoint.x < map.GetSizeX()) && (mapPoint.y >= 0 && mapPoint.x < map.GetSizeY()))		
 			map.SetDataAt(mapPoint.x, mapPoint.y, MAPDATATYPE_WALL);		
 	}
+
+	// Change weapons on roller ball.
+	if (mouse.scrollUp)
+	{
+		allWeapons.GetNextWeapon(testPlayer->weapon);
+		mouse.scrollUp = false;
+	}
+
+	if (mouse.scrollDown)
+	{
+		allWeapons.GetLastWeapon(testPlayer->weapon);
+		mouse.scrollDown = false;
+	}	
 
 	// If player hits reload then reload weapon.
 	if (keyboard.r)

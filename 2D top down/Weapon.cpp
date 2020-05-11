@@ -46,3 +46,39 @@ Weapon* Weapons::GetWeapon(std::string wepName)
 
 		return nullptr;
 }
+
+bool Weapons::GetNextWeapon(Weapon*& userWep)
+{
+	for (int i = 0; i < weaponList.size(); i++)
+		if (weaponList[i]->name == userWep->name)
+			if (i < weaponList.size() - 1)
+			{
+				userWep = weaponList[i + 1];
+				return true;
+			}
+			else
+			{
+				userWep = weaponList[0];
+				return true;
+			}
+
+	return false;
+}
+
+bool Weapons::GetLastWeapon(Weapon*& userWep)
+{
+	for (int i = 0; i < weaponList.size(); i++)
+		if (weaponList[i]->name == userWep->name)
+			if (i > 0)
+			{
+				userWep = weaponList[i - 1];
+				return true;
+			}
+			else
+			{
+				userWep = weaponList[weaponList.size() - 1];
+				return true;
+			}
+
+	return false;
+}
