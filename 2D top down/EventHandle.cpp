@@ -525,7 +525,7 @@ void EventHandle(SDL_Event& event)
 
 	testPlayer->MovePlayerAccordingToInput();
 
-	testPlayer->directionFacing = (float)GetAngleAsDegrees(windowWidth / 2, windowHeight / 2, mouse.x, mouse.y);
+	testPlayer->directionFacing = static_cast<float> (GetAngleAsDegrees(windowWidth / 2, windowHeight / 2, mouse.x, mouse.y));
 
 	// Fire weapon if needed.
 	if (mouse.left)

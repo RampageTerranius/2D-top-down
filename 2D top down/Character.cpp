@@ -4,6 +4,19 @@
 #include "globals.h"
 #include "Math functions.h"
 
+Character::Character()
+{
+	this->ammoLeft = 0;
+	this->directionFacing = 0;
+	this->fireTimer = 0;
+	this->ID = 0;
+	this->reloadTimer = 0;
+	this->texture = nullptr;
+	this->weapon = nullptr;
+	this->xLoc = 0;
+	this->yLoc = 0;
+}
+
 bool Character::Render()
 {
 	if (texture != nullptr)
@@ -12,10 +25,10 @@ bool Character::Render()
 
 		rect.w = texture->Rect().w;
 		rect.h = texture->Rect().h;
-		rect.x = (int)round((windowWidth / 2) - (rect.w / 2));
-		rect.y = (int)round((windowHeight / 2) - (rect.h / 2));
+		rect.x = static_cast<int> (round((windowWidth / 2) - (rect.w / 2)));
+		rect.y = static_cast<int> (round((windowHeight / 2) - (rect.h / 2)));
 
-		if (SDL_RenderCopyEx(mainRenderer, texture->Tex(), NULL, &rect, directionFacing + 90, NULL, SDL_FLIP_NONE) >= 0)
+		if (SDL_RenderCopyEx(mainRenderer, texture->Tex(), NULL, &rect, directionFacing + 90.0, NULL, SDL_FLIP_NONE) >= 0)
 			return true;
 	}
 
@@ -24,37 +37,63 @@ bool Character::Render()
 	return false;
 }
 
+Player::Player()
+{
+	Character();
+
+	this->name = "";
+
+	this->health = 0;
+
+	this->currentRecoil = 0;
+	this->isFiring = 0;
+
+	this->xVel = 0;// -1 = left 0 = none 1 = right
+	this->yVel = 0;// -1 = up 0 = none 1 = down
+
+	this->baseMovementVel = 4;
+	this->dodgeVel = 24;
+	this->dodgeVelDrop = 2;
+
+	this->currentMovementVel = baseMovementVel;
+
+	this->dodgesLeft = 3;
+	this->totalDodges = 3;
+	this->dodgeBaseRechargeTime = 120;
+	this->dodgeChargeTimer = 0;
+}
+
 // Logic for determining how the player is moving, refer to EventHandle for how xVel and yVel is determined.
 void Player::MovePlayerAccordingToInput()
 {	
 	switch (xVel)
 	{
 	case -1:
-		MoveObjectBy(-(float)currentMovementVel, 0);
+		MoveBy(-currentMovementVel, 0);
 		break;
 	case 1:
-		MoveObjectBy((float)currentMovementVel, 0);
+		MoveBy(currentMovementVel, 0);
 		break;
 	}
 
 	switch (yVel)
 	{
 	case -1:
-		MoveObjectBy(0, -(float)currentMovementVel);
+		MoveBy(0, -currentMovementVel);
 		break;
 	case 1:
-		MoveObjectBy(0, (float)currentMovementVel);
+		MoveBy(0, currentMovementVel);
 		break;
 	}
 
 	// TODO: camera is currently calculating ALL players, this will need to be updated in the future.
-	camera.x = (windowWidth/2) - testPlayer->xLoc;
+	camera.x = static_cast<int> ((windowWidth/2) - testPlayer->xLoc);
 	camera.w = map.GetSizeX();
-	camera.y = (windowHeight/2) - testPlayer->yLoc;
+	camera.y = static_cast<int> ((windowHeight/2) - testPlayer->yLoc);
 	camera.h = map.GetSizeY();
 }
 
-// Logic for the player firign their weapon.
+// Logic for the player firing their weapon.
 void Player::FireWeapon()
 {
 	SDL_Point aimLoc = GetMapCoordFromCursor();
@@ -66,8 +105,8 @@ void Player::FireWeapon()
 			{
 				// Get the point of the player.
 				SDL_Point plPoint;
-				plPoint.x = (int)round(testPlayer->xLoc);
-				plPoint.y = (int)round(testPlayer->yLoc);
+				plPoint.x = static_cast<int> (round(testPlayer->xLoc));
+				plPoint.y = static_cast<int> (round(testPlayer->yLoc));
 
 				// Calculate deviation/recoil etc.
 				float calcDeviation = weapon->deviation + currentRecoil;
@@ -75,11 +114,11 @@ void Player::FireWeapon()
 				float randomDeviationX = RandomFloat(-(calcDeviation / 2), calcDeviation / 2);
 				float randomDeviationY = RandomFloat(-(calcDeviation / 2), calcDeviation / 2);
 
-				aimLoc.x += (int)round(randomDeviationX);
-				aimLoc.y += (int)round(randomDeviationY);
+				aimLoc.x += static_cast<int> (round(randomDeviationX));
+				aimLoc.y += static_cast<int> (round(randomDeviationY));
 
 				// Create the projectile.
-				allProjectiles.CreateProjectile(plPoint, aimLoc, weapon);
+				allProjectiles.CreateProjectile(plPoint, aimLoc, weapon, this);
 
 				debug.Log("Character", "FireWeapon", "fired round. deviation of :" + std::to_string(calcDeviation));
 
@@ -107,28 +146,28 @@ void Player::RenderAimer()
 	// TODO: bottom and right aimer are 1 pixel off and need to be minused by 1, fix this.
 
 	aimer.texture = allTextures.GetTexture("AimMarkerTop");
-	aimer.xLoc = (float)mouse.x;
-	aimer.yLoc = ((float)mouse.y - ((testPlayer->currentRecoil + testPlayer->weapon->deviation) / 2)) - (aimer.texture->Rect().h);
+	aimer.xLoc = static_cast<float> (mouse.x);
+	aimer.yLoc = (static_cast<float> (mouse.y) - ((testPlayer->currentRecoil + testPlayer->weapon->deviation) / 2)) - static_cast<float> (aimer.texture->Rect().h);
 	aimer.Render(0);
 
 	aimer.texture = allTextures.GetTexture("AimMarkerBottom");
-	aimer.xLoc = (float)mouse.x;
-	aimer.yLoc = ((float)mouse.y + ((testPlayer->currentRecoil + testPlayer->weapon->deviation) / 2)) + (aimer.texture->Rect().h) - 1;
+	aimer.xLoc = static_cast<float> (mouse.x);
+	aimer.yLoc = (static_cast<float> (mouse.y) + ((testPlayer->currentRecoil + testPlayer->weapon->deviation) / 2)) + static_cast<float> (aimer.texture->Rect().h) - 1;
 	aimer.Render(0);
 
 	aimer.texture = allTextures.GetTexture("AimMarkerLeft");
-	aimer.xLoc = ((float)mouse.x - ((testPlayer->currentRecoil + testPlayer->weapon->deviation) / 2)) - (aimer.texture->Rect().w);
-	aimer.yLoc = (float)mouse.y;
+	aimer.xLoc = (static_cast<float> (mouse.x) - ((testPlayer->currentRecoil + testPlayer->weapon->deviation) / 2)) - static_cast<float> (aimer.texture->Rect().w);
+	aimer.yLoc = static_cast<float> (mouse.y);
 	aimer.Render(0);
 
 	aimer.texture = allTextures.GetTexture("AimMarkerRight");
-	aimer.xLoc = ((float)mouse.x + ((testPlayer->currentRecoil + testPlayer->weapon->deviation) / 2)) + (aimer.texture->Rect().w) - 1;
-	aimer.yLoc = (float)mouse.y;
+	aimer.xLoc = (static_cast<float> (mouse.x) + ((testPlayer->currentRecoil + testPlayer->weapon->deviation) / 2)) + static_cast<float> (aimer.texture->Rect().w) - 1;
+	aimer.yLoc = static_cast<float> (mouse.y);
 	aimer.Render(0);
 
 	aimer.texture = allTextures.GetTexture("RedDot");
-	aimer.xLoc = (float)mouse.x;
-	aimer.yLoc = (float)mouse.y;
+	aimer.xLoc = static_cast<float> (mouse.x);
+	aimer.yLoc = static_cast<float> (mouse.y);
 	aimer.Render(0);
 }
 

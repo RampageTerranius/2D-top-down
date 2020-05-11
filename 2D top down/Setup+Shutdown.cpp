@@ -161,8 +161,8 @@ bool SetupEngine()
 
 	testPlayer = allPlayers.CreatePlayer("TestPlayer");
 	testPlayer->texture = allTextures.GetTexture("DirMarker");
-	//testPlayer->xLoc = round((float)windowWidth / 2);
-	//testPlayer->yLoc = round((float)windowHeight / 2);
+	//testPlayer->xLoc = round(static_cast<float> (windowWidth / 2));
+	//testPlayer->yLoc = round(static_cast<float> (windowHeight / 2));
 	testPlayer->xLoc = 499;
 	testPlayer->yLoc = 499;
 	testPlayer->weapon = allWeapons.GetWeapon("Test - No speed");
@@ -232,6 +232,10 @@ bool SetupEngine()
 	map.SetDataAt(104, 54, MAPDATATYPE_WALL);
 	map.SetDataAt(95, 55, MAPDATATYPE_WALL);
 	map.SetDataAt(105, 55, MAPDATATYPE_WALL);
+
+	for (int i = map.GetSizeX() - 200; i <= map.GetSizeX() - 100; i++)
+		for (int n = 100; n <= map.GetSizeY() - 100; n++)
+			map.SetDataAt(i, n, MAPDATATYPE_WALL);
 
 	return true;
 }

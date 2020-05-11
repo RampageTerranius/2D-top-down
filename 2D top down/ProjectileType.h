@@ -2,5 +2,5 @@
 
 enum ProjectileType
 {
-	Bullet
+	PROJECTILETYPE_BULLET
 };

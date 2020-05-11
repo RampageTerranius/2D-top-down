@@ -28,7 +28,7 @@ double GetAngleAsDegrees(double x1, double y1, double x2, double y2)
 
 float RandomFloat(float min, float max)
 {
-	return (((float)rand() / (float)RAND_MAX) * (max - min)) + min;
+	return ((static_cast<float> (rand()) / static_cast<float> (RAND_MAX)) * (max - min)) + min;
 }
 
 // Gets the X/Y coordinate on the map of where the cursor is pointing.

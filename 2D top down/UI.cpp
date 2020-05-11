@@ -8,12 +8,12 @@ bool UI::Render(int rotationAngle)
 	{
 		SDL_Rect rect;
 
-		rect.x = (int)round(xLoc);
-		rect.y = (int)round(yLoc);
+		rect.x = static_cast<int> (round(xLoc));
+		rect.y = static_cast<int> (round(yLoc));
 		rect.w = texture->Rect().w;
 		rect.h = texture->Rect().h;
-		rect.x -= (int)round((float)rect.w / 2);
-		rect.y -= (int)round((float)rect.h / 2);
+		rect.x -= static_cast<int> (round(static_cast<float> (rect.w / 2)));
+		rect.y -= static_cast<int> (round(static_cast<float> (rect.h / 2)));
 
 		if (xRotLoc < 0 || yRotLoc < 0)
 		{

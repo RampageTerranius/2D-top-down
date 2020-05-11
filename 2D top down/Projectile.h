@@ -3,24 +3,33 @@
 #include "Entity.h"
 #include "Weapon.h"
 #include "ProjectileType.h"
+#include "Character.h"
 #include <vector>
 
 class Projectile : public Object
 {
 public:
+	Projectile();
+
+	//bool MoveAccoringToVel();
+	//bool Render();
+	//void MoveBy(float x, float y);
+	//void MoveTo(int x, int y);
+	bool CalcProjectile();
+
 	ProjectileType type;
 	float distanceLeft;
-
-	bool CalcProjectile();
+	int damage;
+	Player* Owner;
 };
 
 class Projectiles
 {
 public:
-	std::vector<Projectile*> projectileList;
-
 	void CalcAllProjectiles();
-	Projectile* CreateProjectile(SDL_Point start, SDL_Point end, Weapon* weapon);
+	Projectile* CreateProjectile(SDL_Point start, SDL_Point end, Weapon* weapon, Player* owner);
 	void RenderAllProjectiles();
 	void DestroyProjectile(Projectile* proj);
+
+	std::vector<Projectile*> projectileList;
 };

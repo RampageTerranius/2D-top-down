@@ -13,8 +13,8 @@ bool Entity::Render()
 		rect.w = texture->Rect().w;
 		rect.h = texture->Rect().h;
 		// TODO: This does not reference where the entity exists, should be updated to reference that instead of middle of screen.
-		rect.x = (int)round((windowWidth / 2) - (rect.w / 2));
-		rect.y = (int)round((windowHeight / 2) - (rect.h / 2));
+		rect.x = static_cast<int> (round((windowWidth / 2) - (rect.w / 2)));
+		rect.y = static_cast<int> (round((windowHeight / 2) - (rect.h / 2)));
 
 		if (SDL_RenderCopyEx(mainRenderer, texture->Tex(), NULL, &rect, NULL, NULL, SDL_FLIP_NONE) >= 0)
 			return true;
@@ -26,60 +26,75 @@ bool Entity::Render()
 }
 
 // Move the entity from its point of origin by the given X/Y.
-void Entity::MoveObjectBy(float x, float y)
+void Entity::MoveBy(float x, float y)
 {
 	xLoc += x;
 	yLoc += y;
 
 	if (xLoc <= 0)
 		xLoc = 0;
-	else if (xLoc >= (float)map.GetSizeX())
-		xLoc = (float)map.GetSizeX() - 1;
+	else if (xLoc >= static_cast<float> (map.GetSizeX()))
+		xLoc = static_cast<float> (map.GetSizeX() - 1);
 
 	if (yLoc <= 0)
 		yLoc = 0;
-	if (yLoc >= (float)map.GetSizeY())
-		yLoc = (float)(map.GetSizeY() - 1);
+	if (yLoc >= static_cast<float> (map.GetSizeY()))
+		yLoc = static_cast<float> (map.GetSizeY() - 1);
 }
 
 // Move the entity DIRECTLY to the given X/Y coords
-void Entity::MoveObjectTo(int x, int y)
+void Entity::MoveTo(int x, int y)
 {
-	xLoc = (float)x;
-	yLoc = (float)y;
+	xLoc = static_cast<float> (x);
+	yLoc = static_cast<float> (y);
 
 	if (xLoc <= 0)
 		xLoc = 0;
-	else if (xLoc > (float)windowWidth)
-		xLoc = (float)windowWidth - 1;
+	else if (xLoc > static_cast<float> (windowWidth))
+		xLoc = static_cast<float> (windowWidth - 1);
 
 	if (yLoc <= 0)
 		yLoc = 0;
-	if (yLoc > (float)windowHeight)
-		yLoc = (float)(windowHeight - 1);
+	if (yLoc > static_cast<float> (windowHeight))
+		yLoc = static_cast<float> (windowHeight - 1);
 }
 
 // Automatically move the object according to its velocity and facing direction
 // The objects hold their direction as an angle, not as radian so we need to convert it back.
-void Object::MoveObjectAccoringToVel()
+// Returns true if has hit soemthing.
+bool Object::MoveAccoringToVel()
 {
-	float i = (float)(cos(directionFacing * M_PI / 180) * velocity);
-	float n = (float)(sin(directionFacing * M_PI / 180) * velocity);
+	float i = static_cast<float> (cos(directionFacing * M_PI / 180) * velocity);
+	float n = static_cast<float> (sin(directionFacing * M_PI / 180) * velocity);
 
 	xLoc += i;
 	yLoc += n;
 
 	if (xLoc < 0)
+	{
 		xLoc = 0;
+		return true;
+	}
 
 	if (yLoc < 0)
+	{
 		yLoc = 0;
+		return true;
+	}
 
 	if (xLoc >= map.GetSizeX())
-		xLoc = map.GetSizeX() - 1;
+	{
+		xLoc = static_cast<float> (map.GetSizeX() - 1);
+		return true;
+	}
 
 	if (yLoc >= map.GetSizeY())
-		yLoc = map.GetSizeY() - 1;
+	{		
+		yLoc = static_cast<float> (map.GetSizeY() - 1);
+		return true;
+	}
+
+	return false;
 }
 
 bool Object::Render()
@@ -97,8 +112,8 @@ bool Object::Render()
 			dstRect.w = texture->Rect().w;
 			dstRect.h = texture->Rect().h;
 			SDL_Point p;
-			p.x = xLoc;
-			p.y = yLoc;
+			p.x = static_cast<int> (xLoc);
+			p.y = static_cast<int> (yLoc);
 			
 			SDL_Point p2 = GetScreenCoordFromMapPoint(p);
 

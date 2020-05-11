@@ -6,17 +6,28 @@
 class Character : public Entity
 {
 public:
+	Character();
+
+	bool Render();
+
 	Weapon* weapon;
 	int reloadTimer;
 	int ammoLeft;
 	int fireTimer;
 	float directionFacing;
-	bool Render();
+	
 };
 
 class Player : public Character
 {
 public:
+	Player();
+
+	void MovePlayerAccordingToInput();
+	void FireWeapon();
+	void ReloadWeapon();
+	void RenderAimer();
+
 	std::string name;
 
 	int health;
@@ -27,21 +38,16 @@ public:
 	int xVel;// -1 = left 0 = none 1 = right
 	int yVel;// -1 = up 0 = none 1 = down
 	
-	float baseMovementVel = 4;
-	float dodgeVel = 24;
-	float dodgeVelDrop = 2;
+	float baseMovementVel;
+	float dodgeVel;
+	float dodgeVelDrop;
 
-	float currentMovementVel = baseMovementVel;
+	float currentMovementVel;
 
-	int dodgesLeft = 3;
-	int totalDodges = 3;
-	int dodgeBaseRechargeTime = 120;
+	int dodgesLeft;
+	int totalDodges;
+	int dodgeBaseRechargeTime;
 	int dodgeChargeTimer;
-	
-	void MovePlayerAccordingToInput();	
-	void FireWeapon();
-	void ReloadWeapon();
-	void RenderAimer();
 };
 
 class Players

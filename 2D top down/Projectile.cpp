@@ -2,11 +2,21 @@
 #include "Math functions.h"
 #include "globals.h"
 
+Projectile::Projectile()
+{
+	this->type = PROJECTILETYPE_BULLET;
+	this->distanceLeft = 0;
+	this->damage = 0;
+	this->Owner = nullptr;
+}
+
 bool Projectile::CalcProjectile()
 {
-	MoveObjectAccoringToVel();
-
-	distanceLeft -= velocity;
+	// Move the projectile and check if it hit something.
+	if (!MoveAccoringToVel())
+		distanceLeft -= velocity;
+	else
+		distanceLeft = 0;
 
 	if (distanceLeft <= 0)
 	{
@@ -17,23 +27,25 @@ bool Projectile::CalcProjectile()
 	return true;
 }
 
-Projectile* Projectiles::CreateProjectile(SDL_Point start, SDL_Point end, Weapon* weapon)
+Projectile* Projectiles::CreateProjectile(SDL_Point start, SDL_Point end, Weapon* weapon, Player* owner)
 {
 	Projectile* proj = new Projectile();
 
-	proj->xLoc = (float)start.x;
-	proj->yLoc = (float)start.y;
+	proj->Owner = owner;
 
-	proj->directionFacing = (float)GetAngleAsDegrees(start.x, start.y, end.x, end.y);
+	proj->xLoc = static_cast<float> (start.x);
+	proj->yLoc = static_cast<float> (start.y);
+
+	proj->directionFacing = static_cast<float> (GetAngleAsDegrees(start.x, start.y, end.x, end.y));
 
 	// TODO: automate texture and velocity
 	proj->texture = allTextures.GetTexture("Bullet");
 	// TODO
 
 	proj->velocity = weapon->projectileSpeed;
-	proj->distanceLeft = (float)GetDistance(start.x, start.y, end.x, end.y);
-	if (proj->distanceLeft > (float)weapon->projectileDistance)
-		proj->distanceLeft = (float)weapon->projectileDistance;
+	proj->distanceLeft = static_cast<float> (GetDistance(start.x, start.y, end.x, end.y));
+	if (proj->distanceLeft > static_cast<float> (weapon->projectileDistance))
+		proj->distanceLeft = static_cast<float> (weapon->projectileDistance);
 
 	projectileList.push_back(proj);
 
