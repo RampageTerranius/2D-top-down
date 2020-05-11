@@ -10,21 +10,50 @@ Projectile::Projectile()
 	this->Owner = nullptr;
 }
 
-bool Projectile::CalcProjectile()
+void Projectile::CalcProjectile()
 {
-	// Move the projectile and check if it hit something.
-	if (!MoveAccoringToVel())
-		distanceLeft -= velocity;
-	else
-		distanceLeft = 0;
-
-	if (distanceLeft <= 0)
+	while (distanceLeft > 0)
 	{
-		debug.Log("Projectile", "CalcProjectile", "Projectile is end of life");
-		return false;
-	}
+		float i = static_cast<float> (cos(directionFacing * M_PI / 180) * velocity);
+		float n = static_cast<float> (sin(directionFacing * M_PI / 180) * velocity);
 
-	return true;
+		xLoc += i;
+		yLoc += n;
+
+		if (xLoc < 0)
+		{
+			xLoc = 0;
+			distanceLeft = 0;
+			break;
+		}
+
+		if (yLoc < 0)
+		{
+			yLoc = 0;
+			distanceLeft = 0;
+			break;
+		}
+
+		if (xLoc >= map.GetSizeX())
+		{
+			xLoc = static_cast<float> (map.GetSizeX() - 1);
+			distanceLeft = 0;
+			break;
+		}
+
+		if (yLoc >= map.GetSizeY())
+		{
+			yLoc = static_cast<float> (map.GetSizeY() - 1);
+			distanceLeft = 0;
+			break;
+		}
+
+		if (map.GetDataAt(xLoc, yLoc) != MAPDATATYPE_EMPTY)
+		{
+			// TODO: map calc here
+			voidvoidvoidgivemetheerror
+		}
+	}
 }
 
 Projectile* Projectiles::CreateProjectile(SDL_Point start, SDL_Point end, Weapon* weapon, Player* owner)
@@ -76,8 +105,7 @@ void Projectiles::DestroyProjectile(Projectile* proj)
 void Projectiles::CalcAllProjectiles()
 {
 	for (auto& projectile : projectileList)
-		if (!projectile->CalcProjectile())
-			allProjectiles.DestroyProjectile(projectile);
+		projectile->CalcProjectile();
 }
 
 void Projectiles::RenderAllProjectiles()

@@ -11,11 +11,7 @@ class Projectile : public Object
 public:
 	Projectile();
 
-	//bool MoveAccoringToVel();
-	//bool Render();
-	//void MoveBy(float x, float y);
-	//void MoveTo(int x, int y);
-	bool CalcProjectile();
+	void CalcProjectile();
 
 	ProjectileType type;
 	float distanceLeft;
