@@ -546,8 +546,10 @@ void EventHandle(SDL_Event& event)
 	if (mouse.right)
 	{
 		SDL_Point mapPoint = GetMapCoordFromCursor();
-		if ((mapPoint.x >= 0 && mapPoint.x < map.GetSizeX()) && (mapPoint.y >= 0 && mapPoint.x < map.GetSizeY()))		
-			map.SetDataAt(mapPoint.x, mapPoint.y, MAPDATATYPE_WALL, baseWallHealth);		
+
+		for (int x = mapPoint.x - 1; x <= mapPoint.x + 1; x++)
+			for (int y = mapPoint.y - 1; y <= mapPoint.y + 1; y++)	
+				map.SetDataAt(x, y, MAPDATATYPE_WALL, baseWallHealth);		
 	}
 
 	// Change weapons on roller ball.

@@ -22,33 +22,27 @@ void Projectile::CalcProjectile()
 	this->xLoc += i;
 	this->yLoc += n;
 
-	this->distanceLeft -= i;
-	this->distanceLeft -= n;
+	// Reduce the total distance by how much the bullet has moved.
+	if (i < 0)
+		this->distanceLeft += i;
+	else
+		this->distanceLeft -= i;
+	if (n < 0)
+		this->distanceLeft += n;
+	else
+		this->distanceLeft -= n;
 
+	// Check if bullet has hit the edge of the map.
 	if (this->xLoc < 0)
-	{
-		this->xLoc = 0;
-		this->distanceLeft = 0;
-	}
+		this->distanceLeft = 0;	
+	else if (this->yLoc < 0)
+		this->distanceLeft = 0;	
+	else if (this->xLoc >= map.GetSizeX())	
+		this->distanceLeft = 0;	
+	else if (this->yLoc >= map.GetSizeY())
+		this->distanceLeft = 0;	
 
-	if (this->yLoc < 0)
-	{
-		this->yLoc = 0;
-		this->distanceLeft = 0;
-	}
-
-	if (this->xLoc >= map.GetSizeX())
-	{
-		this->xLoc = static_cast<float> (map.GetSizeX() - 1);
-		this->distanceLeft = 0;
-	}
-
-	if (this->yLoc >= map.GetSizeY())
-	{
-		this->yLoc = static_cast<float> (map.GetSizeY() - 1);
-		this->distanceLeft = 0;
-	}
-
+	// Get all points we have passed and cause damage as needed.
 	std::vector<SDL_Point> points = GetAllMapDataBetweenPoints(oldXLoc, oldYLoc, xLoc, yLoc);
 
 	if (points.size() > 0)

@@ -57,94 +57,24 @@ SDL_Point GetScreenCoordFromMapPoint(SDL_Point point)
 }
 
 // Gets every single point in the line between two x/y coords.
-// https://stackoverflow.com/questions/10060046/drawing-lines-with-bresenhams-line-algorithm
-std::vector<SDL_Point> GetAllMapDataBetweenPoints(int x1, int y1, int x2, int y2)
+// https://gist.github.com/bert/1085538#file-plot_line-c
+std::vector<SDL_Point> GetAllMapDataBetweenPoints(int x0, int y0, int x1, int y1)
 {
 	std::vector<SDL_Point> points;
 
-    {
-        int x, y, dx, dy, dx1, dy1, px, py, xe, ye, i;
-        dx = x2 - x1;
-        dy = y2 - y1;
-        dx1 = fabs(dx);
-        dy1 = fabs(dy);
-        px = 2 * dy1 - dx1;
-        py = 2 * dx1 - dy1;
-        if (dy1 <= dx1)
-        {
-            if (dx >= 0)
-            {
-                x = x1;
-                y = y1;
-                xe = x2;
-            }
-            else
-            {
-                x = x2;
-                y = y2;
-                xe = x1;
-            }
-            points.push_back(SDL_Point{ x, y });
-            for (i = 0; x < xe; i++)
-            {
-                x = x + 1;
-                if (px < 0)
-                {
-                    px = px + 2 * dy1;
-                }
-                else
-                {
-                    if ((dx < 0 && dy < 0) || (dx > 0 && dy > 0))
-                    {
-                        y = y + 1;
-                    }
-                    else
-                    {
-                        y = y - 1;
-                    }
-                    px = px + 2 * (dy1 - dx1);
-                }
-                points.push_back(SDL_Point{ x, y });
-            }
-        }
-        else
-        {
-            if (dy >= 0)
-            {
-                x = x1;
-                y = y1;
-                ye = y2;
-            }
-            else
-            {
-                x = x2;
-                y = y2;
-                ye = y1;
-            }
-            points.push_back(SDL_Point{ x, y });
-            for (i = 0; y < ye; i++)
-            {
-                y = y + 1;
-                if (py <= 0)
-                {
-                    py = py + 2 * dx1;
-                }
-                else
-                {
-                    if ((dx < 0 && dy < 0) || (dx > 0 && dy > 0))
-                    {
-                        x = x + 1;
-                    }
-                    else
-                    {
-                        x = x - 1;
-                    }
-                    py = py + 2 * (dx1 - dy1);
-                }
-                points.push_back(SDL_Point{ x, y });
-            }
-        }
-    }
+	{
+		int dx = abs(x1 - x0), sx = x0 < x1 ? 1 : -1;
+		int dy = -abs(y1 - y0), sy = y0 < y1 ? 1 : -1;
+		int err = dx + dy, e2; /* error value e_xy */
+
+		for (;;) {  /* loop */
+			points.push_back({ x0, y0 });
+			if (x0 == x1 && y0 == y1) break;
+			e2 = 2 * err;
+			if (e2 >= dy) { err += dy; x0 += sx; } /* e_xy+e_x > 0 */
+			if (e2 <= dx) { err += dx; y0 += sy; } /* e_xy+e_y < 0 */
+		}
+	}
 
 	return points;
 }
