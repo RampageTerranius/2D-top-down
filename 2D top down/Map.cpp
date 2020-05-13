@@ -9,13 +9,16 @@ Map::Map(int newSizeX, int newSizeY)
 	sizeX = newSizeX;
 	sizeY = newSizeY;
 
-	mapData = new MapDataType* [sizeY];
+	mapData = new MapData* [sizeY];
 	for (int i = 0; i < sizeY; ++i)	
-		mapData[i] = new MapDataType[sizeX];
+		mapData[i] = new MapData[sizeX];
 
 	for (int i = 0; i < sizeY; i++)
 		for (int n = 0; n < sizeX; n++)
-			mapData[i][n] = MAPDATATYPE_EMPTY;
+		{
+			mapData[i][n].type = MAPDATATYPE_EMPTY;
+			mapData[i][n].health = 0;
+		}
 }
 
 MapDataType Map::GetDataAt(int x, int y)
@@ -23,19 +26,20 @@ MapDataType Map::GetDataAt(int x, int y)
 	// Attempt to get the data at the given location.
 	if (x >= 0 && x < sizeX)
 		if (y >= 0 && y < sizeY)
-			return mapData[x][y];
+			return mapData[x][y].type;
 
 	// If there is any issues return an unknown data type.		
 	return MAPDATATYPE_UNKNOWN;
 }
 
-bool Map::SetDataAt(int x, int y, MapDataType newType)
+bool Map::SetDataAt(int x, int y, MapDataType newType, int newHealth)
 {
 	// Attempt to set the data at the given location.
 	if (x >= 0 && x < sizeX)
 		if (y >= 0 && y < sizeY)
 		{
-			mapData[x][y] = newType;
+			mapData[x][y].type = newType;
+			mapData[x][y].health = newHealth;
 			return true;
 		}
 
@@ -91,7 +95,7 @@ void Map::Render()
 
 	for (int i = 0; i < sizeY; i++)
 		for (int n = 0; n < sizeX; n++)
-			switch (mapData[n][i])
+			switch (mapData[n][i].type)
 			{
 			case MAPDATATYPE_WALL:
 				SDL_LockSurface(tempSurf);

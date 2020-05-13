@@ -51,7 +51,6 @@ void Projectile::CalcProjectile()
 		if (map.GetDataAt(xLoc, yLoc) != MAPDATATYPE_EMPTY)
 		{
 			// TODO: map calc here
-			voidvoidvoidgivemetheerror
 		}
 	}
 }
