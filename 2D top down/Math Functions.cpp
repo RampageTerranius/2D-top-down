@@ -55,3 +55,37 @@ SDL_Point GetScreenCoordFromMapPoint(SDL_Point point)
 
 	return mapCoord;
 }
+
+// Gets every single point in the line between two x/y coords.
+std::vector<SDL_Point> GetAllMapDataBetweenPoints(int x0, int y0, int x1, int y1)
+{
+	std::vector<SDL_Point> points;
+
+	int dx, dy, p, x, y;
+
+	dx = x1 - x0;
+	dy = y1 - y0;
+
+	x = x0;
+	y = y0;
+
+	p = 2 * dy - dx;
+
+	while (x < x1)
+	{
+		if (p >= 0)
+		{
+			points.push_back(SDL_Point{ x, y });
+			y = y + 1;
+			p = p + 2 * dy - 2 * dx;
+		}
+		else
+		{
+			points.push_back(SDL_Point{ x, y });
+			p = p + 2 * dy;
+		}
+		x = x + 1;
+	}
+
+	return points;
+}

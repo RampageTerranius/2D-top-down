@@ -20,7 +20,8 @@ public:
 
 	int GetSizeX() { return sizeX; }
 	int GetSizeY() { return sizeY; }
-	MapDataType GetDataAt(int x, int y);
+	MapDataType GetTypeAt(int x, int y);
+	int GetHealthAt(int x, int y);
 	bool SetDataAt(int x, int y, MapDataType newType, int newHealth);
 	void Render();
 

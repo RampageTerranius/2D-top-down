@@ -127,7 +127,7 @@ bool SetupEngine()
 	allWeapons.AddWeapon(wep3);
 
 	Weapon* wep4 = new Weapon;
-	wep4->damage = 50;
+	wep4->damage = 80;
 	wep4->name = "Bolt Rifle";
 	wep4->projectileDistance = 1000;
 	wep4->projectileSpeed = 50;
@@ -155,6 +155,21 @@ bool SetupEngine()
 	wep5->totalAmmo = 30;
 	wep5->fireType = FIRETYPE_FULLAUTO;
 	allWeapons.AddWeapon(wep5);
+
+	Weapon* wep6 = new Weapon;
+	wep6->damage = 9999999;
+	wep6->name = "Test - Wall Breaker";
+	wep6->projectileDistance = 1000;
+	wep6->projectileSpeed = 60;
+	wep6->fireRate = 30;
+	wep6->reloadTime = 1;
+	wep6->deviation = 1;
+	wep6->maxDeviation = 1;
+	wep6->recoil = 1;
+	wep6->recoilControlRate = 1;
+	wep6->totalAmmo = 30;
+	wep6->fireType = FIRETYPE_FULLAUTO;
+	allWeapons.AddWeapon(wep6);
 	// TODO
 
 	

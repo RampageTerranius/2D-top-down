@@ -42,6 +42,7 @@ extern SDL_Rect camera;
 extern Map map;
 
 extern int baseWallHealth;
+extern int projectileCalcsPerTick;
 
 // TTF Fonts.
 extern TTF ttfFPS;

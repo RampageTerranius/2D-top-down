@@ -21,7 +21,7 @@ Map::Map(int newSizeX, int newSizeY)
 		}
 }
 
-MapDataType Map::GetDataAt(int x, int y)
+MapDataType Map::GetTypeAt(int x, int y)
 {
 	// Attempt to get the data at the given location.
 	if (x >= 0 && x < sizeX)
@@ -30,6 +30,17 @@ MapDataType Map::GetDataAt(int x, int y)
 
 	// If there is any issues return an unknown data type.		
 	return MAPDATATYPE_UNKNOWN;
+}
+
+int Map::GetHealthAt(int x, int y)
+{
+	// Attempt to get the data at the given location.
+	if (x >= 0 && x < sizeX)
+		if (y >= 0 && y < sizeY)
+			return mapData[x][y].health;
+
+	// If there is any issues return an unknown data type.		
+	return -1;
 }
 
 bool Map::SetDataAt(int x, int y, MapDataType newType, int newHealth)
@@ -46,7 +57,6 @@ bool Map::SetDataAt(int x, int y, MapDataType newType, int newHealth)
 	// If there is any issues return false.		
 	return false;
 }
-
 
 // http://sdl.beuc.net/sdl.wiki/Pixel_Access
 void EditPixel(SDL_Surface* surface, int x, int y, Uint32 pixel)
