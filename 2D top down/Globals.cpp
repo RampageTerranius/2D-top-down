@@ -26,7 +26,7 @@ SDL_Rect camera = {0, 0, windowWidth, windowHeight};
 // Map data;
 Map map = Map(1000, 1000);
 
-int baseWallHealth = 20;
+int baseWallHealth = 1;
 
 TTF ttfFPS = TTF();
 TTF ttfWeapon = TTF();
