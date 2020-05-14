@@ -28,6 +28,7 @@ public:
 	void CreateProjectile(SDL_Point start, SDL_Point end, Weapon* weapon, Player* owner);
 	void RenderAllProjectiles();
 	void DestroyProjectile(Projectile* proj);
+	void DestroyAllProjectiles();
 
 	std::vector<Projectile*> projectileList;
 };

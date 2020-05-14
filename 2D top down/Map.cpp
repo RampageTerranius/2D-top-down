@@ -29,6 +29,8 @@ void Map::Create(int newSizeX, int newSizeY)
 			mapData[i][n].type = MAPDATATYPE_EMPTY;
 			mapData[i][n].health = 0;
 		}
+
+
 }
 
 void Map::Delete()

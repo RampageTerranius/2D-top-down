@@ -58,6 +58,7 @@ private:
 public:
 	Player* CreatePlayer(std::string playerName);
 	void DeletePlayer(std::string playerName);
+	void DeleteAllPlayers();
 	Player* GetPlayer(std::string playerName);
 	void HandlePlayerEvents();
 	void RenderAllPlayers();

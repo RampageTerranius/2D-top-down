@@ -97,7 +97,7 @@ void Projectiles::CreateProjectile(SDL_Point start, SDL_Point end, Weapon* weapo
 
 	this->projectileList.push_back(proj);
 
-	debug.Log("Projectile", "CreateProjectile", "Created a Projectile start point x/y " + std::to_string(proj->xLoc) + "/" + std::to_string(proj->yLoc) + " going angle: " + std::to_string(proj->directionFacing) + " Target of: " + std::to_string(end.x) + "/" + std::to_string(end.y));
+	debug.Log("Projectiles", "CreateProjectile", "Created a Projectile start point x/y " + std::to_string(proj->xLoc) + "/" + std::to_string(proj->yLoc) + " going angle: " + std::to_string(proj->directionFacing) + " Target of: " + std::to_string(end.x) + "/" + std::to_string(end.y));
 }
 
 void Projectiles::DestroyProjectile(Projectile* proj)
@@ -108,7 +108,7 @@ void Projectiles::DestroyProjectile(Projectile* proj)
 	{
 		if (listProj == proj)
 		{
-			debug.Log("Projectile", "DestroyProjectile", "Deleted a projectile at: " + std::to_string(listProj->xLoc) + "/" + std::to_string(listProj->yLoc));
+			debug.Log("Projectiles", "DestroyProjectile", "Deleted a projectile at: " + std::to_string(listProj->xLoc) + "/" + std::to_string(listProj->yLoc));
 			this->projectileList.erase(this->projectileList.begin() + i);			
 			return;
 		}
@@ -116,7 +116,22 @@ void Projectiles::DestroyProjectile(Projectile* proj)
 		i++;
 	}
 
-	debug.Log("Projectile", "DestroyProjectile", "Call to destroy a projectile has failed!");
+	debug.Log("Projectiles", "DestroyProjectile", "Call to destroy a projectile has failed!");
+}
+
+void Projectiles::DestroyAllProjectiles()
+{
+	int i = 0;
+
+	for (Projectile* listProj : this->projectileList)
+	{
+		this->projectileList.erase(this->projectileList.begin() + i);
+		delete listProj;
+
+		i++;
+	}
+
+	debug.Log("Projectiles", "DestroyAllProjectiles", "Destroyed all projectiles");
 }
 
 void Projectiles::CalcAllProjectiles()

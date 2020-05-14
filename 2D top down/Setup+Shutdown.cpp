@@ -296,6 +296,8 @@ void ShutdownEngine()
 		SDL_FreeSurface(mainSurface);
 
 	allWeapons.RemoveAllWeapons();
+	allPlayers.DeleteAllPlayers();
+	allProjectiles.DestroyAllProjectiles();	
 	allTextures.Cleanup();
 
 	debug.Log("Setup+Shutdown", "Shutdown", "Shutdown completed");

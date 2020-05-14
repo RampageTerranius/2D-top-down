@@ -42,7 +42,7 @@ void Weapons::RemoveWeapon(std::string wepName)
 		{			
 			weaponList.erase(weaponList.begin() + i);
 			delete wep;
-			debug.Log("Weapon", "RemoveWeapon", "Removed a weapon");
+			debug.Log("Weapons", "RemoveWeapon", "Removed a weapon");
 
 			return;
 		}
@@ -59,6 +59,8 @@ void Weapons::RemoveAllWeapons()
 		delete wep;	
 
 	weaponList.clear();
+
+	debug.Log("Weapons", "RemoveAllWeapons", "Removed all weapons");
 }
 
 Weapon* Weapons::GetWeapon(std::string wepName)

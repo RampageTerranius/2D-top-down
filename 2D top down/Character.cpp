@@ -140,8 +140,6 @@ void Player::FireWeapon()
 				this->fireTimer = this->weapon->fireRate;
 
 				this->ammoLeft--;
-
-				return;
 			}
 			// TODO: player tryed to fire while gun was reloading/between shots. make a sound or something to let the player know.
 		}
@@ -197,7 +195,7 @@ Player* Players::CreatePlayer(std::string playerName)
 
 	playerList.push_back(pl);
 
-	debug.Log("Character", "Players::CreatePlayer", "Created a player of name: " + playerName);
+	debug.Log("Character", "CreatePlayer", "Created a player of name: " + playerName);
 
 	return playerList.back();
 }
@@ -211,7 +209,8 @@ void Players::DeletePlayer(std::string playerName)
 		if (pl->name == playerName)
 		{
 			playerList.erase(playerList.begin() + i);
-			debug.Log("Character", "Players::DeletePlayer", "Deleted a player of name: " +playerName);
+			delete pl;
+			debug.Log("Character", "DeletePlayer", "Deleted a player of name: " +playerName);
 			return;
 		}
 
@@ -219,6 +218,20 @@ void Players::DeletePlayer(std::string playerName)
 	}
 
 	debug.Log("Projectile", "DestroyProjectile", "Call to destroy a player of name: " + playerName + " has failed!");
+}
+
+void Players::DeleteAllPlayers()
+{
+	int i = 0;
+
+	for (Player* pl : playerList)
+	{
+		playerList.erase(playerList.begin() + i);
+		delete pl;
+		i++;
+	}
+
+	debug.Log("Players", "DeleteAllPlayers", "Deleted all players");
 }
 
 Player* Players::GetPlayer(std::string playerName)
@@ -237,9 +250,10 @@ void Players::RenderAllPlayers()
 }
 
 void Players::HandlePlayerEvents()
-{
+{	
 	for (Player* pl : playerList)
 	{
+		// Reloading logic.
 		if (pl->reloadTimer > 0)
 		{
 			pl->reloadTimer--;
@@ -260,6 +274,7 @@ void Players::HandlePlayerEvents()
 				}
 		}
 
+		// Reduce the fire timer each tick so that weapons fire when required.
 		if (pl->fireTimer > 0)
 			pl->fireTimer--;
 
@@ -274,6 +289,7 @@ void Players::HandlePlayerEvents()
 				pl->currentRecoil = pl->currentRecoil;
 		}
 
+		// dodging logic.
 		if (pl->currentMovementVel > pl->baseMovementVel)
 		{
 			pl->currentMovementVel -= pl->dodgeVelDrop;

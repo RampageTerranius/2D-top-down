@@ -26,11 +26,11 @@ void Texture::Clear()
 
 bool Texture::Load(std::string fileLoc, std::string name)
 {
-	debug.Log("Texture", "Texture::Load", "Attempting to load texture at location : " + fileLoc);
+	debug.Log("Texture", "Load", "Attempting to load texture at location : " + fileLoc);
 
 	if (tex != nullptr)
 	{
-		debug.Log("Texture", "Texture::Load", "A texture is already loaded in this object");
+		debug.Log("Texture", "Load", "A texture is already loaded in this object");
 		return false;
 	}
 
@@ -42,7 +42,7 @@ bool Texture::Load(std::string fileLoc, std::string name)
 	if (surface == nullptr)
 	{
 		std::string str = SDL_GetError();
-		debug.Log("Texture", "Texture::Load", "Failed to load image " + str);
+		debug.Log("Texture", "Load", "Failed to load image " + str);
 		return false;
 	}
 
@@ -64,13 +64,13 @@ bool Texture::Load(std::string fileLoc, std::string name)
 	if (tex == nullptr)
 	{
 		std::string str = SDL_GetError();
-		debug.Log("Texture", "Texture::Load", "Failed to create texture from image " + str);
+		debug.Log("Texture", "Load", "Failed to create texture from image " + str);
 		return false;
 	}
 
 	this->name = name;
 
-	debug.Log("Texture", "Texture::Load", "Success loading texture at location : " + fileLoc);
+	debug.Log("Texture", "Load", "Success loading texture at location : " + fileLoc);
 
 	return true;
 }
@@ -95,6 +95,8 @@ void Textures::Cleanup()
 {
 	for (auto& texture : textureList)
 		texture->Clear();
+
+	debug.Log("Textures", "Cleanup", "Destroyed all textures");
 }
 
 Texture* Textures::GetTexture(std::string name)
@@ -126,7 +128,7 @@ bool Textures::AddTexture(SDL_Texture* texture, std::string name)
 
 	if (texture == nullptr)
 	{
-		debug.Log("Texture", "Textures::AddTexture", "given texture was nullptr, can not add a blank texture");
+		debug.Log("Textures", "AddTexture", "given texture was nullptr, can not add a blank texture");
 		return false;
 	}
 
