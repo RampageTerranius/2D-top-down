@@ -274,5 +274,8 @@ void ShutdownEngine()
 	if (mainSurface != nullptr)
 		SDL_FreeSurface(mainSurface);
 
+	allWeapons.RemoveAllWeapons();
+	allTextures.Cleanup();
+
 	debug.Log("Setup+Shutdown", "Shutdown", "Shutdown completed");
 }

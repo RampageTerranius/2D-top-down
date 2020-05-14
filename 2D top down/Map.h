@@ -17,7 +17,10 @@ class Map
 {
 public:
 	Map(int x, int y);
-
+	~Map();
+	
+	void Create(int newSizeX, int newSizeY);
+	void Delete();
 	int GetSizeX() { return sizeX; }
 	int GetSizeY() { return sizeY; }
 	MapDataType GetTypeAt(int x, int y);

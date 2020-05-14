@@ -5,12 +5,22 @@
 // Basic constructor for automatically creating the map at the given size.
 Map::Map(int newSizeX, int newSizeY)
 {
+	Create(newSizeX, newSizeY);
+}
+
+Map::~Map()
+{	
+	Delete();
+}
+
+void Map::Create(int newSizeX, int newSizeY)
+{
 	// We need to know the total size of the map
 	sizeX = newSizeX;
 	sizeY = newSizeY;
 
-	mapData = new MapData* [sizeY];
-	for (int i = 0; i < sizeY; ++i)	
+	mapData = new MapData * [sizeY];
+	for (int i = 0; i < sizeY; ++i)
 		mapData[i] = new MapData[sizeX];
 
 	for (int i = 0; i < sizeY; i++)
@@ -19,6 +29,18 @@ Map::Map(int newSizeX, int newSizeY)
 			mapData[i][n].type = MAPDATATYPE_EMPTY;
 			mapData[i][n].health = 0;
 		}
+}
+
+void Map::Delete()
+{
+	for (int i = 0; i < sizeY; ++i)
+	{
+		delete mapData[i];
+		mapData[i] = nullptr;
+	}
+
+	delete mapData;
+	mapData = nullptr;
 }
 
 MapDataType Map::GetTypeAt(int x, int y)

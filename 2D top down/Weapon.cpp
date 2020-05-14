@@ -5,8 +5,11 @@ void Weapons::AddWeapon(Weapon* weapon)
 {
 	if (weapon != nullptr)
 	{
-		// Drop the projectile speed by a factor of 100 or bullets will mvoe at mach 10.
+		// Drop the projectile speed by a factor of 100 or bullets will move at mach 10.
 		weapon->projectileSpeed /= 100;
+
+		// Drop the recoil control rate by the firerate to keep it consistant no matter the fire rate.
+		//weapon->recoilControlRate /= weapon->fireRate;
 
 		// Push the new weapon into the list then send a log of the weapon to the console.
 		weaponList.push_back(weapon);
@@ -35,14 +38,28 @@ void Weapons::RemoveWeapon(std::string wepName)
 	// Check all weapons and find the first one with the given name, then remove it.
 	for (Weapon* wep : weaponList)
 		if (wep->name == wepName)
-		{
+		{			
 			weaponList.erase(weaponList.begin() + i);
+			delete wep;
 			debug.Log("Weapon", "RemoveWeapon", "Removed a weapon");
 
 			return;
 		}
 		else
 			i++;
+}
+
+void Weapons::RemoveAllWeapons()
+{
+	int i = 0;
+
+	// Check all weapons and find the first one with the given name, then remove it.
+	for (Weapon* wep : weaponList)
+	{
+		delete wep;
+	}
+
+	weaponList.clear();
 }
 
 Weapon* Weapons::GetWeapon(std::string wepName)
