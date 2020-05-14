@@ -72,8 +72,8 @@ bool Projectile::CalcProjectile()
 	return true;
 }
 
-Projectile* Projectiles::CreateProjectile(SDL_Point start, SDL_Point end, Weapon* weapon, Player* owner)
-{
+void Projectiles::CreateProjectile(SDL_Point start, SDL_Point end, Weapon* weapon, Player* owner)
+{	
 	Projectile* proj = new Projectile();
 
 	proj->Owner = owner;
@@ -93,13 +93,11 @@ Projectile* Projectiles::CreateProjectile(SDL_Point start, SDL_Point end, Weapon
 
 	proj->velocity = weapon->projectileSpeed;
 
-	proj->damage = weapon->damage;	
+	proj->damage = weapon->damage;
 
 	this->projectileList.push_back(proj);
 
 	debug.Log("Projectile", "CreateProjectile", "Created a Projectile start point x/y " + std::to_string(proj->xLoc) + "/" + std::to_string(proj->yLoc) + " going angle: " + std::to_string(proj->directionFacing) + " Target of: " + std::to_string(end.x) + "/" + std::to_string(end.y));
-
-	return this->projectileList.back();
 }
 
 void Projectiles::DestroyProjectile(Projectile* proj)

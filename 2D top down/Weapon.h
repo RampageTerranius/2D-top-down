@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ProjectileType.h"
+#include "ReloadType.h"
 
 #include <string>
 #include <vector>
@@ -11,6 +12,7 @@ enum FireType
 	FIRETYPE_SEMIAUTO
 };
 
+// TODO: projectileDistance does not currently function.
 class Weapon
 {
 public:
@@ -24,8 +26,10 @@ public:
 	float maxDeviation;
 	float recoil;
 	float recoilControlRate;
+	int bulletsPerShot = 1;
 	int projectileDistance;
 	ProjectileType bulletType;
+	ReloadType reloadType;
 	FireType fireType;
 };
 

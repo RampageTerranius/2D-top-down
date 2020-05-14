@@ -131,5 +131,8 @@
     <ClInclude Include="Map Data Type.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ReloadType.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

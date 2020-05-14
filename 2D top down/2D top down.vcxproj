@@ -171,6 +171,7 @@
     <ClInclude Include="Mouse.h" />
     <ClInclude Include="Projectile.h" />
     <ClInclude Include="ProjectileType.h" />
+    <ClInclude Include="ReloadType.h" />
     <ClInclude Include="Render.h" />
     <ClInclude Include="Setup+Shutdown.h" />
     <ClInclude Include="Texture.h" />

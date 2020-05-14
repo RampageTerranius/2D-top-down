@@ -25,7 +25,7 @@ class Projectiles
 {
 public:
 	void CalcAllProjectiles();
-	Projectile* CreateProjectile(SDL_Point start, SDL_Point end, Weapon* weapon, Player* owner);
+	void CreateProjectile(SDL_Point start, SDL_Point end, Weapon* weapon, Player* owner);
 	void RenderAllProjectiles();
 	void DestroyProjectile(Projectile* proj);
 

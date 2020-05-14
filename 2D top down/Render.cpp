@@ -25,7 +25,7 @@ void Render()
 	if (testPlayer->reloadTimer == 0)
 		ttfAmmo.SetText(mainRenderer, "Ammo: " + std::to_string(testPlayer->ammoLeft));
 	else
-		ttfAmmo.SetText(mainRenderer, "Reloading");
+		ttfAmmo.SetText(mainRenderer, "Ammo: " + std::to_string(testPlayer->ammoLeft) + " Reloading");
 
 	ttfAmmo.Draw(mainRenderer, 5, windowHeight - 25);
 

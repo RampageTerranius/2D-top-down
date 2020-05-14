@@ -94,6 +94,7 @@ bool SetupEngine()
 	wep->recoilControlRate = 6;
 	wep->totalAmmo = 30;
 	wep->fireType = FIRETYPE_FULLAUTO;
+	wep->reloadType = RELOADTYPE_CLIP;
 	allWeapons.AddWeapon(wep);
 
 	Weapon* wep2 = new Weapon;
@@ -109,6 +110,7 @@ bool SetupEngine()
 	wep2->recoilControlRate = 5;
 	wep2->totalAmmo = 20;
 	wep2->fireType = FIRETYPE_FULLAUTO;
+	wep2->reloadType = RELOADTYPE_CLIP;
 	allWeapons.AddWeapon(wep2);
 
 	Weapon* wep3 = new Weapon;
@@ -124,6 +126,7 @@ bool SetupEngine()
 	wep3->recoilControlRate = 4;
 	wep3->totalAmmo = 100;
 	wep3->fireType = FIRETYPE_FULLAUTO;
+	wep3->reloadType = RELOADTYPE_CLIP;
 	allWeapons.AddWeapon(wep3);
 
 	Weapon* wep4 = new Weapon;
@@ -139,6 +142,7 @@ bool SetupEngine()
 	wep4->recoilControlRate = 5;
 	wep4->totalAmmo = 10;
 	wep4->fireType = FIRETYPE_SEMIAUTO;
+	wep4->reloadType = RELOADTYPE_CLIP;
 	allWeapons.AddWeapon(wep4);
 
 	Weapon* wep5 = new Weapon;
@@ -154,6 +158,7 @@ bool SetupEngine()
 	wep5->recoilControlRate = 1;
 	wep5->totalAmmo = 30;
 	wep5->fireType = FIRETYPE_FULLAUTO;
+	wep5->reloadType = RELOADTYPE_CLIP;
 	allWeapons.AddWeapon(wep5);
 
 	Weapon* wep6 = new Weapon;
@@ -169,10 +174,26 @@ bool SetupEngine()
 	wep6->recoilControlRate = 1;
 	wep6->totalAmmo = 30;
 	wep6->fireType = FIRETYPE_FULLAUTO;
+	wep6->reloadType = RELOADTYPE_CLIP;
 	allWeapons.AddWeapon(wep6);
-	// TODO
 
-	
+	Weapon* wep7 = new Weapon;
+	wep7->damage = 5;
+	wep7->name = "Shotgun";
+	wep7->projectileDistance = 200;
+	wep7->projectileSpeed = 5;
+	wep7->fireRate = 40;
+	wep7->reloadTime = 30;
+	wep7->deviation = 60;
+	wep7->maxDeviation = 220;
+	wep7->recoil = 100;
+	wep7->recoilControlRate = 2;
+	wep7->bulletsPerShot = 12;
+	wep7->totalAmmo = 7;
+	wep7->fireType = FIRETYPE_SEMIAUTO;
+	wep7->reloadType = RELOADTYPE_SINGLE;
+	allWeapons.AddWeapon(wep7);
+	// TODO	
 
 	testPlayer = allPlayers.CreatePlayer("TestPlayer");
 	testPlayer->texture = allTextures.GetTexture("DirMarker");

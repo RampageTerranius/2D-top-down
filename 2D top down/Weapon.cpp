@@ -25,6 +25,7 @@ void Weapons::AddWeapon(Weapon* weapon)
 		debug.Log("Weapon", "AddWeapon", "MaxDeviation: " + std::to_string(weapon->maxDeviation));
 		debug.Log("Weapon", "AddWeapon", "Recoil: " + std::to_string(weapon->recoil));
 		debug.Log("Weapon", "AddWeapon", "RecoilControlRate: " + std::to_string(weapon->recoilControlRate));
+		debug.Log("Weapon", "AddWeapon", "BulletsPerShot: " + std::to_string(weapon->bulletsPerShot));
 		debug.Log("Weapon", "AddWeapon", "ProjectileDistance: " + std::to_string(weapon->projectileDistance));
 		debug.Log("Weapon", "AddWeapon", "BulletType: " + std::to_string(weapon->bulletType));
 		debug.Log("Weapon", "AddWeapon", "fireType: " + std::to_string(weapon->fireType));
@@ -54,10 +55,8 @@ void Weapons::RemoveAllWeapons()
 	int i = 0;
 
 	// Check all weapons and find the first one with the given name, then remove it.
-	for (Weapon* wep : weaponList)
-	{
-		delete wep;
-	}
+	for (Weapon* wep : weaponList)	
+		delete wep;	
 
 	weaponList.clear();
 }
