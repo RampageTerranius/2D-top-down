@@ -6,73 +6,70 @@
 Projectile::Projectile()
 {
 	this->type = PROJECTILETYPE_BULLET;
-	this->distanceLeft = 0;
 	this->damage = 0;
 	this->Owner = nullptr;
 }
 
-void Projectile::CalcProjectile()
-{	
-	float i = static_cast<float> (cos(this->directionFacing * M_PI / 180) * this->velocity);
-	float n = static_cast<float> (sin(this->directionFacing * M_PI / 180) * this->velocity);
+bool Projectile::CalcProjectile()
+{
+	double tempXDist = this->xLoc - this->targetPoint.x;
+	double tempYDist = this->yLoc - this->targetPoint.y;
+	double distance = sqrt((tempXDist * tempXDist) + (tempYDist * tempYDist));
 
-	float oldXLoc = this->xLoc;
-	float oldYLoc = this->yLoc;
+	if (distance > 1)
+	{
+		float oldXLoc = this->xLoc;
+		float oldYLoc = this->yLoc;
 
-	this->xLoc += i;
-	this->yLoc += n;
+		double xDistance = this->xStart - this->targetPoint.x;
+		double yDistance = this->yStart - this->targetPoint.y;
 
-	// Reduce the total distance by how much the bullet has moved.
-	if (i < 0)
-		this->distanceLeft += i;
-	else
-		this->distanceLeft -= i;
-	if (n < 0)
-		this->distanceLeft += n;
-	else
-		this->distanceLeft -= n;
+		this->xLoc -= xDistance * this->velocity;
+		this->yLoc -= yDistance * this->velocity;
 
-	// Check if bullet has hit the edge of the map.
-	if (this->xLoc < 0)
-		this->distanceLeft = 0;	
-	else if (this->yLoc < 0)
-		this->distanceLeft = 0;	
-	else if (this->xLoc >= map.GetSizeX())	
-		this->distanceLeft = 0;	
-	else if (this->yLoc >= map.GetSizeY())
-		this->distanceLeft = 0;	
+		// Get all points we have passed and cause damage as needed.
+		std::vector<SDL_Point> points = GetAllMapDataBetweenPoints(oldXLoc, oldYLoc, xLoc, yLoc);
 
-	// Get all points we have passed and cause damage as needed.
-	std::vector<SDL_Point> points = GetAllMapDataBetweenPoints(oldXLoc, oldYLoc, xLoc, yLoc);
-
-	if (points.size() > 0)
-		for (auto& point : points)
-			if (map.GetTypeAt(point.x, point.y) != MAPDATATYPE_EMPTY)
-			{
-				int currentHealth = map.GetHealthAt(point.x, point.y);
-				MapDataType currentMapDataType = map.GetTypeAt(point.x, point.y);
-
-				int tempDamage = this->damage;
-
-				this->damage -= currentHealth;
-				currentHealth -= tempDamage;				
-
-				// Check if the current block should be destroyed.
-				if (currentHealth <= 0)
+		if (points.size() > 0)
+			for (auto& point : points)
+				if (map.GetTypeAt(point.x, point.y) != MAPDATATYPE_EMPTY)
 				{
-					currentHealth = 0;
-					currentMapDataType = MAPDATATYPE_EMPTY;
+					int currentHealth = map.GetHealthAt(point.x, point.y);
+					MapDataType currentMapDataType = map.GetTypeAt(point.x, point.y);
+
+					int tempDamage = this->damage;
+
+					this->damage -= currentHealth;
+					currentHealth -= tempDamage;
+
+					// Check if the current block should be destroyed.
+					if (currentHealth <= 0)
+					{
+						currentHealth = 0;
+						currentMapDataType = MAPDATATYPE_EMPTY;
+					}
+
+					map.SetDataAt(point.x, point.y, currentMapDataType, currentHealth);
+
+					// Check if the bullet is out of potential damage.
+					if (this->damage <= 0)					
+						return false;					
 				}
 
-				map.SetDataAt(point.x, point.y, currentMapDataType, currentHealth);
+		// Check if bullet has hit the edge of the map.
+		if (this->xLoc < 0)
+			return false;
+		else if (this->yLoc < 0)
+			return false;
+		else if (this->xLoc >= map.GetSizeX())
+			return false;
+		else if (this->yLoc >= map.GetSizeY())
+			return false;
+	}
+	else
+		return false;
 
-				// Check if the bullet is out of potential damage.
-				if (this->damage <= 0)
-				{
-					this->distanceLeft = 0;
-					break;
-				}
-			}
+	return true;
 }
 
 Projectile* Projectiles::CreateProjectile(SDL_Point start, SDL_Point end, Weapon* weapon, Player* owner)
@@ -84,22 +81,23 @@ Projectile* Projectiles::CreateProjectile(SDL_Point start, SDL_Point end, Weapon
 	proj->xLoc = static_cast<float> (start.x);
 	proj->yLoc = static_cast<float> (start.y);
 
-	proj->directionFacing = static_cast<float> (GetAngleAsDegrees(start.x, start.y, end.x, end.y));
+	proj->xStart = start.x;
+	proj->yStart = start.y;
+	proj->targetPoint = end;
+
+	proj->directionFacing = static_cast<float> (GetAngleAsDegrees(start.x, start.y, proj->targetPoint.x, proj->targetPoint.y));
 
 	// TODO: automate texture and velocity
 	proj->texture = allTextures.GetTexture("Bullet");
 	// TODO
 
 	proj->velocity = weapon->projectileSpeed;
-	proj->distanceLeft = static_cast<float> (GetDistance(start.x, start.y, end.x, end.y));
-	if (proj->distanceLeft > static_cast<float> (weapon->projectileDistance))
-		proj->distanceLeft = static_cast<float> (weapon->projectileDistance);
 
-	proj->damage = weapon->damage;
+	proj->damage = weapon->damage;	
 
 	this->projectileList.push_back(proj);
 
-	debug.Log("Projectile", "CreateProjectile", "Created a Projectile start point x/y " + std::to_string(proj->xLoc) + "/" + std::to_string(proj->yLoc) + " going angle: " + std::to_string(proj->directionFacing) + " Distance of: " + std::to_string(proj->distanceLeft));
+	debug.Log("Projectile", "CreateProjectile", "Created a Projectile start point x/y " + std::to_string(proj->xLoc) + "/" + std::to_string(proj->yLoc) + " going angle: " + std::to_string(proj->directionFacing) + " Target of: " + std::to_string(end.x) + "/" + std::to_string(end.y));
 
 	return this->projectileList.back();
 }
@@ -112,8 +110,8 @@ void Projectiles::DestroyProjectile(Projectile* proj)
 	{
 		if (listProj == proj)
 		{
-			this->projectileList.erase(this->projectileList.begin() + i);
-			debug.Log("Projectile", "DestroyProjectile", "Deleted a projectile");
+			debug.Log("Projectile", "DestroyProjectile", "Deleted a projectile at: " + std::to_string(listProj->xLoc) + "/" + std::to_string(listProj->yLoc));
+			this->projectileList.erase(this->projectileList.begin() + i);			
 			return;
 		}
 
@@ -125,12 +123,9 @@ void Projectiles::DestroyProjectile(Projectile* proj)
 
 void Projectiles::CalcAllProjectiles()
 {
-	for (auto& projectile : this->projectileList)
-	{
-		projectile->CalcProjectile();	
-		if (projectile->distanceLeft <= 0)
-			allProjectiles.DestroyProjectile(projectile);
-	}
+	for (auto& projectile : this->projectileList)	
+		if (!projectile->CalcProjectile())
+			allProjectiles.DestroyProjectile(projectile);	
 }
 
 void Projectiles::RenderAllProjectiles()

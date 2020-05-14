@@ -160,7 +160,7 @@ bool SetupEngine()
 	wep6->damage = 9999999;
 	wep6->name = "Test - Wall Breaker";
 	wep6->projectileDistance = 1000;
-	wep6->projectileSpeed = 1;
+	wep6->projectileSpeed = 10;
 	wep6->fireRate = 30;
 	wep6->reloadTime = 1;
 	wep6->deviation = 1;

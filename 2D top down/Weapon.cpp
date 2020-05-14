@@ -5,7 +5,12 @@ void Weapons::AddWeapon(Weapon* weapon)
 {
 	if (weapon != nullptr)
 	{
+		// Drop the projectile speed by a factor of 100 or bullets will mvoe at mach 10.
+		weapon->projectileSpeed /= 100;
+
+		// Push the new weapon into the list then send a log of the weapon to the console.
 		weaponList.push_back(weapon);
+
 		debug.Log("Weapon", "AddWeapon", "--Weapon added with following stats--");
 		debug.Log("Weapon", "AddWeapon", "Name: " + weapon->name);
 		debug.Log("Weapon", "AddWeapon", "Damage: " + std::to_string(weapon->damage));
@@ -22,10 +27,12 @@ void Weapons::AddWeapon(Weapon* weapon)
 		debug.Log("Weapon", "AddWeapon", "fireType: " + std::to_string(weapon->fireType));
 	}
 }
+
 void Weapons::RemoveWeapon(std::string wepName)
 {
 	int i = 0;
 
+	// Check all weapons and find the first one with the given name, then remove it.
 	for (Weapon* wep : weaponList)
 		if (wep->name == wepName)
 		{
@@ -51,12 +58,12 @@ bool Weapons::GetNextWeapon(Weapon*& userWep)
 {
 	for (int i = 0; i < weaponList.size(); i++)
 		if (weaponList[i]->name == userWep->name)
-			if (i < weaponList.size() - 1)
+			if (i < weaponList.size() - 1)// If we are not at the last weapon then get the next weapon.
 			{
 				userWep = weaponList[i + 1];
 				return true;
 			}
-			else
+			else// If we ARE at the last weapon then get the first.
 			{
 				userWep = weaponList[0];
 				return true;
@@ -69,12 +76,12 @@ bool Weapons::GetLastWeapon(Weapon*& userWep)
 {
 	for (int i = 0; i < weaponList.size(); i++)
 		if (weaponList[i]->name == userWep->name)
-			if (i > 0)
+			if (i > 0)// If we are not at the first weapon then get the previous weapon.
 			{
 				userWep = weaponList[i - 1];
 				return true;
 			}
-			else
+			else// If we ARE at the first weapon then get the last.
 			{
 				userWep = weaponList[weaponList.size() - 1];
 				return true;

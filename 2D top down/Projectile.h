@@ -11,12 +11,14 @@ class Projectile : public Object
 public:
 	Projectile();
 
-	void CalcProjectile();
+	bool CalcProjectile();
 
 	ProjectileType type;
-	float distanceLeft;
 	int damage;
 	Player* Owner;
+	SDL_Point targetPoint;
+	float xStart;
+	float yStart;
 };
 
 class Projectiles

@@ -14,7 +14,8 @@ public:
 	virtual void MoveTo(int x, int y);
 
 	float xLoc;
-	float yLoc;
+	float yLoc;	
+
 	int ID;
 	Texture* texture;
 };

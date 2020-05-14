@@ -11,7 +11,10 @@
 // Get the distance between two different points.
 double GetDistance(double x1, double y1, double x2, double y2)
 {
-	return sqrt(pow(x2 - x1, 2) + pow(y2 - y1, 2) * 1.0);
+	double x = x1 - x2;
+	double y = y1 - y2;
+
+	return sqrt((x * x) + (y * y));
 }
 
 // Get the angle that the 2nd point is from the first.
