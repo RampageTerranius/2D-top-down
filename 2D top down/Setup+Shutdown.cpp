@@ -104,7 +104,7 @@ bool SetupEngine()
 	wep2->projectileSpeed = 50;
 	wep2->fireRate = 15;
 	wep2->reloadTime = 110;
-	wep2->deviation = 5;
+	wep2->deviation = 10;
 	wep2->maxDeviation = 120;
 	wep2->recoil = 40;
 	wep2->recoilControlRate = 5;
@@ -133,14 +133,14 @@ bool SetupEngine()
 	wep4->damage = 80;
 	wep4->name = "Bolt Rifle";
 	wep4->projectileDistance = 1000;
-	wep4->projectileSpeed = 50;
-	wep4->fireRate = 30;
-	wep4->reloadTime = 120;
-	wep4->deviation = 3;
+	wep4->projectileSpeed = 100;
+	wep4->fireRate = 60;
+	wep4->reloadTime = 200;
+	wep4->deviation = 5;
 	wep4->maxDeviation = 120;
 	wep4->recoil = 60;
 	wep4->recoilControlRate = 5;
-	wep4->totalAmmo = 10;
+	wep4->totalAmmo = 5;
 	wep4->fireType = FIRETYPE_SEMIAUTO;
 	wep4->reloadType = RELOADTYPE_CLIP;
 	allWeapons.AddWeapon(wep4);

@@ -547,8 +547,8 @@ void EventHandle(SDL_Event& event)
 	{
 		SDL_Point mapPoint = GetMapCoordFromCursor();
 
-		for (int x = mapPoint.x - 1; x <= mapPoint.x + 1; x++)
-			for (int y = mapPoint.y - 1; y <= mapPoint.y + 1; y++)	
+		for (int x = mapPoint.x - 2; x <= mapPoint.x + 2; x++)
+			for (int y = mapPoint.y - 2; y <= mapPoint.y + 2; y++)	
 				map.SetDataAt(x, y, MAPDATATYPE_WALL, baseWallHealth);		
 	}
 
