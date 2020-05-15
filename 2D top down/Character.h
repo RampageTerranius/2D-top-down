@@ -8,6 +8,8 @@ class Character : public Entity
 public:
 	Character();
 
+	void MoveBy(float x, float y);
+
 	bool Render();
 
 	Weapon* weapon;

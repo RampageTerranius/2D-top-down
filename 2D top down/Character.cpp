@@ -37,6 +37,50 @@ bool Character::Render()
 	return false;
 }
 
+// Move the character from its point of origin by the given X/Y whiel also checking for collision with walls etc.
+void Character::MoveBy(float x, float y)
+{
+	float tempX = xLoc + x;
+	float tempY = yLoc + y;
+
+	int pointsToMove = 0;
+
+	std::vector<SDL_Point> points = GetAllMapDataBetweenPoints(xLoc, yLoc, tempX, tempY);
+
+	bool firstPoint = true;
+
+	if (points.size() > 0)
+		for (auto& point : points)
+		{
+			if (firstPoint)
+			{
+				firstPoint = false;
+				continue;
+			}
+
+			if (map.GetTypeAt(point.x, point.y) == MAPDATATYPE_EMPTY)
+				pointsToMove++;
+			else
+				break;
+		}
+
+	if (pointsToMove > 0)
+	{
+		this->xLoc = (xLoc + ((x / points.size()) * pointsToMove));
+		this->yLoc = (yLoc + ((y / points.size()) * pointsToMove));
+
+		if (this->xLoc <= 0)
+			this->xLoc = 0;
+		else if (this->xLoc >= static_cast<float> (map.GetSizeX()))
+			this->xLoc = static_cast<float> (map.GetSizeX() - 1);
+
+		if (this->yLoc <= 0)
+			this->yLoc = 0;
+		if (this->yLoc >= static_cast<float> (map.GetSizeY()))
+			this->yLoc = static_cast<float> (map.GetSizeY() - 1);
+	}
+}
+
 Player::Player()
 {
 	Character();
@@ -55,7 +99,7 @@ Player::Player()
 	this->dodgeVel = 24;
 	this->dodgeVelDrop = 2;
 
-	this->currentMovementVel = baseMovementVel;
+	this->currentMovementVel = this->baseMovementVel;
 
 	this->dodgesLeft = 3;
 	this->totalDodges = 3;
@@ -69,20 +113,20 @@ void Player::MovePlayerAccordingToInput()
 	switch (xVel)
 	{
 	case -1:
-		MoveBy(-currentMovementVel, 0);
+		MoveBy(-this->currentMovementVel, 0);
 		break;
 	case 1:
-		MoveBy(currentMovementVel, 0);
+		MoveBy(this->currentMovementVel, 0);
 		break;
 	}
 
 	switch (yVel)
 	{
 	case -1:
-		MoveBy(0, -currentMovementVel);
+		MoveBy(0, -this->currentMovementVel);
 		break;
 	case 1:
-		MoveBy(0, currentMovementVel);
+		MoveBy(0, this->currentMovementVel);
 		break;
 	}
 
