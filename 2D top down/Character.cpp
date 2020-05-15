@@ -47,8 +47,10 @@ void Character::MoveBy(float x, float y)
 
 	std::vector<SDL_Point> points = GetAllMapDataBetweenPoints(xLoc, yLoc, tempX, tempY);
 
+	// We need to NOT check the first point as the first point is the player.
 	bool firstPoint = true;
 
+	// Check how many points we will be moving.
 	if (points.size() > 0)
 		for (auto& point : points)
 		{
@@ -64,6 +66,7 @@ void Character::MoveBy(float x, float y)
 				break;
 		}
 
+	// Move the user and
 	if (pointsToMove > 0)
 	{
 		this->xLoc = (xLoc + ((x / points.size()) * pointsToMove));
@@ -143,10 +146,15 @@ void Player::FireWeapon()
 	if (this->weapon != nullptr)
 		if (this->ammoLeft > 0)
 		{
-			if ((this->reloadTimer == 0 && this->fireTimer == 0) || (this->weapon->fireType == RELOADTYPE_SINGLE && this->fireTimer == 0))
+			if (this->weapon->fireType == RELOADTYPE_SINGLE && this->reloadTimer > 0)
 			{
 				this->reloadTimer = 0;
-				
+				this->fireTimer = this->weapon->fireRate;
+				return;
+			}
+
+			if (this->reloadTimer == 0 && this->fireTimer == 0)
+			{
 				// Get the point of the player.
 				SDL_Point plPoint;
 				plPoint.x = static_cast<int> (round(testPlayer->xLoc));
@@ -227,8 +235,11 @@ void Player::RenderAimer()
 // Start making the player reload their weapon.
 void Player::ReloadWeapon()
 {
-	if (reloadTimer == 0)
-		reloadTimer = weapon->reloadTime;
+	if (this->reloadTimer == 0)
+	{
+		this->reloadTimer = this->weapon->reloadTime;
+		this->fireTimer = this->weapon->fireRate;
+	}
 }
 
 Player* Players::CreatePlayer(std::string playerName)
@@ -237,11 +248,11 @@ Player* Players::CreatePlayer(std::string playerName)
 
 	pl->texture = allTextures.GetTexture("DirMarker");
 
-	playerList.push_back(pl);
+	this->playerList.push_back(pl);
 
 	debug.Log("Character", "CreatePlayer", "Created a player of name: " + playerName);
 
-	return playerList.back();
+	return this->playerList.back();
 }
 
 void Players::DeletePlayer(std::string playerName)
@@ -319,7 +330,7 @@ void Players::HandlePlayerEvents()
 		}
 
 		// Reduce the fire timer each tick so that weapons fire when required.
-		if (pl->fireTimer > 0)
+		if (pl->fireTimer > 0 && pl->reloadTimer == 0)
 			pl->fireTimer--;
 
 		if (pl->currentRecoil > 0/* && !pl->isFiring && pl->fireTimer == 0*/)

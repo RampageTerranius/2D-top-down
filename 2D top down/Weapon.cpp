@@ -29,6 +29,7 @@ void Weapons::AddWeapon(Weapon* weapon)
 		debug.Log("Weapon", "AddWeapon", "ProjectileDistance: " + std::to_string(weapon->projectileDistance));
 		debug.Log("Weapon", "AddWeapon", "BulletType: " + std::to_string(weapon->bulletType));
 		debug.Log("Weapon", "AddWeapon", "fireType: " + std::to_string(weapon->fireType));
+		debug.Log("Weapon", "AddWeapon", "reloadType: " + std::to_string(weapon->reloadType));
 	}
 }
 
