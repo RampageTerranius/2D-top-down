@@ -267,7 +267,7 @@ void Player::SwitchToLastWeapon()
 	{
 		this->selectedWeapon--;
 		if (this->selectedWeapon < 0)
-			this->selectedWeapon = this->weapon.size() - 1;
+			this->selectedWeapon = static_cast<int>(this->weapon.size()) - 1;
 
 		this->fireTimer = this->weapon[this->selectedWeapon]->fireRate;
 		this->reloadTimer = 0;

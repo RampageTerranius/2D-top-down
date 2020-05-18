@@ -9,6 +9,8 @@
 class Entity
 {
 public:
+	Entity();
+
 	virtual bool Render();
 	virtual void MoveBy(float x, float y);
 	virtual void MoveTo(int x, int y);
@@ -26,6 +28,8 @@ public:
 class Object : public Entity
 {
 public:
+	Object();
+
 	virtual bool MoveAccoringToVel();
 	virtual bool Render();
 

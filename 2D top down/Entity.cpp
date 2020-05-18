@@ -3,6 +3,15 @@
 #include "Globals.h"
 #include "Math functions.h"
 
+Entity::Entity()
+{
+	xLoc = 0.0;
+	yLoc = 0.0;
+
+	ID = 0;
+	texture = nullptr;
+}
+
 // Render the current entity to its given location.
 bool Entity::Render()
 {
@@ -57,6 +66,12 @@ void Entity::MoveTo(int x, int y)
 		yLoc = 0;
 	if (yLoc > static_cast<float> (windowHeight))
 		yLoc = static_cast<float> (windowHeight - 1);
+}
+
+Object::Object()
+{
+	this->velocity = 0.0;
+	this->directionFacing = 0.0;
 }
 
 // Automatically move the object according to its velocity and facing direction

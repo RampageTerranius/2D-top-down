@@ -8,6 +8,9 @@ Projectile::Projectile()
 	this->type = ProjectileType::Bullet;
 	this->damage = 0;
 	this->Owner = nullptr;
+	this->targetPoint = SDL_Point{ 0, 0 };
+	this->xStart = 0.0;
+	this->yStart = 0.0;
 }
 
 bool Projectile::CalcProjectile()

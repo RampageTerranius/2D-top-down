@@ -1,6 +1,25 @@
 #include "Weapon.h"
 #include "globals.h"
 
+Weapon::Weapon()
+{
+	this->name = std::string();
+	this->damage = 0;
+	this->totalAmmo = 0;
+	this->fireRate = 0;
+	this->reloadTime = 0;
+	this->projectileSpeed = 0.0;
+	this->deviation = 0.0;
+	this->maxDeviation = 0.0;
+	this->recoil = 0.0;
+	this->recoilControlRate = 0.0;
+	this->bulletsPerShot = 0;
+	this->projectileDistance = 0;
+	this->bulletType = ProjectileType::Bullet;
+	this->reloadType = ReloadType::Clip;
+	this->fireType = FireType::FullAuto;
+}
+
 void Weapons::AddWeapon(Weapon* weapon)
 {
 	if (weapon != nullptr)

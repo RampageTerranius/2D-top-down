@@ -16,6 +16,8 @@ enum class FireType
 class Weapon
 {
 public:
+	Weapon();
+
 	std::string name;
 	int damage;
 	int totalAmmo;
@@ -26,7 +28,7 @@ public:
 	float maxDeviation;
 	float recoil;
 	float recoilControlRate;
-	int bulletsPerShot = 1;
+	int bulletsPerShot;
 	int projectileDistance;
 	ProjectileType bulletType;
 	ReloadType reloadType;

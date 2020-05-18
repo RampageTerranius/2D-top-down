@@ -92,6 +92,7 @@ bool SetupEngine()
 	wep->maxDeviation = 80;
 	wep->recoil = 8;
 	wep->recoilControlRate = 6;
+	wep->bulletsPerShot = 1;
 	wep->totalAmmo = 30;
 	wep->fireType = FireType::FullAuto;
 	wep->reloadType = ReloadType::Clip;
@@ -108,6 +109,7 @@ bool SetupEngine()
 	wep2->maxDeviation = 120;
 	wep2->recoil = 40;
 	wep2->recoilControlRate = 5;
+	wep2->bulletsPerShot = 1;
 	wep2->totalAmmo = 20;
 	wep2->fireType = FireType::FullAuto;
 	wep2->reloadType = ReloadType::Clip;
@@ -124,6 +126,7 @@ bool SetupEngine()
 	wep3->maxDeviation = 160;
 	wep3->recoil = 13;
 	wep3->recoilControlRate = 4;
+	wep3->bulletsPerShot = 1;
 	wep3->totalAmmo = 100;
 	wep3->fireType = FireType::FullAuto;
 	wep3->reloadType = ReloadType::Clip;
@@ -140,6 +143,7 @@ bool SetupEngine()
 	wep4->maxDeviation = 120;
 	wep4->recoil = 60;
 	wep4->recoilControlRate = 5;
+	wep4->bulletsPerShot = 1;
 	wep4->totalAmmo = 5;
 	wep4->fireType = FireType::SemiAuto;
 	wep4->reloadType = ReloadType::Clip;
@@ -156,6 +160,7 @@ bool SetupEngine()
 	wep5->maxDeviation = 1;
 	wep5->recoil = 1;
 	wep5->recoilControlRate = 1;
+	wep5->bulletsPerShot = 1;
 	wep5->totalAmmo = 30;
 	wep5->fireType = FireType::FullAuto;
 	wep5->reloadType = ReloadType::Clip;
@@ -172,6 +177,7 @@ bool SetupEngine()
 	wep6->maxDeviation = 1;
 	wep6->recoil = 1;
 	wep6->recoilControlRate = 1;
+	wep6->bulletsPerShot = 1;
 	wep6->totalAmmo = 30;
 	wep6->fireType = FireType::FullAuto;
 	wep6->reloadType = ReloadType::Clip;
