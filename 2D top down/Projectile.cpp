@@ -21,6 +21,7 @@ bool Projectile::CalcProjectile()
 
 	if (distance > 1)
 	{
+		
 		float oldXLoc = this->xLoc;
 		float oldYLoc = this->yLoc;
 

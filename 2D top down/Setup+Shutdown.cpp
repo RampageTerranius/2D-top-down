@@ -216,6 +216,23 @@ bool SetupEngine()
 	wep8->fireType = FireType::FullAuto;
 	wep8->reloadType = ReloadType::Clip;
 	allWeapons.AddWeapon(wep8);
+
+	Weapon* wep9 = new Weapon;
+	wep9->damage = 5;
+	wep9->name = "Test - Slow Projectile";
+	wep9->projectileDistance = 200;
+	wep9->projectileSpeed = 0.1;
+	wep9->fireRate = 3;
+	wep9->reloadTime = 1;
+	wep9->deviation = 10;
+	wep9->maxDeviation = 10;
+	wep9->recoil = 0;
+	wep9->recoilControlRate = 2;
+	wep9->bulletsPerShot = 1;
+	wep9->totalAmmo = 30;
+	wep9->fireType = FireType::FullAuto;
+	wep9->reloadType = ReloadType::Clip;
+	allWeapons.AddWeapon(wep9);
 	// TODO	
 
 	testPlayer = allPlayers.CreatePlayer("TestPlayer");
