@@ -233,6 +233,23 @@ bool SetupEngine()
 	wep9->fireType = FireType::FullAuto;
 	wep9->reloadType = ReloadType::Clip;
 	allWeapons.AddWeapon(wep9);
+
+	Weapon* wep10 = new Weapon;
+	wep10->damage = 5;
+	wep10->name = "Test - Fast Firing";
+	wep10->projectileDistance = 500;
+	wep10->projectileSpeed = 20;
+	wep10->fireRate = 1;
+	wep10->reloadTime = 1;
+	wep10->deviation = 30;
+	wep10->maxDeviation = 80;
+	wep10->recoil = 8;
+	wep10->recoilControlRate = 6;
+	wep10->bulletsPerShot = 1;
+	wep10->totalAmmo = 300;
+	wep10->fireType = FireType::FullAuto;
+	wep10->reloadType = ReloadType::Clip;
+	allWeapons.AddWeapon(wep10);
 	// TODO	
 
 	testPlayer = allPlayers.CreatePlayer("TestPlayer");

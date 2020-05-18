@@ -25,7 +25,7 @@ void Weapons::AddWeapon(Weapon* weapon)
 	if (weapon != nullptr)
 	{
 		// Drop the projectile speed by a factor of 100 or bullets will move at mach 10.
-		weapon->projectileSpeed /= 100;
+		//weapon->projectileSpeed /= 100;
 
 		// Drop the recoil control rate by the firerate to keep it consistant no matter the fire rate.
 		//weapon->recoilControlRate /= weapon->fireRate;
