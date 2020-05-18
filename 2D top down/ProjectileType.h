@@ -1,6 +1,7 @@
 #pragma once
 
-enum ProjectileType
+enum class ProjectileType
 {
-	PROJECTILETYPE_BULLET
+	Bullet,
+	Explosive
 };

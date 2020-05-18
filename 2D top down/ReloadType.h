@@ -1,7 +1,7 @@
 #pragma once
 
-enum ReloadType
+enum class ReloadType
 {
-	RELOADTYPE_CLIP,
-	RELOADTYPE_SINGLE
+	Clip,
+	Single
 };

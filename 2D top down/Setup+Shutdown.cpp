@@ -93,8 +93,8 @@ bool SetupEngine()
 	wep->recoil = 8;
 	wep->recoilControlRate = 6;
 	wep->totalAmmo = 30;
-	wep->fireType = FIRETYPE_FULLAUTO;
-	wep->reloadType = RELOADTYPE_CLIP;
+	wep->fireType = FireType::FullAuto;
+	wep->reloadType = ReloadType::Clip;
 	allWeapons.AddWeapon(wep);
 
 	Weapon* wep2 = new Weapon;
@@ -109,8 +109,8 @@ bool SetupEngine()
 	wep2->recoil = 40;
 	wep2->recoilControlRate = 5;
 	wep2->totalAmmo = 20;
-	wep2->fireType = FIRETYPE_FULLAUTO;
-	wep2->reloadType = RELOADTYPE_CLIP;
+	wep2->fireType = FireType::FullAuto;
+	wep2->reloadType = ReloadType::Clip;
 	allWeapons.AddWeapon(wep2);
 
 	Weapon* wep3 = new Weapon;
@@ -120,13 +120,13 @@ bool SetupEngine()
 	wep3->projectileSpeed = 30;
 	wep3->fireRate = 3;
 	wep3->reloadTime = 180;
-	wep3->deviation = 30;
+	wep3->deviation = 40;
 	wep3->maxDeviation = 160;
 	wep3->recoil = 13;
 	wep3->recoilControlRate = 4;
 	wep3->totalAmmo = 100;
-	wep3->fireType = FIRETYPE_FULLAUTO;
-	wep3->reloadType = RELOADTYPE_CLIP;
+	wep3->fireType = FireType::FullAuto;
+	wep3->reloadType = ReloadType::Clip;
 	allWeapons.AddWeapon(wep3);
 
 	Weapon* wep4 = new Weapon;
@@ -141,8 +141,8 @@ bool SetupEngine()
 	wep4->recoil = 60;
 	wep4->recoilControlRate = 5;
 	wep4->totalAmmo = 5;
-	wep4->fireType = FIRETYPE_SEMIAUTO;
-	wep4->reloadType = RELOADTYPE_CLIP;
+	wep4->fireType = FireType::SemiAuto;
+	wep4->reloadType = ReloadType::Clip;
 	allWeapons.AddWeapon(wep4);
 
 	Weapon* wep5 = new Weapon;
@@ -157,8 +157,8 @@ bool SetupEngine()
 	wep5->recoil = 1;
 	wep5->recoilControlRate = 1;
 	wep5->totalAmmo = 30;
-	wep5->fireType = FIRETYPE_FULLAUTO;
-	wep5->reloadType = RELOADTYPE_CLIP;
+	wep5->fireType = FireType::FullAuto;
+	wep5->reloadType = ReloadType::Clip;
 	allWeapons.AddWeapon(wep5);
 
 	Weapon* wep6 = new Weapon;
@@ -173,8 +173,8 @@ bool SetupEngine()
 	wep6->recoil = 1;
 	wep6->recoilControlRate = 1;
 	wep6->totalAmmo = 30;
-	wep6->fireType = FIRETYPE_FULLAUTO;
-	wep6->reloadType = RELOADTYPE_CLIP;
+	wep6->fireType = FireType::FullAuto;
+	wep6->reloadType = ReloadType::Clip;
 	allWeapons.AddWeapon(wep6);
 
 	Weapon* wep7 = new Weapon;
@@ -190,8 +190,8 @@ bool SetupEngine()
 	wep7->recoilControlRate = 2;
 	wep7->bulletsPerShot = 12;
 	wep7->totalAmmo = 7;
-	wep7->fireType = FIRETYPE_SEMIAUTO;
-	wep7->reloadType = RELOADTYPE_SINGLE;
+	wep7->fireType = FireType::SemiAuto;
+	wep7->reloadType = ReloadType::Single;
 	allWeapons.AddWeapon(wep7);
 
 	Weapon* wep8 = new Weapon;
@@ -207,8 +207,8 @@ bool SetupEngine()
 	wep8->recoilControlRate = 2;
 	wep8->bulletsPerShot = 12;
 	wep8->totalAmmo = 15;
-	wep8->fireType = FIRETYPE_FULLAUTO;
-	wep8->reloadType = RELOADTYPE_CLIP;
+	wep8->fireType = FireType::FullAuto;
+	wep8->reloadType = ReloadType::Clip;
 	allWeapons.AddWeapon(wep8);
 	// TODO	
 
@@ -230,65 +230,65 @@ bool SetupEngine()
 	for (int i = 0; i < map.GetSizeX(); i++)
 		for (int n = 0; n < map.GetSizeY(); n++)
 			if ((n == 0 || n == map.GetSizeY() - 1) || (i == 0 || i == map.GetSizeX() - 1))
-				map.SetDataAt(i, n, MAPDATATYPE_WALL, baseWallHealth);
+				map.SetDataAt(i, n, MapDataType::Wall, baseWallHealth);
 
-	map.SetDataAt(499, 500, MAPDATATYPE_WALL, baseWallHealth);
-	map.SetDataAt(499, 499, MAPDATATYPE_WALL, baseWallHealth);
-	map.SetDataAt(500, 500, MAPDATATYPE_WALL, baseWallHealth);
-	map.SetDataAt(500, 499, MAPDATATYPE_WALL, baseWallHealth);
+	map.SetDataAt(499, 500, MapDataType::Wall, baseWallHealth);
+	map.SetDataAt(499, 499, MapDataType::Wall, baseWallHealth);
+	map.SetDataAt(500, 500, MapDataType::Wall, baseWallHealth);
+	map.SetDataAt(500, 499, MapDataType::Wall, baseWallHealth);
 
 	// Map test data.
-	map.SetDataAt(50, 100, MAPDATATYPE_WALL, baseWallHealth);
-	map.SetDataAt(51, 100, MAPDATATYPE_WALL, baseWallHealth);
-	map.SetDataAt(52, 100, MAPDATATYPE_WALL, baseWallHealth);
-	map.SetDataAt(53, 100, MAPDATATYPE_WALL, baseWallHealth);
-	map.SetDataAt(54, 100, MAPDATATYPE_WALL, baseWallHealth);
-	map.SetDataAt(55, 100, MAPDATATYPE_WALL, baseWallHealth);
-	map.SetDataAt(56, 100, MAPDATATYPE_WALL, baseWallHealth);
-	map.SetDataAt(57, 100, MAPDATATYPE_WALL, baseWallHealth);
-	map.SetDataAt(58, 100, MAPDATATYPE_WALL, baseWallHealth);
-	map.SetDataAt(59, 100, MAPDATATYPE_WALL, baseWallHealth);
-	map.SetDataAt(60, 100, MAPDATATYPE_WALL, baseWallHealth);
-	map.SetDataAt(61, 100, MAPDATATYPE_WALL, baseWallHealth);
+	map.SetDataAt(50, 100, MapDataType::Wall, baseWallHealth);
+	map.SetDataAt(51, 100, MapDataType::Wall, baseWallHealth);
+	map.SetDataAt(52, 100, MapDataType::Wall, baseWallHealth);
+	map.SetDataAt(53, 100, MapDataType::Wall, baseWallHealth);
+	map.SetDataAt(54, 100, MapDataType::Wall, baseWallHealth);
+	map.SetDataAt(55, 100, MapDataType::Wall, baseWallHealth);
+	map.SetDataAt(56, 100, MapDataType::Wall, baseWallHealth);
+	map.SetDataAt(57, 100, MapDataType::Wall, baseWallHealth);
+	map.SetDataAt(58, 100, MapDataType::Wall, baseWallHealth);
+	map.SetDataAt(59, 100, MapDataType::Wall, baseWallHealth);
+	map.SetDataAt(60, 100, MapDataType::Wall, baseWallHealth);
+	map.SetDataAt(61, 100, MapDataType::Wall, baseWallHealth);
 
-	map.SetDataAt(51, 99, MAPDATATYPE_WALL, baseWallHealth);
-	map.SetDataAt(51, 101, MAPDATATYPE_WALL, baseWallHealth);
-	map.SetDataAt(52, 98, MAPDATATYPE_WALL, baseWallHealth);
-	map.SetDataAt(52, 102, MAPDATATYPE_WALL, baseWallHealth);
-	map.SetDataAt(53, 97, MAPDATATYPE_WALL, baseWallHealth);
-	map.SetDataAt(53, 103, MAPDATATYPE_WALL, baseWallHealth);
-	map.SetDataAt(54, 96, MAPDATATYPE_WALL, baseWallHealth);
-	map.SetDataAt(54, 104, MAPDATATYPE_WALL, baseWallHealth);
-	map.SetDataAt(55, 95, MAPDATATYPE_WALL, baseWallHealth);
-	map.SetDataAt(55, 105, MAPDATATYPE_WALL, baseWallHealth);
+	map.SetDataAt(51, 99, MapDataType::Wall, baseWallHealth);
+	map.SetDataAt(51, 101, MapDataType::Wall, baseWallHealth);
+	map.SetDataAt(52, 98, MapDataType::Wall, baseWallHealth);
+	map.SetDataAt(52, 102, MapDataType::Wall, baseWallHealth);
+	map.SetDataAt(53, 97, MapDataType::Wall, baseWallHealth);
+	map.SetDataAt(53, 103, MapDataType::Wall, baseWallHealth);
+	map.SetDataAt(54, 96, MapDataType::Wall, baseWallHealth);
+	map.SetDataAt(54, 104, MapDataType::Wall, baseWallHealth);
+	map.SetDataAt(55, 95, MapDataType::Wall, baseWallHealth);
+	map.SetDataAt(55, 105, MapDataType::Wall, baseWallHealth);
 
-	map.SetDataAt(100, 50, MAPDATATYPE_WALL, baseWallHealth);
-	map.SetDataAt(100, 51, MAPDATATYPE_WALL, baseWallHealth);
-	map.SetDataAt(100, 52, MAPDATATYPE_WALL, baseWallHealth);
-	map.SetDataAt(100, 53, MAPDATATYPE_WALL, baseWallHealth);
-	map.SetDataAt(100, 54, MAPDATATYPE_WALL, baseWallHealth);
-	map.SetDataAt(100, 55, MAPDATATYPE_WALL, baseWallHealth);
-	map.SetDataAt(100, 56, MAPDATATYPE_WALL, baseWallHealth);
-	map.SetDataAt(100, 57, MAPDATATYPE_WALL, baseWallHealth);
-	map.SetDataAt(100, 58, MAPDATATYPE_WALL, baseWallHealth);
-	map.SetDataAt(100, 59, MAPDATATYPE_WALL, baseWallHealth);
-	map.SetDataAt(100, 60, MAPDATATYPE_WALL, baseWallHealth);
-	map.SetDataAt(100, 61, MAPDATATYPE_WALL, baseWallHealth);
+	map.SetDataAt(100, 50, MapDataType::Wall, baseWallHealth);
+	map.SetDataAt(100, 51, MapDataType::Wall, baseWallHealth);
+	map.SetDataAt(100, 52, MapDataType::Wall, baseWallHealth);
+	map.SetDataAt(100, 53, MapDataType::Wall, baseWallHealth);
+	map.SetDataAt(100, 54, MapDataType::Wall, baseWallHealth);
+	map.SetDataAt(100, 55, MapDataType::Wall, baseWallHealth);
+	map.SetDataAt(100, 56, MapDataType::Wall, baseWallHealth);
+	map.SetDataAt(100, 57, MapDataType::Wall, baseWallHealth);
+	map.SetDataAt(100, 58, MapDataType::Wall, baseWallHealth);
+	map.SetDataAt(100, 59, MapDataType::Wall, baseWallHealth);
+	map.SetDataAt(100, 60, MapDataType::Wall, baseWallHealth);
+	map.SetDataAt(100, 61, MapDataType::Wall, baseWallHealth);
 
-	map.SetDataAt(99, 51, MAPDATATYPE_WALL, baseWallHealth);
-	map.SetDataAt(101, 51, MAPDATATYPE_WALL, baseWallHealth);
-	map.SetDataAt(98, 52, MAPDATATYPE_WALL, baseWallHealth);
-	map.SetDataAt(102, 52, MAPDATATYPE_WALL, baseWallHealth);
-	map.SetDataAt(97, 53, MAPDATATYPE_WALL, baseWallHealth);
-	map.SetDataAt(103, 53, MAPDATATYPE_WALL, baseWallHealth);
-	map.SetDataAt(96, 54, MAPDATATYPE_WALL, baseWallHealth);
-	map.SetDataAt(104, 54, MAPDATATYPE_WALL, baseWallHealth);
-	map.SetDataAt(95, 55, MAPDATATYPE_WALL, baseWallHealth);
-	map.SetDataAt(105, 55, MAPDATATYPE_WALL, baseWallHealth);
+	map.SetDataAt(99, 51, MapDataType::Wall, baseWallHealth);
+	map.SetDataAt(101, 51, MapDataType::Wall, baseWallHealth);
+	map.SetDataAt(98, 52, MapDataType::Wall, baseWallHealth);
+	map.SetDataAt(102, 52, MapDataType::Wall, baseWallHealth);
+	map.SetDataAt(97, 53, MapDataType::Wall, baseWallHealth);
+	map.SetDataAt(103, 53, MapDataType::Wall, baseWallHealth);
+	map.SetDataAt(96, 54, MapDataType::Wall, baseWallHealth);
+	map.SetDataAt(104, 54, MapDataType::Wall, baseWallHealth);
+	map.SetDataAt(95, 55, MapDataType::Wall, baseWallHealth);
+	map.SetDataAt(105, 55, MapDataType::Wall, baseWallHealth);
 
 	for (int i = map.GetSizeX() - 200; i <= map.GetSizeX() - 100; i++)
 		for (int n = 100; n <= map.GetSizeY() - 100; n++)
-			map.SetDataAt(i, n, MAPDATATYPE_WALL, baseWallHealth);
+			map.SetDataAt(i, n, MapDataType::Wall, baseWallHealth);
 
 	return true;
 }

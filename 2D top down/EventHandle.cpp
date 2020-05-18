@@ -533,7 +533,7 @@ void EventHandle(SDL_Event& event)
 		if (testPlayer->weapon.size() > 0)
 		{
 			testPlayer->FireWeapon();
-			if (testPlayer->weapon[testPlayer->selectedWeapon]->fireType == FIRETYPE_SEMIAUTO)
+			if (testPlayer->weapon[testPlayer->selectedWeapon]->fireType == FireType::SemiAuto)
 			{
 				mouse.left = false;
 				testPlayer->isFiring = false;
@@ -552,7 +552,7 @@ void EventHandle(SDL_Event& event)
 
 		for (int x = mapPoint.x - 2; x <= mapPoint.x + 2; x++)
 			for (int y = mapPoint.y - 2; y <= mapPoint.y + 2; y++)	
-				map.SetDataAt(x, y, MAPDATATYPE_WALL, baseWallHealth);		
+				map.SetDataAt(x, y, MapDataType::Wall, baseWallHealth);		
 	}
 
 	// Change weapons on roller ball.

@@ -6,10 +6,10 @@
 #include <string>
 #include <vector>
 
-enum FireType
+enum class FireType
 {
-	FIRETYPE_FULLAUTO,
-	FIRETYPE_SEMIAUTO
+	FullAuto,
+	SemiAuto
 };
 
 // TODO: projectileDistance does not currently function.

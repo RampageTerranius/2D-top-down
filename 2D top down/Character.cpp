@@ -41,7 +41,7 @@ void Character::MoveBy(float x, float y)
 
 	int pointsToMove = 0;
 
-	std::vector<SDL_Point> points = GetAllMapDataBetweenPoints(xLoc, yLoc, tempX, tempY);
+	std::vector<SDL_Point> points = GetAllMapDataBetweenPoints(static_cast<int> (round(xLoc)), static_cast<int> (round(yLoc)), static_cast<int> (round(tempX)), static_cast<int> (round(tempY)));
 
 	// We need to NOT check the first point as the first point is the player.
 	bool firstPoint = true;
@@ -56,7 +56,7 @@ void Character::MoveBy(float x, float y)
 				continue;
 			}
 
-			if (map.GetTypeAt(point.x, point.y) == MAPDATATYPE_EMPTY)
+			if (map.GetTypeAt(point.x, point.y) == MapDataType::Empty)
 				pointsToMove++;
 			else
 				break;
@@ -148,7 +148,7 @@ void Player::FireWeapon()
 		if (this->weapon[this->selectedWeapon] != nullptr)
 			if (this->ammoLeft[this->selectedWeapon] > 0)
 			{
-				if (this->weapon[this->selectedWeapon]->fireType == RELOADTYPE_SINGLE && this->reloadTimer > 0)
+				if (this->weapon[this->selectedWeapon]->reloadType == ReloadType::Single && this->reloadTimer > 0)
 				{
 					this->reloadTimer = 0;
 					this->fireTimer = this->weapon[this->selectedWeapon]->fireRate;
@@ -358,11 +358,11 @@ void Players::HandlePlayerEvents()
 			if (pl->reloadTimer == 0)
 				switch (pl->weapon[pl->selectedWeapon]->reloadType)
 				{
-				case RELOADTYPE_CLIP:
+				case ReloadType::Clip:
 					pl->ammoLeft[pl->selectedWeapon] = pl->weapon[pl->selectedWeapon]->totalAmmo;
 					break;
 
-				case RELOADTYPE_SINGLE:
+				case ReloadType::Single:
 					if (pl->ammoLeft[pl->selectedWeapon] < pl->weapon[pl->selectedWeapon]->totalAmmo)
 					{
 						pl->ammoLeft[pl->selectedWeapon]++;

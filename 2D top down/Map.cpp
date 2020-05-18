@@ -26,7 +26,7 @@ void Map::Create(int newSizeX, int newSizeY)
 	for (int i = 0; i < sizeY; i++)
 		for (int n = 0; n < sizeX; n++)
 		{
-			mapData[i][n].type = MAPDATATYPE_EMPTY;
+			mapData[i][n].type = MapDataType::Empty;
 			mapData[i][n].health = 0;
 		}
 
@@ -53,7 +53,7 @@ MapDataType Map::GetTypeAt(int x, int y)
 			return mapData[x][y].type;
 
 	// If there is any issues return an unknown data type.		
-	return MAPDATATYPE_UNKNOWN;
+	return MapDataType::Unknown;
 }
 
 int Map::GetHealthAt(int x, int y)
@@ -131,7 +131,7 @@ void Map::Render()
 		for (int n = 0; n < sizeX; n++)
 			switch (mapData[n][i].type)
 			{
-			case MAPDATATYPE_WALL:
+			case MapDataType::Wall:
 				SDL_LockSurface(tempSurf);
 				EditPixel(tempSurf, n, i, SDL_MapRGB(tempSurf->format, 80, 40, 0));
 				SDL_UnlockSurface(tempSurf);

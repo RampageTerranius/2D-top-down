@@ -5,34 +5,34 @@
 
 Projectile::Projectile()
 {
-	this->type = PROJECTILETYPE_BULLET;
+	this->type = ProjectileType::Bullet;
 	this->damage = 0;
 	this->Owner = nullptr;
 }
 
 bool Projectile::CalcProjectile()
 {
-	double tempXDist = this->xLoc - this->targetPoint.x;
-	double tempYDist = this->yLoc - this->targetPoint.y;
-	double distance = sqrt((tempXDist * tempXDist) + (tempYDist * tempYDist));
+	float tempXDist = static_cast<float> (this->xLoc) - static_cast<float> (this->targetPoint.x);
+	float tempYDist = static_cast<float> (this->yLoc) - static_cast<float> (this->targetPoint.y);
+	float distance = sqrt((tempXDist * tempXDist) + (tempYDist * tempYDist));
 
 	if (distance > 1)
 	{
 		float oldXLoc = this->xLoc;
 		float oldYLoc = this->yLoc;
 
-		double xDistance = this->xStart - this->targetPoint.x;
-		double yDistance = this->yStart - this->targetPoint.y;
+		float xDistance = this->xStart - static_cast<float> (this->targetPoint.x);
+		float yDistance = this->yStart - static_cast<float> (this->targetPoint.y);
 
-		this->xLoc -= xDistance * this->velocity;
-		this->yLoc -= yDistance * this->velocity;
+		this->xLoc -= static_cast<float> (xDistance) * this->velocity;
+		this->yLoc -= static_cast<float> (yDistance) * this->velocity;
 
 		// Get all points we have passed and cause damage as needed.
-		std::vector<SDL_Point> points = GetAllMapDataBetweenPoints(oldXLoc, oldYLoc, xLoc, yLoc);
+		std::vector<SDL_Point> points = GetAllMapDataBetweenPoints(static_cast<int> (oldXLoc), static_cast<int> (oldYLoc), static_cast<int> (xLoc), static_cast<int> (yLoc));
 
 		if (points.size() > 0)
 			for (auto& point : points)
-				if (map.GetTypeAt(point.x, point.y) != MAPDATATYPE_EMPTY)
+				if (map.GetTypeAt(point.x, point.y) != MapDataType::Empty)
 				{
 					int currentHealth = map.GetHealthAt(point.x, point.y);
 					MapDataType currentMapDataType = map.GetTypeAt(point.x, point.y);
@@ -46,7 +46,7 @@ bool Projectile::CalcProjectile()
 					if (currentHealth <= 0)
 					{
 						currentHealth = 0;
-						currentMapDataType = MAPDATATYPE_EMPTY;
+						currentMapDataType = MapDataType::Empty;
 					}
 
 					map.SetDataAt(point.x, point.y, currentMapDataType, currentHealth);
@@ -81,8 +81,8 @@ void Projectiles::CreateProjectile(SDL_Point start, SDL_Point end, Weapon* weapo
 	proj->xLoc = static_cast<float> (start.x);
 	proj->yLoc = static_cast<float> (start.y);
 
-	proj->xStart = start.x;
-	proj->yStart = start.y;
+	proj->xStart = static_cast<float> (start.x);
+	proj->yStart = static_cast<float> (start.y);
 	proj->targetPoint = end;
 
 	proj->directionFacing = static_cast<float> (GetAngleAsDegrees(start.x, start.y, proj->targetPoint.x, proj->targetPoint.y));

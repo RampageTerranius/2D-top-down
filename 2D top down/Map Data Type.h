@@ -1,10 +1,10 @@
 #pragma once
 
-enum MapDataType
+enum class MapDataType
 {
-	MAPDATATYPE_UNKNOWN,
-	MAPDATATYPE_EMPTY,
-	MAPDATATYPE_WALL,
-	MAPDATATYPE_INDESTRUCTIBLEWALL,
-	MAPDATATYPE_WALLCHUNK
+	Unknown,
+	Empty,
+	Wall,
+	IndestructibleWall,
+	WallChunk
 };
