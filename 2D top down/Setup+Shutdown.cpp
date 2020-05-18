@@ -221,7 +221,7 @@ bool SetupEngine()
 	wep9->damage = 5;
 	wep9->name = "Test - Slow Projectile";
 	wep9->projectileDistance = 200;
-	wep9->projectileSpeed = 0.1;
+	wep9->projectileSpeed = 0.1f;
 	wep9->fireRate = 3;
 	wep9->reloadTime = 1;
 	wep9->deviation = 10;

@@ -19,7 +19,6 @@ public:
 	SDL_Point targetPoint;
 	float xStart;
 	float yStart;
-	float distanceLeft;
 };
 
 class Projectiles

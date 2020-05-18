@@ -24,7 +24,7 @@ bool Projectile::CalcProjectile()
 		float directionY = (this->targetPoint.y - this->yStart) / distance;
 
 		this->xLoc += directionX * this->velocity;
-		this->yLoc += directionY * this->velocity;	
+		this->yLoc += directionY * this->velocity;
 
 		// Get all points we have passed and cause damage as needed.
 		std::vector<SDL_Point> points = GetAllMapDataBetweenPoints(static_cast<int> (oldXLoc), static_cast<int> (oldYLoc), static_cast<int> (xLoc), static_cast<int> (yLoc));
@@ -53,17 +53,15 @@ bool Projectile::CalcProjectile()
 
 					// Check if the bullet is out of potential damage.
 					if (this->damage <= 0)
-						return false;		
-
-					
+						return false;
 				}
 
 				float currDistance = sqrt(pow(this->xLoc - this->xStart, 2) + pow(this->yLoc - this->yStart, 2));
 
 				if (currDistance >= distance)
 				{
-					this->xLoc = this->targetPoint.x;
-					this->yLoc = this->targetPoint.y;
+					this->xLoc = static_cast<float> (this->targetPoint.x);
+					this->yLoc = static_cast<float> (this->targetPoint.y);
 					return false;
 				}
 			}
@@ -105,11 +103,6 @@ void Projectiles::CreateProjectile(SDL_Point start, SDL_Point end, Weapon* weapo
 	proj->velocity = weapon->projectileSpeed;
 
 	proj->damage = weapon->damage;
-
-	// Prepare projectile maximum distance.
-	proj->distanceLeft = GetDistance(start.x, start.y, end.x, end.y);
-	if (proj->distanceLeft > weapon->projectileDistance)
-		proj->distanceLeft = weapon->projectileDistance;
 
 	this->projectileList.push_back(proj);
 
