@@ -51,7 +51,7 @@ bool SetupEngine()
 	Uint32 renderFlags = SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC;
 	mainRenderer = SDL_CreateRenderer(mainWindow, -1, renderFlags);	
 
-	SDL_SetRenderDrawColor(mainRenderer, 0, 0, 0, 255);
+	SDL_SetRenderDrawColor(mainRenderer, renderColorR, renderColorG, renderColorB, renderColorA);
 
 	debug.Log("Setup+Shutdown", "Setup", "Loading textures...");	
 

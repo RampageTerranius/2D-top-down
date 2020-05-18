@@ -20,6 +20,11 @@ extern int windowWidth;
 extern int windowHeight;
 extern bool HardwareCursor;
 
+extern int renderColorR;
+extern int renderColorG;
+extern int renderColorB;
+extern int renderColorA;
+
 // SDL renderer/window.
 extern SDL_Window* mainWindow;
 extern SDL_Renderer* mainRenderer;

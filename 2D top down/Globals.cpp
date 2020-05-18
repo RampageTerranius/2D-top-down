@@ -10,6 +10,11 @@ bool HardwareCursor = false;
 int windowWidth = 640;
 int windowHeight = 480;
 
+int renderColorR = 20;
+int renderColorG = 20;
+int renderColorB = 20;
+int renderColorA = 255;
+
 SDL_Window* mainWindow = nullptr;
 SDL_Renderer* mainRenderer = nullptr;
 SDL_Surface* mainSurface = nullptr;
