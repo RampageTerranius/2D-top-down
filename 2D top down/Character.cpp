@@ -5,14 +5,10 @@
 #include "Math functions.h"
 
 Character::Character()
-{
-	this->ammoLeft = 0;
-	this->directionFacing = 0;
-	this->fireTimer = 0;
-	this->ID = 0;
-	this->reloadTimer = 0;
-	this->texture = nullptr;
-	this->weapon = nullptr;
+{	
+	this->directionFacing = 0;	
+	this->ID = 0;	
+	this->texture = nullptr;	
 	this->xLoc = 0;
 	this->yLoc = 0;
 }
@@ -95,6 +91,11 @@ Player::Player()
 	this->currentRecoil = 0;
 	this->isFiring = 0;
 
+	this->weapon.clear();
+	this->ammoLeft.clear();
+	this->fireTimer = 0;
+	this->reloadTimer = 0;
+
 	this->xVel = 0;// -1 = left 0 = none 1 = right
 	this->yVel = 0;// -1 = up 0 = none 1 = down
 
@@ -143,60 +144,61 @@ void Player::MovePlayerAccordingToInput()
 // Logic for the player firing their weapon.
 void Player::FireWeapon()
 {
-	if (this->weapon != nullptr)
-		if (this->ammoLeft > 0)
-		{
-			if (this->weapon->fireType == RELOADTYPE_SINGLE && this->reloadTimer > 0)
+	if (this->weapon.size() > 0)
+		if (this->weapon[this->selectedWeapon] != nullptr)
+			if (this->ammoLeft[this->selectedWeapon] > 0)
 			{
-				this->reloadTimer = 0;
-				this->fireTimer = this->weapon->fireRate;
-				return;
-			}
-
-			if (this->reloadTimer == 0 && this->fireTimer == 0)
-			{
-				// Get the point of the player.
-				SDL_Point plPoint;
-				plPoint.x = static_cast<int> (round(testPlayer->xLoc));
-				plPoint.y = static_cast<int> (round(testPlayer->yLoc));
-
-				int tempProjectilesToLaunch = this->weapon->bulletsPerShot;
-
-				float calcDeviation = 0.0;
-
-				while (tempProjectilesToLaunch > 0)
+				if (this->weapon[this->selectedWeapon]->fireType == RELOADTYPE_SINGLE && this->reloadTimer > 0)
 				{
-					SDL_Point aimLoc = GetMapCoordFromCursor();
-
-					// Calculate deviation/recoil etc.
-					calcDeviation = weapon->deviation + currentRecoil;
-
-					float randomDeviationX = RandomFloat(-(calcDeviation / 2), calcDeviation / 2);
-					float randomDeviationY = RandomFloat(-(calcDeviation / 2), calcDeviation / 2);
-
-					aimLoc.x += static_cast<int> (round(randomDeviationX));
-					aimLoc.y += static_cast<int> (round(randomDeviationY));
-
-					// Create the projectile.
-					allProjectiles.CreateProjectile(plPoint, aimLoc, this->weapon, this);
-
-					tempProjectilesToLaunch--;
+					this->reloadTimer = 0;
+					this->fireTimer = this->weapon[this->selectedWeapon]->fireRate;
+					return;
 				}
 
-				debug.Log("Character", "FireWeapon", "fired round. deviation of :" + std::to_string(calcDeviation));
+				if (this->reloadTimer == 0 && this->fireTimer == 0)
+				{
+					// Get the point of the player.
+					SDL_Point plPoint;
+					plPoint.x = static_cast<int> (round(testPlayer->xLoc));
+					plPoint.y = static_cast<int> (round(testPlayer->yLoc));
 
-				this->currentRecoil += this->weapon->recoil;
-				if (currentRecoil > this->weapon->maxDeviation)
-					currentRecoil = this->weapon->maxDeviation;
+					int tempProjectilesToLaunch = this->weapon[this->selectedWeapon]->bulletsPerShot;
 
-				this->fireTimer = this->weapon->fireRate;
+					float calcDeviation = 0.0;
 
-				this->ammoLeft--;
+					while (tempProjectilesToLaunch > 0)
+					{
+						SDL_Point aimLoc = GetMapCoordFromCursor();
+
+						// Calculate deviation/recoil etc.
+						calcDeviation = this->weapon[this->selectedWeapon]->deviation + currentRecoil;
+
+						float randomDeviationX = RandomFloat(-(calcDeviation / 2), calcDeviation / 2);
+						float randomDeviationY = RandomFloat(-(calcDeviation / 2), calcDeviation / 2);
+
+						aimLoc.x += static_cast<int> (round(randomDeviationX));
+						aimLoc.y += static_cast<int> (round(randomDeviationY));
+
+						// Create the projectile.
+						allProjectiles.CreateProjectile(plPoint, aimLoc, this->weapon[this->selectedWeapon], this);
+
+						tempProjectilesToLaunch--;
+					}
+
+					debug.Log("Character", "FireWeapon", "fired round. deviation of :" + std::to_string(calcDeviation));
+
+					this->currentRecoil += this->weapon[this->selectedWeapon]->recoil;
+					if (currentRecoil > this->weapon[this->selectedWeapon]->maxDeviation)
+						currentRecoil = this->weapon[this->selectedWeapon]->maxDeviation;
+
+					this->fireTimer = this->weapon[this->selectedWeapon]->fireRate;
+
+					this->ammoLeft[this->selectedWeapon]--;
+				}
+				// TODO: player tryed to fire while gun was reloading/between shots. make a sound or something to let the player know.
 			}
-			// TODO: player tryed to fire while gun was reloading/between shots. make a sound or something to let the player know.
-		}
-		else
-			ReloadWeapon();// Player had no ammo, goto reload logic.		
+			else
+				ReloadWeapon();// Player had no ammo, goto reload logic.		
 }
 
 void Player::RenderAimer()
@@ -205,26 +207,28 @@ void Player::RenderAimer()
 	UI aimer = UI();
 
 	// TODO: bottom and right aimer are 1 pixel off and need to be minused by 1, fix this.
+	if (this->weapon.size() > 0)
+	{
+		aimer.texture = allTextures.GetTexture("AimMarkerTop");
+		aimer.xLoc = static_cast<float> (mouse.x);
+		aimer.yLoc = (static_cast<float> (mouse.y) - ((this->currentRecoil + this->weapon[this->selectedWeapon]->deviation) / 2)) - static_cast<float> (aimer.texture->Rect().h);
+		aimer.Render(0);
 
-	aimer.texture = allTextures.GetTexture("AimMarkerTop");
-	aimer.xLoc = static_cast<float> (mouse.x);
-	aimer.yLoc = (static_cast<float> (mouse.y) - ((testPlayer->currentRecoil + testPlayer->weapon->deviation) / 2)) - static_cast<float> (aimer.texture->Rect().h);
-	aimer.Render(0);
+		aimer.texture = allTextures.GetTexture("AimMarkerBottom");
+		aimer.xLoc = static_cast<float> (mouse.x);
+		aimer.yLoc = (static_cast<float> (mouse.y) + ((this->currentRecoil + this->weapon[this->selectedWeapon]->deviation) / 2)) + static_cast<float> (aimer.texture->Rect().h) - 1;
+		aimer.Render(0);
 
-	aimer.texture = allTextures.GetTexture("AimMarkerBottom");
-	aimer.xLoc = static_cast<float> (mouse.x);
-	aimer.yLoc = (static_cast<float> (mouse.y) + ((testPlayer->currentRecoil + testPlayer->weapon->deviation) / 2)) + static_cast<float> (aimer.texture->Rect().h) - 1;
-	aimer.Render(0);
+		aimer.texture = allTextures.GetTexture("AimMarkerLeft");
+		aimer.xLoc = (static_cast<float> (mouse.x) - ((this->currentRecoil + this->weapon[this->selectedWeapon]->deviation) / 2)) - static_cast<float> (aimer.texture->Rect().w);
+		aimer.yLoc = static_cast<float> (mouse.y);
+		aimer.Render(0);
 
-	aimer.texture = allTextures.GetTexture("AimMarkerLeft");
-	aimer.xLoc = (static_cast<float> (mouse.x) - ((testPlayer->currentRecoil + testPlayer->weapon->deviation) / 2)) - static_cast<float> (aimer.texture->Rect().w);
-	aimer.yLoc = static_cast<float> (mouse.y);
-	aimer.Render(0);
-
-	aimer.texture = allTextures.GetTexture("AimMarkerRight");
-	aimer.xLoc = (static_cast<float> (mouse.x) + ((testPlayer->currentRecoil + testPlayer->weapon->deviation) / 2)) + static_cast<float> (aimer.texture->Rect().w) - 1;
-	aimer.yLoc = static_cast<float> (mouse.y);
-	aimer.Render(0);
+		aimer.texture = allTextures.GetTexture("AimMarkerRight");
+		aimer.xLoc = (static_cast<float> (mouse.x) + ((this->currentRecoil + this->weapon[this->selectedWeapon]->deviation) / 2)) + static_cast<float> (aimer.texture->Rect().w) - 1;
+		aimer.yLoc = static_cast<float> (mouse.y);
+		aimer.Render(0);
+	}
 
 	aimer.texture = allTextures.GetTexture("RedDot");
 	aimer.xLoc = static_cast<float> (mouse.x);
@@ -232,14 +236,53 @@ void Player::RenderAimer()
 	aimer.Render(0);
 }
 
+void Player::AddWeapon(Weapon* wep)
+{
+	this->weapon.push_back(wep);
+	this->ammoLeft.push_back(wep->totalAmmo);
+}
+
+void Player::RemoveWeapon(int weaponIndex)
+{
+	this->weapon.erase(this->weapon.begin() + weaponIndex);
+	this->SwitchToLastWeapon();
+}
+
+void Player::SwitchToNextWeapon()
+{
+	if (this->weapon.size() > 0)
+	{
+		this->selectedWeapon++;
+		if (this->selectedWeapon >= this->weapon.size())
+			this->selectedWeapon = 0;
+
+		this->fireTimer = this->weapon[this->selectedWeapon]->fireRate;
+		this->reloadTimer = 0;
+	}
+}
+
+void Player::SwitchToLastWeapon()
+{
+	if (this->weapon.size() > 0)
+	{
+		this->selectedWeapon--;
+		if (this->selectedWeapon < 0)
+			this->selectedWeapon = this->weapon.size() - 1;
+
+		this->fireTimer = this->weapon[this->selectedWeapon]->fireRate;
+		this->reloadTimer = 0;
+	}
+}
+
 // Start making the player reload their weapon.
 void Player::ReloadWeapon()
 {
-	if (this->reloadTimer == 0)
-	{
-		this->reloadTimer = this->weapon->reloadTime;
-		this->fireTimer = this->weapon->fireRate;
-	}
+	if (this->weapon.size() > 0)
+		if (this->reloadTimer == 0)
+		{
+			this->reloadTimer = this->weapon[this->selectedWeapon]->reloadTime;
+			this->fireTimer = this->weapon[this->selectedWeapon]->fireRate;
+		}
 }
 
 Player* Players::CreatePlayer(std::string playerName)
@@ -313,17 +356,17 @@ void Players::HandlePlayerEvents()
 		{
 			pl->reloadTimer--;
 			if (pl->reloadTimer == 0)
-				switch (pl->weapon->reloadType)
+				switch (pl->weapon[pl->selectedWeapon]->reloadType)
 				{
 				case RELOADTYPE_CLIP:
-					pl->ammoLeft = pl->weapon->totalAmmo;
+					pl->ammoLeft[pl->selectedWeapon] = pl->weapon[pl->selectedWeapon]->totalAmmo;
 					break;
 
 				case RELOADTYPE_SINGLE:
-					if (pl->ammoLeft < pl->weapon->totalAmmo)
+					if (pl->ammoLeft[pl->selectedWeapon] < pl->weapon[pl->selectedWeapon]->totalAmmo)
 					{
-						pl->ammoLeft++;
-						pl->reloadTimer = pl->weapon->reloadTime;
+						pl->ammoLeft[pl->selectedWeapon]++;
+						pl->reloadTimer = pl->weapon[pl->selectedWeapon]->reloadTime;
 					}
 					break;
 				}
@@ -335,7 +378,7 @@ void Players::HandlePlayerEvents()
 
 		if (pl->currentRecoil > 0/* && !pl->isFiring && pl->fireTimer == 0*/)
 		{
-			pl->currentRecoil-= pl->weapon->recoilControlRate;
+			pl->currentRecoil-= pl->weapon[pl->selectedWeapon]->recoilControlRate;
 
 			if (pl->currentRecoil < 0)
 				pl->currentRecoil = 0;

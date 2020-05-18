@@ -35,14 +35,10 @@ public:
 
 class Weapons
 {
-private:
-	std::vector<Weapon*> weaponList;
-
 public:
+	std::vector<Weapon*> weaponList;
 	void AddWeapon(Weapon* weapon);
 	void RemoveWeapon(std::string wepName);
 	void RemoveAllWeapons();
 	Weapon* GetWeapon(std::string wepName);
-	bool GetNextWeapon(Weapon*& userWep);
-	bool GetLastWeapon(Weapon*& userWep);
 };

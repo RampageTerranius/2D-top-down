@@ -22,16 +22,20 @@ void Render()
 	testPlayer->RenderAimer();
 
 	// Render the ammo count.
-	if (testPlayer->reloadTimer == 0)
-		ttfAmmo.SetText(mainRenderer, "Ammo: " + std::to_string(testPlayer->ammoLeft));
+	if (testPlayer->weapon.size() <= 0)
+		ttfAmmo.SetText(mainRenderer, "Ammo: 0");
+	else if (testPlayer->reloadTimer == 0)
+		ttfAmmo.SetText(mainRenderer, "Ammo: " + std::to_string(testPlayer->ammoLeft[testPlayer->selectedWeapon]));
 	else
-		ttfAmmo.SetText(mainRenderer, "Ammo: " + std::to_string(testPlayer->ammoLeft) + " Reloading");
+		ttfAmmo.SetText(mainRenderer, "Ammo: " + std::to_string(testPlayer->ammoLeft[testPlayer->selectedWeapon]) + " Reloading");
 
 	ttfAmmo.Draw(mainRenderer, 5, windowHeight - 25);
 
 	// Render the weapon name.
-	if (testPlayer->weapon != nullptr)
-		ttfWeapon.SetText(mainRenderer, "Weapon: " + testPlayer->weapon->name);
+	if (testPlayer->weapon.size() > 0)
+		ttfWeapon.SetText(mainRenderer, "Weapon: " + testPlayer->weapon[testPlayer->selectedWeapon]->name);
+	else
+		ttfWeapon.SetText(mainRenderer, "Weapon: Unarmed");
 
 	ttfWeapon.Draw(mainRenderer, 5, windowHeight - 50);
 

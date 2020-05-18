@@ -193,15 +193,32 @@ bool SetupEngine()
 	wep7->fireType = FIRETYPE_SEMIAUTO;
 	wep7->reloadType = RELOADTYPE_SINGLE;
 	allWeapons.AddWeapon(wep7);
+
+	Weapon* wep8 = new Weapon;
+	wep8->damage = 3;
+	wep8->name = "Auto-Shotgun";
+	wep8->projectileDistance = 200;
+	wep8->projectileSpeed = 5;
+	wep8->fireRate = 20;
+	wep8->reloadTime = 150;
+	wep8->deviation = 60;
+	wep8->maxDeviation = 120;
+	wep8->recoil = 60;
+	wep8->recoilControlRate = 2;
+	wep8->bulletsPerShot = 12;
+	wep8->totalAmmo = 15;
+	wep8->fireType = FIRETYPE_FULLAUTO;
+	wep8->reloadType = RELOADTYPE_CLIP;
+	allWeapons.AddWeapon(wep8);
 	// TODO	
 
 	testPlayer = allPlayers.CreatePlayer("TestPlayer");
 	testPlayer->texture = allTextures.GetTexture("DirMarker");
-	//testPlayer->xLoc = round(static_cast<float> (windowWidth / 2));
-	//testPlayer->yLoc = round(static_cast<float> (windowHeight / 2));
-	testPlayer->xLoc = 499;
-	testPlayer->yLoc = 499;
-	testPlayer->weapon = allWeapons.GetWeapon("Test - No speed");
+	testPlayer->xLoc = round(static_cast<float> ((map.GetSizeX() - 1) / 2));
+	testPlayer->yLoc = round(static_cast<float> ((map.GetSizeY() - 1) / 2));
+
+	for (auto& wep : allWeapons.weaponList)
+		testPlayer->AddWeapon(wep);
 
 	debug.Log("Setup+Shutdown", "Setup", "Setup completed");
 

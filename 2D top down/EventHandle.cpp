@@ -530,14 +530,17 @@ void EventHandle(SDL_Event& event)
 	// Fire weapon if needed.
 	if (mouse.left)
 	{		
-		testPlayer->FireWeapon();
-		if (testPlayer->weapon->fireType == FIRETYPE_SEMIAUTO)
+		if (testPlayer->weapon.size() > 0)
 		{
-			mouse.left = false;
-			testPlayer->isFiring = false;
+			testPlayer->FireWeapon();
+			if (testPlayer->weapon[testPlayer->selectedWeapon]->fireType == FIRETYPE_SEMIAUTO)
+			{
+				mouse.left = false;
+				testPlayer->isFiring = false;
+			}
+			else
+				testPlayer->isFiring = true;
 		}
-		else
-			testPlayer->isFiring = true;
 	}
 	else	
 		testPlayer->isFiring = false;
@@ -555,13 +558,13 @@ void EventHandle(SDL_Event& event)
 	// Change weapons on roller ball.
 	if (mouse.scrollUp)
 	{
-		allWeapons.GetNextWeapon(testPlayer->weapon);
+		testPlayer->SwitchToNextWeapon();
 		mouse.scrollUp = false;
 	}
 
 	if (mouse.scrollDown)
 	{
-		allWeapons.GetLastWeapon(testPlayer->weapon);
+		testPlayer->SwitchToLastWeapon();
 		mouse.scrollDown = false;
 	}	
 

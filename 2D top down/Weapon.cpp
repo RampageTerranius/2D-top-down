@@ -72,39 +72,3 @@ Weapon* Weapons::GetWeapon(std::string wepName)
 
 		return nullptr;
 }
-
-bool Weapons::GetNextWeapon(Weapon*& userWep)
-{
-	for (int i = 0; i < weaponList.size(); i++)
-		if (weaponList[i]->name == userWep->name)
-			if (i < weaponList.size() - 1)// If we are not at the last weapon then get the next weapon.
-			{
-				userWep = weaponList[i + 1];
-				return true;
-			}
-			else// If we ARE at the last weapon then get the first.
-			{
-				userWep = weaponList[0];
-				return true;
-			}
-
-	return false;
-}
-
-bool Weapons::GetLastWeapon(Weapon*& userWep)
-{
-	for (int i = 0; i < weaponList.size(); i++)
-		if (weaponList[i]->name == userWep->name)
-			if (i > 0)// If we are not at the first weapon then get the previous weapon.
-			{
-				userWep = weaponList[i - 1];
-				return true;
-			}
-			else// If we ARE at the first weapon then get the last.
-			{
-				userWep = weaponList[weaponList.size() - 1];
-				return true;
-			}
-
-	return false;
-}

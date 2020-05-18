@@ -11,13 +11,8 @@ public:
 	void MoveBy(float x, float y);
 
 	bool Render();
-
-	Weapon* weapon;
-	int reloadTimer;
-	int ammoLeft;
-	int fireTimer;
-	float directionFacing;
 	
+	float directionFacing;	
 };
 
 class Player : public Character
@@ -29,6 +24,10 @@ public:
 	void FireWeapon();
 	void ReloadWeapon();
 	void RenderAimer();
+	void AddWeapon(Weapon* wep);
+	void RemoveWeapon(int weaponIndex);
+	void SwitchToNextWeapon();
+	void SwitchToLastWeapon();
 
 	std::string name;
 
@@ -36,6 +35,12 @@ public:
 
 	float currentRecoil;
 	bool isFiring;
+
+	std::vector<Weapon*> weapon;
+	int selectedWeapon;
+	std::vector<int> ammoLeft;
+	int reloadTimer;
+	int fireTimer;
 
 	int xVel;// -1 = left 0 = none 1 = right
 	int yVel;// -1 = up 0 = none 1 = down
