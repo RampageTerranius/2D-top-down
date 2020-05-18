@@ -136,7 +136,7 @@ bool SetupEngine()
 	wep4->damage = 80;
 	wep4->name = "Bolt Rifle";
 	wep4->projectileDistance = 1000;
-	wep4->projectileSpeed = 100;
+	wep4->projectileSpeed = 50;
 	wep4->fireRate = 60;
 	wep4->reloadTime = 200;
 	wep4->deviation = 5;

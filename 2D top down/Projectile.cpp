@@ -11,71 +11,74 @@ Projectile::Projectile()
 	this->targetPoint = SDL_Point{ 0, 0 };
 	this->xStart = 0.0;
 	this->yStart = 0.0;
+	this->maxDistance = 0;
 }
 
 bool Projectile::CalcProjectile()
 {	
-	{
-		float oldXLoc = this->xLoc;
-		float oldYLoc = this->yLoc;
+	float oldXLoc = this->xLoc;
+	float oldYLoc = this->yLoc;
 
-		float distance = sqrt(pow(this->targetPoint.x - this->xStart, 2) + pow(this->targetPoint.y - this->yStart, 2));
-		float directionX = (this->targetPoint.x - this->xStart) / distance;
-		float directionY = (this->targetPoint.y - this->yStart) / distance;
+	float distance = sqrt(pow(this->targetPoint.x - this->xStart, 2) + pow(this->targetPoint.y - this->yStart, 2));
+	if (distance > this->maxDistance)
+		distance = this->maxDistance;
 
-		this->xLoc += directionX * this->velocity;
-		this->yLoc += directionY * this->velocity;
+	float directionX = (this->targetPoint.x - this->xStart) / distance;
+	float directionY = (this->targetPoint.y - this->yStart) / distance;
 
-		// Get all points we have passed and cause damage as needed.
-		std::vector<SDL_Point> points = GetAllMapDataBetweenPoints(static_cast<int> (oldXLoc), static_cast<int> (oldYLoc), static_cast<int> (xLoc), static_cast<int> (yLoc));
+	this->xLoc += directionX * this->velocity;
+	this->yLoc += directionY * this->velocity;
 
-		if (points.size() > 0)
-			for (auto& point : points)
+	// Get all points we have passed and cause damage as needed.
+	std::vector<SDL_Point> points = GetAllMapDataBetweenPoints(static_cast<int> (oldXLoc), static_cast<int> (oldYLoc), static_cast<int> (xLoc), static_cast<int> (yLoc));
+
+	if (points.size() > 0)
+		for (auto& point : points)
+		{
+			if (map.GetTypeAt(point.x, point.y) != MapDataType::Empty)
 			{
-				if (map.GetTypeAt(point.x, point.y) != MapDataType::Empty)
+				int currentHealth = map.GetHealthAt(point.x, point.y);
+				MapDataType currentMapDataType = map.GetTypeAt(point.x, point.y);
+
+				int tempDamage = this->damage;
+
+				this->damage -= currentHealth;
+				currentHealth -= tempDamage;
+
+				// Check if the current block should be destroyed.
+				if (currentHealth <= 0)
 				{
-					int currentHealth = map.GetHealthAt(point.x, point.y);
-					MapDataType currentMapDataType = map.GetTypeAt(point.x, point.y);
-
-					int tempDamage = this->damage;
-
-					this->damage -= currentHealth;
-					currentHealth -= tempDamage;
-
-					// Check if the current block should be destroyed.
-					if (currentHealth <= 0)
-					{
-						currentHealth = 0;
-						currentMapDataType = MapDataType::Empty;
-					}
-
-					map.SetDataAt(point.x, point.y, currentMapDataType, currentHealth);
-
-					// Check if the bullet is out of potential damage.
-					if (this->damage <= 0)
-						return false;
+					currentHealth = 0;
+					currentMapDataType = MapDataType::Empty;
 				}
 
-				float currDistance = sqrt(pow(this->xLoc - this->xStart, 2) + pow(this->yLoc - this->yStart, 2));
+				map.SetDataAt(point.x, point.y, currentMapDataType, currentHealth);
 
-				if (currDistance >= distance)
-				{
-					this->xLoc = static_cast<float> (this->targetPoint.x);
-					this->yLoc = static_cast<float> (this->targetPoint.y);
+				// Check if the bullet is out of potential damage.
+				if (this->damage <= 0)
 					return false;
-				}
 			}
 
-		// Check if bullet has hit the edge of the map.
-		if (this->xLoc < 0)
-			return false;
-		else if (this->yLoc < 0)
-			return false;
-		else if (this->xLoc >= map.GetSizeX())
-			return false;
-		else if (this->yLoc >= map.GetSizeY())
-			return false;
-	}
+			float currDistance = sqrt(pow(this->xLoc - this->xStart, 2) + pow(this->yLoc - this->yStart, 2));
+
+			if (currDistance >= distance)
+			{
+				this->xLoc = static_cast<float> (this->targetPoint.x);
+				this->yLoc = static_cast<float> (this->targetPoint.y);
+				return false;
+			}
+		}
+
+	// Check if bullet has hit the edge of the map.
+	if (this->xLoc < 0)
+		return false;
+	else if (this->yLoc < 0)
+		return false;
+	else if (this->xLoc >= map.GetSizeX())
+		return false;
+	else if (this->yLoc >= map.GetSizeY())
+		return false;
+	
 
 	return true;
 }
@@ -104,11 +107,14 @@ void Projectiles::CreateProjectile(SDL_Point start, SDL_Point end, Weapon* weapo
 
 	proj->damage = weapon->damage;
 
+	proj->maxDistance = weapon->projectileDistance;
+
 	this->projectileList.push_back(proj);
 
 	debug.Log("Projectiles", "CreateProjectile", "Created a Projectile start point x/y " + std::to_string(proj->xLoc) + "/" + std::to_string(proj->yLoc) + " going angle: " + std::to_string(proj->directionFacing) + " Target of: " + std::to_string(end.x) + "/" + std::to_string(end.y));
 }
 
+// TODO: this fundtion sometiems fails to delete particles, check into why
 void Projectiles::DestroyProjectile(Projectile* proj)
 {
 	int i = 0;
@@ -118,7 +124,7 @@ void Projectiles::DestroyProjectile(Projectile* proj)
 		if (listProj == proj)
 		{
 			debug.Log("Projectiles", "DestroyProjectile", "Deleted a projectile at: " + std::to_string(listProj->xLoc) + "/" + std::to_string(listProj->yLoc));
-			this->projectileList.erase(this->projectileList.begin() + i);			
+			this->projectileList.erase(this->projectileList.begin() + i);
 			return;
 		}
 

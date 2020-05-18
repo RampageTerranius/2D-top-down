@@ -15,6 +15,7 @@ public:
 
 	ProjectileType type;
 	int damage;
+	int maxDistance;
 	Player* Owner;
 	SDL_Point targetPoint;
 	float xStart;
