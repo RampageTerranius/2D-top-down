@@ -208,27 +208,28 @@ void Player::RenderAimer()
 
 	// TODO: bottom and right aimer are 1 pixel off and need to be minused by 1, fix this.
 	if (this->weapon.size() > 0)
-	{
-		aimer.texture = allTextures.GetTexture("AimMarkerTop");
-		aimer.xLoc = static_cast<float> (mouse.x);
-		aimer.yLoc = (static_cast<float> (mouse.y) - ((this->currentRecoil + this->weapon[this->selectedWeapon]->deviation) / 2)) - static_cast<float> (aimer.texture->Rect().h);
-		aimer.Render(0);
+		if (this->currentRecoil + this->weapon[this->selectedWeapon]->deviation > 0)
+		{
+			aimer.texture = allTextures.GetTexture("AimMarkerTop");
+			aimer.xLoc = static_cast<float> (mouse.x);
+			aimer.yLoc = (static_cast<float> (mouse.y) - ((this->currentRecoil + this->weapon[this->selectedWeapon]->deviation) / 2)) - static_cast<float> (aimer.texture->Rect().h);
+			aimer.Render(0);
 
-		aimer.texture = allTextures.GetTexture("AimMarkerBottom");
-		aimer.xLoc = static_cast<float> (mouse.x);
-		aimer.yLoc = (static_cast<float> (mouse.y) + ((this->currentRecoil + this->weapon[this->selectedWeapon]->deviation) / 2)) + static_cast<float> (aimer.texture->Rect().h) - 1;
-		aimer.Render(0);
+			aimer.texture = allTextures.GetTexture("AimMarkerBottom");
+			aimer.xLoc = static_cast<float> (mouse.x);
+			aimer.yLoc = (static_cast<float> (mouse.y) + ((this->currentRecoil + this->weapon[this->selectedWeapon]->deviation) / 2)) + static_cast<float> (aimer.texture->Rect().h) - 1;
+			aimer.Render(0);
 
-		aimer.texture = allTextures.GetTexture("AimMarkerLeft");
-		aimer.xLoc = (static_cast<float> (mouse.x) - ((this->currentRecoil + this->weapon[this->selectedWeapon]->deviation) / 2)) - static_cast<float> (aimer.texture->Rect().w);
-		aimer.yLoc = static_cast<float> (mouse.y);
-		aimer.Render(0);
+			aimer.texture = allTextures.GetTexture("AimMarkerLeft");
+			aimer.xLoc = (static_cast<float> (mouse.x) - ((this->currentRecoil + this->weapon[this->selectedWeapon]->deviation) / 2)) - static_cast<float> (aimer.texture->Rect().w);
+			aimer.yLoc = static_cast<float> (mouse.y);
+			aimer.Render(0);
 
-		aimer.texture = allTextures.GetTexture("AimMarkerRight");
-		aimer.xLoc = (static_cast<float> (mouse.x) + ((this->currentRecoil + this->weapon[this->selectedWeapon]->deviation) / 2)) + static_cast<float> (aimer.texture->Rect().w) - 1;
-		aimer.yLoc = static_cast<float> (mouse.y);
-		aimer.Render(0);
-	}
+			aimer.texture = allTextures.GetTexture("AimMarkerRight");
+			aimer.xLoc = (static_cast<float> (mouse.x) + ((this->currentRecoil + this->weapon[this->selectedWeapon]->deviation) / 2)) + static_cast<float> (aimer.texture->Rect().w) - 1;
+			aimer.yLoc = static_cast<float> (mouse.y);
+			aimer.Render(0);
+		}
 
 	aimer.texture = allTextures.GetTexture("RedDot");
 	aimer.xLoc = static_cast<float> (mouse.x);

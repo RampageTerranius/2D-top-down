@@ -173,7 +173,7 @@ bool SetupEngine()
 	wep6->projectileSpeed = 10;
 	wep6->fireRate = 30;
 	wep6->reloadTime = 1;
-	wep6->deviation = 1;
+	wep6->deviation = 0;
 	wep6->maxDeviation = 1;
 	wep6->recoil = 1;
 	wep6->recoilControlRate = 1;
