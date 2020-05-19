@@ -20,6 +20,21 @@ public:
 	SDL_Point targetPoint;
 	float xStart;
 	float yStart;
+
+	Projectile* last = nullptr;
+	Projectile* next = nullptr;
+};
+
+class ProjectileLinkedList
+{
+public:
+	void PushBack(Projectile* data);
+	void Clear();
+
+	Projectile* front = nullptr;
+	Projectile* back = nullptr;
+
+	int count = 0;
 };
 
 class Projectiles
@@ -31,5 +46,5 @@ public:
 	void DestroyProjectile(Projectile* proj);
 	void DestroyAllProjectiles();
 
-	std::vector<Projectile*> projectileList;
+	ProjectileLinkedList projectileList;
 };

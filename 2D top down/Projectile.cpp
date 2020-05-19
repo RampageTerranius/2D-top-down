@@ -3,6 +3,42 @@
 #include "Map Data Type.h"
 #include "globals.h"
 
+void ProjectileLinkedList::PushBack(Projectile* data)
+{
+	// No front.
+	if (this->front == nullptr)
+		this->front = data;
+	// No back.
+	else if (this->back == nullptr)
+	{
+		this->back = data;
+		this->back->last = this->front;
+		this->front->next = this->back;
+	}
+	// A front and a back.
+	else
+	{
+		Projectile* tempData = this->back;
+		this->back = data;
+		this->back->last = tempData;
+		tempData->next = this->back;		
+	}
+}
+
+void ProjectileLinkedList::Clear()
+{
+	// Clear all data out of the linked list.
+	while (this->front != nullptr)
+	{
+		Projectile* delData;
+
+		delData = this->front;
+		this->front = this->front->next;
+
+		delete delData;
+	}
+}
+
 Projectile::Projectile()
 {
 	this->type = ProjectileType::Bullet;
@@ -78,7 +114,6 @@ bool Projectile::CalcProjectile()
 		return false;
 	else if (this->yLoc >= map.GetSizeY())
 		return false;
-	
 
 	return true;
 }
@@ -109,41 +144,38 @@ void Projectiles::CreateProjectile(SDL_Point start, SDL_Point end, Weapon* weapo
 
 	proj->maxDistance = weapon->projectileDistance;
 
-	this->projectileList.push_back(proj);
+	this->projectileList.PushBack(proj);
 
 	debug.Log("Projectiles", "CreateProjectile", "Created a Projectile start point x/y " + std::to_string(proj->xLoc) + "/" + std::to_string(proj->yLoc) + " going angle: " + std::to_string(proj->directionFacing) + " Target of: " + std::to_string(end.x) + "/" + std::to_string(end.y));
 }
 
-// TODO: this fundtion sometiems fails to delete particles, check into why
+// TODO: this fundtion sometiems fails to delete particles, check into why.
 void Projectiles::DestroyProjectile(Projectile* proj)
 {
-	int i = 0;
+	if (projectileList.front = proj)
+		projectileList.front = projectileList.front->next;
+	else if (projectileList.back = proj)
+		projectileList.back = projectileList.back->last;
 
-	for (auto& listProj : this->projectileList)
-	{
-		if (listProj == proj)
-		{
-			debug.Log("Projectiles", "DestroyProjectile", "Deleted a projectile at: " + std::to_string(listProj->xLoc) + "/" + std::to_string(listProj->yLoc));
-			this->projectileList.erase(this->projectileList.begin() + i);
-			return;
-		}
+	if (proj->next != nullptr)
+		proj->next->last = proj->last;
+	if (proj->last != nullptr)
+		proj->last->next = proj->next;
 
-		i++;
-	}
+	delete proj;
 
-	debug.Log("Projectiles", "DestroyProjectile", "Call to destroy a projectile has failed!");
+	//debug.Log("Projectiles", "DestroyProjectile", "Deleted a projectile at: " + std::to_string(listProj->xLoc) + "/" + std::to_string(listProj->yLoc));
 }
 
 void Projectiles::DestroyAllProjectiles()
 {
-	int i = 0;
+	Projectile* data = projectileList.front;
 
-	for (Projectile* listProj : this->projectileList)
+	while (data != nullptr)
 	{
-		this->projectileList.erase(this->projectileList.begin() + i);
-		delete listProj;
-
-		i++;
+		Projectile* tempData = data->next;
+		DestroyProjectile(data);
+		data = tempData;
 	}
 
 	debug.Log("Projectiles", "DestroyAllProjectiles", "Destroyed all projectiles");
@@ -151,13 +183,28 @@ void Projectiles::DestroyAllProjectiles()
 
 void Projectiles::CalcAllProjectiles()
 {
-	for (auto& projectile : this->projectileList)	
-		if (!projectile->CalcProjectile())
-			allProjectiles.DestroyProjectile(projectile);	
+	Projectile* data = projectileList.front;
+
+	while (data != nullptr)
+	{
+		if (data->CalcProjectile())
+			data = data->next;
+		else
+		{
+			Projectile* tempData = data;
+			data = data->next;
+			allProjectiles.DestroyProjectile(tempData);
+		}
+	}
 }
 
 void Projectiles::RenderAllProjectiles()
 {
-	for (auto& projectile : this->projectileList)
-		projectile->Render();
+	Projectile* data = projectileList.front;
+
+	while (data != nullptr)
+	{
+		data->Render();
+		data = data->next;
+	}
 }
