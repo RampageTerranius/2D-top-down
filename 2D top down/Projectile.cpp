@@ -85,12 +85,10 @@ bool ProjectileLinkedList::DeleteFront()
 bool ProjectileLinkedList::Delete(Projectile* data)
 {
 	if (this->front == data)
-		return DeleteFront();
-	
+		return DeleteFront();	
 	
 	if (this->back == data)
-		return DeleteBack();
-	
+		return DeleteBack();	
 
 	Projectile* last = data->last;
 	Projectile* next = data->next;
@@ -225,11 +223,13 @@ void Projectiles::CreateProjectile(SDL_Point start, SDL_Point end, Weapon* weapo
 	debug.Log("Projectiles", "CreateProjectile", "Created a Projectile start point x/y " + std::to_string(proj->xLoc) + "/" + std::to_string(proj->yLoc) + " going angle: " + std::to_string(proj->directionFacing) + " Target of: " + std::to_string(end.x) + "/" + std::to_string(end.y));
 }
 
-// TODO: this fundtion sometiems fails to delete particles, check into why.
 void Projectiles::DestroyProjectile(Projectile* proj)
 {
+	float x = proj->xLoc;
+	float y = proj->yLoc;
+
 	if (this->projectileList.Delete(proj))
-		debug.Log("Projectiles", "DestroyProjectile", "Deleted a projectile");
+		debug.Log("Projectiles", "DestroyProjectile", "Deleted a projectile at " + std::to_string(x) + "/" + std::to_string(y));
 	else
 		debug.Log("Projectiles", "DestroyProjectile", "Faield to delete projectile!");
 }
