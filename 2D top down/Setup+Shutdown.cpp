@@ -194,7 +194,7 @@ bool SetupEngine()
 	wep7->maxDeviation = 220;
 	wep7->recoil = 100;
 	wep7->recoilControlRate = 2;
-	wep7->bulletsPerShot = 12;
+	wep7->bulletsPerShot = 3;
 	wep7->totalAmmo = 7;
 	wep7->fireType = FireType::SemiAuto;
 	wep7->reloadType = ReloadType::Single;

@@ -29,6 +29,9 @@ class ProjectileLinkedList
 {
 public:
 	void PushBack(Projectile* data);
+	bool DeleteBack();
+	bool DeleteFront();
+	bool Delete(Projectile* data);
 	void Clear();
 
 	Projectile* front = nullptr;

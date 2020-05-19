@@ -7,22 +7,101 @@ void ProjectileLinkedList::PushBack(Projectile* data)
 {
 	// No front.
 	if (this->front == nullptr)
+	{
 		this->front = data;
+		this->count++;
+	}
 	// No back.
 	else if (this->back == nullptr)
 	{
 		this->back = data;
 		this->back->last = this->front;
 		this->front->next = this->back;
+		this->count++;
 	}
 	// A front and a back.
 	else
 	{
-		Projectile* tempData = this->back;
+		Projectile* tempBack = this->back;
 		this->back = data;
-		this->back->last = tempData;
-		tempData->next = this->back;		
+		this->back->last = tempBack;
+		tempBack->next = data;
+		this->count++;
 	}
+}
+
+bool ProjectileLinkedList::DeleteBack()
+{
+	if (this->back == nullptr)
+		return false;
+
+	Projectile* tempProj = this->back;
+
+	if (this->back->last == this->front)
+	{
+		this->back = nullptr;
+		this->front->next = nullptr;
+	}
+	else
+	{
+		this->back = this->back->last;
+		this->back->next = nullptr;
+	}
+
+	delete tempProj;
+
+	this->count--;
+
+	return true;
+}
+
+bool ProjectileLinkedList::DeleteFront()
+{
+	if (this->front == nullptr)
+		return false;
+
+	Projectile* tempProj = this->front;
+	
+	if (this->back != nullptr && this->front->next == this->back)
+	{
+		this->back->last = nullptr;
+		this->front = this->back;
+		this->back = nullptr;
+	}
+	else
+	{
+		this->front = this->front->next;
+		if (this->front != nullptr)
+			this->front->last = nullptr;
+	}	
+
+	delete tempProj;
+
+	this->count--;
+
+	return true;
+}
+
+bool ProjectileLinkedList::Delete(Projectile* data)
+{
+	if (this->front == data)
+		return DeleteFront();
+	
+	
+	if (this->back == data)
+		return DeleteBack();
+	
+
+	Projectile* last = data->last;
+	Projectile* next = data->next;
+	last->next = next;
+	next->last = last;
+
+	delete data;
+
+	this->count--;
+
+	return true;
 }
 
 void ProjectileLinkedList::Clear()
@@ -36,6 +115,7 @@ void ProjectileLinkedList::Clear()
 		this->front = this->front->next;
 
 		delete delData;
+		this->count--;
 	}
 }
 
@@ -98,11 +178,7 @@ bool Projectile::CalcProjectile()
 			float currDistance = sqrt(pow(this->xLoc - this->xStart, 2) + pow(this->yLoc - this->yStart, 2));
 
 			if (currDistance >= distance)
-			{
-				this->xLoc = static_cast<float> (this->targetPoint.x);
-				this->yLoc = static_cast<float> (this->targetPoint.y);
-				return false;
-			}
+				return false;			
 		}
 
 	// Check if bullet has hit the edge of the map.
@@ -152,19 +228,10 @@ void Projectiles::CreateProjectile(SDL_Point start, SDL_Point end, Weapon* weapo
 // TODO: this fundtion sometiems fails to delete particles, check into why.
 void Projectiles::DestroyProjectile(Projectile* proj)
 {
-	if (projectileList.front = proj)
-		projectileList.front = projectileList.front->next;
-	else if (projectileList.back = proj)
-		projectileList.back = projectileList.back->last;
-
-	if (proj->next != nullptr)
-		proj->next->last = proj->last;
-	if (proj->last != nullptr)
-		proj->last->next = proj->next;
-
-	delete proj;
-
-	//debug.Log("Projectiles", "DestroyProjectile", "Deleted a projectile at: " + std::to_string(listProj->xLoc) + "/" + std::to_string(listProj->yLoc));
+	if (this->projectileList.Delete(proj))
+		debug.Log("Projectiles", "DestroyProjectile", "Deleted a projectile");
+	else
+		debug.Log("Projectiles", "DestroyProjectile", "Faield to delete projectile!");
 }
 
 void Projectiles::DestroyAllProjectiles()
