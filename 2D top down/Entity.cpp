@@ -2,14 +2,12 @@
 
 #include "Globals.h"
 #include "Math functions.h"
+#include "Vector2D.h"
 
 Entity::Entity()
 {
-	xLoc = 0.0;
-	yLoc = 0.0;
-
-	ID = 0;
-	texture = nullptr;
+	this->ID = 0;
+	this->texture = nullptr;
 }
 
 // Render the current entity to its given location.
@@ -37,79 +35,43 @@ bool Entity::Render()
 // Move the entity from its point of origin by the given X/Y.
 void Entity::MoveBy(float x, float y)
 {
-	xLoc += x;
-	yLoc += y;
+	this->loc.x += x;
+	this->loc.y += y;
 
-	if (xLoc <= 0)
-		xLoc = 0;
-	else if (xLoc >= static_cast<float> (map.GetSizeX()))
-		xLoc = static_cast<float> (map.GetSizeX() - 1);
+	if (this->loc.x <= 0)
+		this->loc.x = 0;
+	else if (this->loc.x >= static_cast<float> (map.GetSizeX()))
+		this->loc.x = static_cast<float> (map.GetSizeX() - 1);
 
-	if (yLoc <= 0)
-		yLoc = 0;
-	if (yLoc >= static_cast<float> (map.GetSizeY()))
-		yLoc = static_cast<float> (map.GetSizeY() - 1);
+	if (this->loc.y <= 0)
+		this->loc.y = 0;
+	if (this->loc.y >= static_cast<float> (map.GetSizeY()))
+		this->loc.y = static_cast<float> (map.GetSizeY() - 1);
 }
 
 // Move the entity DIRECTLY to the given X/Y coords
 void Entity::MoveTo(int x, int y)
 {
-	xLoc = static_cast<float> (x);
-	yLoc = static_cast<float> (y);
+	this->loc.x = static_cast<float> (x);
+	this->loc.y = static_cast<float> (y);
 
-	if (xLoc <= 0)
-		xLoc = 0;
-	else if (xLoc > static_cast<float> (windowWidth))
-		xLoc = static_cast<float> (windowWidth - 1);
+	if (this->loc.x <= 0)
+		this->loc.x = 0;
+	else if (this->loc.x >= static_cast<float> (map.GetSizeX()))
+		this->loc.x = static_cast<float> (map.GetSizeX() - 1);
 
-	if (yLoc <= 0)
-		yLoc = 0;
-	if (yLoc > static_cast<float> (windowHeight))
-		yLoc = static_cast<float> (windowHeight - 1);
+	if (this->loc.y <= 0)
+		this->loc.y = 0;
+	if (this->loc.y >= static_cast<float> (map.GetSizeY()))
+		this->loc.y = static_cast<float> (map.GetSizeY() - 1);
 }
 
 Object::Object()
 {
-	this->velocity = 0.0;
-	this->directionFacing = 0.0;
-}
-
-// Automatically move the object according to its velocity and facing direction
-// The objects hold their direction as an angle, not as radian so we need to convert it back.
-// Returns true if has hit soemthing.
-bool Object::MoveAccoringToVel()
-{
-	float i = static_cast<float> (cos(directionFacing * M_PI / 180) * velocity);
-	float n = static_cast<float> (sin(directionFacing * M_PI / 180) * velocity);
-
-	xLoc += i;
-	yLoc += n;
-
-	if (xLoc < 0)
-	{
-		xLoc = 0;
-		return true;
-	}
-
-	if (yLoc < 0)
-	{
-		yLoc = 0;
-		return true;
-	}
-
-	if (xLoc >= map.GetSizeX())
-	{
-		xLoc = static_cast<float> (map.GetSizeX() - 1);
-		return true;
-	}
-
-	if (yLoc >= map.GetSizeY())
-	{		
-		yLoc = static_cast<float> (map.GetSizeY() - 1);
-		return true;
-	}
-
-	return false;
+	this->velocity = 0.0f;
+	this->ID = 0;
+	this->loc = Vector2D(0, 0);
+	this->texture = nullptr;
 }
 
 bool Object::Render()
@@ -127,8 +89,8 @@ bool Object::Render()
 			dstRect.w = texture->Rect().w;
 			dstRect.h = texture->Rect().h;
 			SDL_Point p;
-			p.x = static_cast<int> (xLoc);
-			p.y = static_cast<int> (yLoc);
+			p.x = static_cast<int> (this->loc.x);
+			p.y = static_cast<int> (this->loc.y);
 			
 			SDL_Point p2 = GetScreenCoordFromMapPoint(p);
 

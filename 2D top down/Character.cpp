@@ -3,14 +3,12 @@
 #include "Mouse.h"
 #include "globals.h"
 #include "Math functions.h"
+#include "Vector2D.h"
 
 Character::Character()
-{	
-	this->directionFacing = 0;	
+{		
 	this->ID = 0;	
 	this->texture = nullptr;	
-	this->xLoc = 0;
-	this->yLoc = 0;
 }
 
 bool Character::Render()
@@ -24,7 +22,7 @@ bool Character::Render()
 		rect.x = static_cast<int> (round((windowWidth / 2) - (rect.w / 2)));
 		rect.y = static_cast<int> (round((windowHeight / 2) - (rect.h / 2)));
 
-		if (SDL_RenderCopyEx(mainRenderer, texture->Tex(), NULL, &rect, directionFacing + 90.0, NULL, SDL_FLIP_NONE) >= 0)
+		if (SDL_RenderCopyEx(mainRenderer, texture->Tex(), NULL, &rect, GetAngleAsDegrees(this->loc.x, this->loc.y, this->directionFacing.x, this->directionFacing.y) + 90, NULL, SDL_FLIP_NONE) >= 0)
 			return true;
 	}
 
@@ -36,12 +34,12 @@ bool Character::Render()
 // Move the character from its point of origin by the given X/Y whiel also checking for collision with walls etc.
 void Character::MoveBy(float x, float y)
 {
-	float tempX = xLoc + x;
-	float tempY = yLoc + y;
+	float tempX = this->loc.x + x;
+	float tempY = this->loc.y + y;
 
 	int pointsToMove = 0;
 
-	std::vector<SDL_Point> points = GetAllMapDataBetweenPoints(static_cast<int> (round(xLoc)), static_cast<int> (round(yLoc)), static_cast<int> (round(tempX)), static_cast<int> (round(tempY)));
+	std::vector<SDL_Point> points = GetAllMapDataBetweenPoints(static_cast<int> (round(this->loc.x)), static_cast<int> (round(this->loc.y)), static_cast<int> (round(tempX)), static_cast<int> (round(tempY)));
 
 	// We need to NOT check the first point as the first point is the player.
 	bool firstPoint = true;
@@ -65,18 +63,18 @@ void Character::MoveBy(float x, float y)
 	// Move the user and
 	if (pointsToMove > 0)
 	{
-		this->xLoc = (xLoc + ((x / points.size()) * pointsToMove));
-		this->yLoc = (yLoc + ((y / points.size()) * pointsToMove));
+		this->loc.x = (loc.x + ((x / points.size()) * pointsToMove));
+		this->loc.y = (this->loc.y + ((y / points.size()) * pointsToMove));
 
-		if (this->xLoc <= 0)
-			this->xLoc = 0;
-		else if (this->xLoc >= static_cast<float> (map.GetSizeX()))
-			this->xLoc = static_cast<float> (map.GetSizeX() - 1);
+		if (this->loc.x <= 0)
+			this->loc.x = 0;
+		else if (this->loc.x >= static_cast<float> (map.GetSizeX()))
+			this->loc.x = static_cast<float> (map.GetSizeX() - 1);
 
-		if (this->yLoc <= 0)
-			this->yLoc = 0;
-		if (this->yLoc >= static_cast<float> (map.GetSizeY()))
-			this->yLoc = static_cast<float> (map.GetSizeY() - 1);
+		if (this->loc.y <= 0)
+			this->loc.y = 0;
+		else if (this->loc.y >= static_cast<float> (map.GetSizeY()))
+			this->loc.y = static_cast<float> (map.GetSizeY() - 1);
 	}
 }
 
@@ -135,9 +133,9 @@ void Player::MovePlayerAccordingToInput()
 	}
 
 	// TODO: camera is currently calculating ALL players, this will need to be updated in the future.
-	camera.x = static_cast<int> ((windowWidth/2) - testPlayer->xLoc);
+	camera.x = static_cast<int> ((windowWidth/2) - testPlayer->loc.x);
 	camera.w = map.GetSizeX();
-	camera.y = static_cast<int> ((windowHeight/2) - testPlayer->yLoc);
+	camera.y = static_cast<int> ((windowHeight/2) - testPlayer->loc.y);
 	camera.h = map.GetSizeY();
 }
 
@@ -158,9 +156,7 @@ void Player::FireWeapon()
 				if (this->reloadTimer == 0 && this->fireTimer == 0)
 				{
 					// Get the point of the player.
-					SDL_Point plPoint;
-					plPoint.x = static_cast<int> (round(testPlayer->xLoc));
-					plPoint.y = static_cast<int> (round(testPlayer->yLoc));
+					Vector2D plPoint{ round(testPlayer->loc.x), round(testPlayer->loc.y) };
 
 					int tempProjectilesToLaunch = this->weapon[this->selectedWeapon]->bulletsPerShot;
 
@@ -168,7 +164,9 @@ void Player::FireWeapon()
 
 					while (tempProjectilesToLaunch > 0)
 					{
-						SDL_Point aimLoc = GetMapCoordFromCursor();
+						SDL_Point tempPoint = GetMapCoordFromCursor();
+
+						Vector2D aimLoc = Vector2D(tempPoint.x, tempPoint.y);
 
 						// Calculate deviation/recoil etc.
 						calcDeviation = this->weapon[this->selectedWeapon]->deviation + currentRecoil;
@@ -215,30 +213,30 @@ void Player::RenderAimer()
 		if (((this->currentRecoil + this->weapon[this->selectedWeapon]->deviation) / 2) > 0)
 		{
 		aimer.texture = allTextures.GetTexture("AimMarkerTop");
-		aimer.xLoc = static_cast<float> (mouse.x);
-		aimer.yLoc = static_cast<float> (mouse.y) - tempRecoil - static_cast<float> (aimer.texture->Rect().h);
+		aimer.loc.x = static_cast<float> (mouse.x);
+		aimer.loc.y = static_cast<float> (mouse.y) - tempRecoil - static_cast<float> (aimer.texture->Rect().h);
 		aimer.Render(0);
 
 		aimer.texture = allTextures.GetTexture("AimMarkerBottom");
-		aimer.xLoc = static_cast<float> (mouse.x);
-		aimer.yLoc = static_cast<float> (mouse.y) + tempRecoil + static_cast<float> (aimer.texture->Rect().h) - 1;
+		aimer.loc.x = static_cast<float> (mouse.x);
+		aimer.loc.y = static_cast<float> (mouse.y) + tempRecoil + static_cast<float> (aimer.texture->Rect().h) - 1;
 		aimer.Render(0);
 
 		aimer.texture = allTextures.GetTexture("AimMarkerLeft");
-		aimer.xLoc = static_cast<float> (mouse.x) - tempRecoil - static_cast<float> (aimer.texture->Rect().w);
-		aimer.yLoc = static_cast<float> (mouse.y);
+		aimer.loc.x = static_cast<float> (mouse.x) - tempRecoil - static_cast<float> (aimer.texture->Rect().w);
+		aimer.loc.y = static_cast<float> (mouse.y);
 		aimer.Render(0);
 
 		aimer.texture = allTextures.GetTexture("AimMarkerRight");
-		aimer.xLoc = static_cast<float> (mouse.x) + tempRecoil + static_cast<float> (aimer.texture->Rect().w) - 1;
-		aimer.yLoc = static_cast<float> (mouse.y);
+		aimer.loc.x = static_cast<float> (mouse.x) + tempRecoil + static_cast<float> (aimer.texture->Rect().w) - 1;
+		aimer.loc.y = static_cast<float> (mouse.y);
 		aimer.Render(0);
 		}
 	}
 
 	aimer.texture = allTextures.GetTexture("RedDot");
-	aimer.xLoc = static_cast<float> (mouse.x);
-	aimer.yLoc = static_cast<float> (mouse.y);
+	aimer.loc.x = static_cast<float> (mouse.x);
+	aimer.loc.y = static_cast<float> (mouse.y);
 	aimer.Render(0);
 }
 

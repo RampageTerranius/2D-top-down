@@ -4,6 +4,8 @@
 #include "Weapon.h"
 #include "ProjectileType.h"
 #include "Character.h"
+#include "Vector2D.h"
+
 #include <vector>
 
 class Projectile : public Object
@@ -17,9 +19,8 @@ public:
 	int damage;
 	int maxDistance;
 	Player* Owner;
-	SDL_Point targetPoint;
-	float xStart;
-	float yStart;
+	Vector2D target = Vector2D{ 0, 0 };;
+	Vector2D start = Vector2D{ 0, 0 };;
 
 	Projectile* last = nullptr;
 	Projectile* next = nullptr;
@@ -44,7 +45,7 @@ class Projectiles
 {
 public:
 	void CalcAllProjectiles();
-	void CreateProjectile(SDL_Point start, SDL_Point end, Weapon* weapon, Player* owner);
+	void CreateProjectile(Vector2D start, Vector2D end, Weapon* weapon, Player* owner);
 	void RenderAllProjectiles();
 	void DestroyProjectile(Projectile* proj);
 	void DestroyAllProjectiles();

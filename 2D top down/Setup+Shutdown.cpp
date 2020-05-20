@@ -254,8 +254,8 @@ bool SetupEngine()
 
 	testPlayer = allPlayers.CreatePlayer("TestPlayer");
 	testPlayer->texture = allTextures.GetTexture("DirMarker");
-	testPlayer->xLoc = round(static_cast<float> ((map.GetSizeX() - 1) / 2));
-	testPlayer->yLoc = round(static_cast<float> ((map.GetSizeY() - 1) / 2));
+	testPlayer->loc.x = round(static_cast<float> ((map.GetSizeX() - 1) / 2));
+	testPlayer->loc.y = round(static_cast<float> ((map.GetSizeY() - 1) / 2));
 
 	for (auto& wep : allWeapons.weaponList)
 		testPlayer->AddWeapon(wep);

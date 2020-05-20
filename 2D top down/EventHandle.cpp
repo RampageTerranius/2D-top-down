@@ -523,9 +523,13 @@ void EventHandle(SDL_Event& event)
 		keyboard.lShift = false;
 	}
 
+	SDL_Point facing = GetMapCoordFromCursor();
+
+	testPlayer->directionFacing.x = facing.x;
+	testPlayer->directionFacing.y = facing.y;
+
 	testPlayer->MovePlayerAccordingToInput();
 
-	testPlayer->directionFacing = static_cast<float> (GetAngleAsDegrees(windowWidth / 2, windowHeight / 2, mouse.x, mouse.y));
 
 	// Fire weapon if needed.
 	if (mouse.left)

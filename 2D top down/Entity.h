@@ -2,6 +2,7 @@
 #include <SDL.h>
 
 #include "Texture.h"
+#include "Vector2D.h"
 
 // Entity is non-relative to the map.
 // this means that setting something to 200/200 will make it exist at 200/200 on the SCREEN.
@@ -15,8 +16,7 @@ public:
 	virtual void MoveBy(float x, float y);
 	virtual void MoveTo(int x, int y);
 
-	float xLoc;
-	float yLoc;	
+	Vector2D loc = Vector2D{ 0, 0 };;
 
 	int ID;
 	Texture* texture;
@@ -30,9 +30,7 @@ class Object : public Entity
 public:
 	Object();
 
-	virtual bool MoveAccoringToVel();
 	virtual bool Render();
 
 	float velocity;
-	float directionFacing;
 };

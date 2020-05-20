@@ -12,7 +12,7 @@ public:
 
 	bool Render();
 	
-	float directionFacing;	
+	Vector2D directionFacing{ 0,0 };
 };
 
 class Player : public Character

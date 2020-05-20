@@ -122,29 +122,28 @@ Projectile::Projectile()
 	this->type = ProjectileType::Bullet;
 	this->damage = 0;
 	this->Owner = nullptr;
-	this->targetPoint = SDL_Point{ 0, 0 };
-	this->xStart = 0.0;
-	this->yStart = 0.0;
+	this->target = Vector2D{ 0, 0 };
+	this->start = Vector2D{ 0, 0 };
 	this->maxDistance = 0;
 }
 
 bool Projectile::CalcProjectile()
 {	
-	float oldXLoc = this->xLoc;
-	float oldYLoc = this->yLoc;
+	float oldXLoc = this->loc.x;
+	float oldYLoc = this->loc.y;
 
-	float distance = sqrt(pow(this->targetPoint.x - this->xStart, 2) + pow(this->targetPoint.y - this->yStart, 2));
+	float distance = sqrt(pow(this->target.x - this->start.x, 2) + pow(this->target.y - this->start.y, 2));
 	if (distance > this->maxDistance)
 		distance = this->maxDistance;
 
-	float directionX = (this->targetPoint.x - this->xStart) / distance;
-	float directionY = (this->targetPoint.y - this->yStart) / distance;
+	float directionX = (this->target.x - this->start.x) / distance;
+	float directionY = (this->target.y - this->start.y) / distance;
 
-	this->xLoc += directionX * this->velocity;
-	this->yLoc += directionY * this->velocity;
+	this->loc.x += directionX * this->velocity;
+	this->loc.y += directionY * this->velocity;
 
 	// Get all points we have passed and cause damage as needed.
-	std::vector<SDL_Point> points = GetAllMapDataBetweenPoints(static_cast<int> (oldXLoc), static_cast<int> (oldYLoc), static_cast<int> (xLoc), static_cast<int> (yLoc));
+	std::vector<SDL_Point> points = GetAllMapDataBetweenPoints(static_cast<int> (oldXLoc), static_cast<int> (oldYLoc), static_cast<int> (this->loc.x), static_cast<int> (this->loc.y));
 
 	if (points.size() > 0)
 		for (auto& point : points)
@@ -173,44 +172,38 @@ bool Projectile::CalcProjectile()
 					return false;
 			}
 
-			float currDistance = sqrt(pow(this->xLoc - this->xStart, 2) + pow(this->yLoc - this->yStart, 2));
+			float currDistance = sqrt(pow(this->loc.x - this->start.x, 2) + pow(this->loc.y - this->start.y, 2));
 
 			if (currDistance >= distance)
 				return false;			
 		}
 
 	// Check if bullet has hit the edge of the map.
-	if (this->xLoc < 0)
+	if (this->loc.x < 0)
 		return false;
-	else if (this->yLoc < 0)
+	else if (this->loc.y < 0)
 		return false;
-	else if (this->xLoc >= map.GetSizeX())
+	else if (this->loc.x >= map.GetSizeX())
 		return false;
-	else if (this->yLoc >= map.GetSizeY())
+	else if (this->loc.y >= map.GetSizeY())
 		return false;
 
 	return true;
 }
 
-void Projectiles::CreateProjectile(SDL_Point start, SDL_Point end, Weapon* weapon, Player* owner)
+void Projectiles::CreateProjectile(Vector2D start, Vector2D end, Weapon* weapon, Player* owner)
 {	
 	Projectile* proj = new Projectile();
 
 	proj->Owner = owner;
 
-	proj->xLoc = static_cast<float> (start.x);
-	proj->yLoc = static_cast<float> (start.y);
+	proj->loc = start;
 
 	// Get the start and ending points.
-	proj->xStart = static_cast<float> (start.x);
-	proj->yStart = static_cast<float> (start.y);
-	proj->targetPoint = end;
+	proj->start = proj->loc;
+	proj->target = end;
 
-	proj->directionFacing = static_cast<float> (GetAngle(start.x, start.y, proj->targetPoint.x, proj->targetPoint.y));
-
-	// TODO: automate texture
 	proj->texture = allTextures.GetTexture("Bullet");
-	// TODO
 
 	proj->velocity = weapon->projectileSpeed;
 
@@ -220,18 +213,18 @@ void Projectiles::CreateProjectile(SDL_Point start, SDL_Point end, Weapon* weapo
 
 	this->projectileList.PushBack(proj);
 
-	debug.Log("Projectiles", "CreateProjectile", "Created a Projectile start point x/y " + std::to_string(proj->xLoc) + "/" + std::to_string(proj->yLoc) + " going angle: " + std::to_string(proj->directionFacing) + " Target of: " + std::to_string(end.x) + "/" + std::to_string(end.y));
+	debug.Log("Projectiles", "CreateProjectile", "Created a Projectile start point x/y " + proj->start.ToString() + " going to: " + proj->target.ToString());
 }
 
 void Projectiles::DestroyProjectile(Projectile* proj)
 {
-	float x = proj->xLoc;
-	float y = proj->yLoc;
+	float x = proj->loc.x;
+	float y = proj->loc.y;
 
 	if (this->projectileList.Delete(proj))
 		debug.Log("Projectiles", "DestroyProjectile", "Deleted a projectile at " + std::to_string(x) + "/" + std::to_string(y));
 	else
-		debug.Log("Projectiles", "DestroyProjectile", "Faield to delete projectile!");
+		debug.Log("Projectiles", "DestroyProjectile", "Failed to delete projectile!");
 }
 
 void Projectiles::DestroyAllProjectiles()
