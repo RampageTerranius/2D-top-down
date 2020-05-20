@@ -8,77 +8,41 @@ Vector2D::Vector2D(float newX, float newY)
 	this->y = newY;
 }
 
-Vector2D& Vector2D::Add(Vector2D& vec)
+void Vector2D::Add(float vec)
 {
-	this->x += vec.x;
-	this->y += vec.y;
-
-	return *this;
+	this->x += vec;
+	this->y += vec;
 }
 
-Vector2D& Vector2D::Subtract(Vector2D& vec)
+void Vector2D::Subtract(float vec)
 {
-	this->x -= vec.x;
-	this->y -= vec.y;
-
-	return *this;
+	this->x -= vec;
+	this->y -= vec;
 }
 
-Vector2D& Vector2D::Multiply(Vector2D& vec)
+void Vector2D::Multiply(float vec)
 {
-	this->x *= vec.x;
-	this->y *= vec.y;
-
-	return *this;
+	this->x *= vec;
+	this->y *= vec;
 }
 
-Vector2D& Vector2D::Divide(Vector2D& vec)
+void Vector2D::Divide(float vec)
 {
-	this->x /= vec.x;
-	this->y /= vec.y;
-
-	return *this;
+	this->x /= vec;
+	this->y /= vec;
 }
 
-Vector2D& operator+(Vector2D& vec1, Vector2D& vec2)
+void Vector2D::Normalize()
 {
-	return vec1.Add(vec2);
-}
+	float len = Length();
+	this->x /= len;
+	this->y /= len;
+};
 
-Vector2D& operator-(Vector2D& vec1, Vector2D& vec2)
+float Vector2D::Length()
 {
-	return vec1.Subtract(vec2);
-}
-
-Vector2D& operator*(Vector2D& vec1, Vector2D& vec2)
-{
-	return vec1.Multiply(vec2);
-}
-
-Vector2D& operator/(Vector2D& vec1, Vector2D& vec2)
-{
-	return vec1.Divide(vec2);
-}
-
-Vector2D& Vector2D::operator+=(Vector2D& vec)
-{
-	return this->Add(vec);
-}
-
-Vector2D& Vector2D::operator-=(Vector2D& vec)
-{
-	return this->Subtract(vec);
-}
-
-Vector2D& Vector2D::operator*=(Vector2D& vec)
-{
-	return this->Multiply(vec);
-}
-
-Vector2D& Vector2D::operator/=(Vector2D& vec)
-{
-	return this->Divide(vec);
-}
+	return sqrt((x * x) + (y * y));
+};
 
 std::string Vector2D::ToString()
 {

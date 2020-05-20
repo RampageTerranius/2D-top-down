@@ -136,11 +136,12 @@ bool Projectile::CalcProjectile()
 	if (distance > this->maxDistance)
 		distance = this->maxDistance;
 
-	float directionX = (this->target.x - this->start.x) / distance;
-	float directionY = (this->target.y - this->start.y) / distance;
+	Vector2D diffVec(this->target.x - this->start.x, this->target.y - this->start.y);
+	diffVec.Normalize();
+	diffVec.Multiply(this->velocity);
 
-	this->loc.x += directionX * this->velocity;
-	this->loc.y += directionY * this->velocity;
+	this->loc.x += diffVec.x;
+	this->loc.y += diffVec.y; 
 
 	// Get all points we have passed and cause damage as needed.
 	std::vector<SDL_Point> points = GetAllMapDataBetweenPoints(static_cast<int> (oldXLoc), static_cast<int> (oldYLoc), static_cast<int> (this->loc.x), static_cast<int> (this->loc.y));
