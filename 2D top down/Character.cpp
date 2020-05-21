@@ -31,7 +31,7 @@ bool Character::Render()
 	return false;
 }
 
-// Move the character from its point of origin by the given X/Y whiel also checking for collision with walls etc.
+// Move the character from its point of origin by the given X/Y while also checking for collision with walls etc.
 void Character::MoveBy(float x, float y)
 {
 	float tempX = this->loc.x + x;

@@ -146,6 +146,8 @@ bool Projectile::CalcProjectile()
 	// Get all points we have passed and cause damage as needed.
 	std::vector<SDL_Point> points = GetAllMapDataBetweenPoints(static_cast<int> (oldXLoc), static_cast<int> (oldYLoc), static_cast<int> (this->loc.x), static_cast<int> (this->loc.y));
 
+	debug.Log("Projectile", "CalcProjectile", "Base distance: " + std::to_string(distance));
+
 	if (points.size() > 0)
 		for (auto& point : points)
 		{
@@ -173,10 +175,12 @@ bool Projectile::CalcProjectile()
 					return false;
 			}
 
-			float currDistance = sqrt(pow(this->loc.x - this->start.x, 2) + pow(this->loc.y - this->start.y, 2));
+			float currDistance = sqrt(pow(point.x - this->start.x, 2) + pow(point.y - this->start.y, 2));
+
+			debug.Log("Projectile", "CalcProjectile", "Current distance: " + std::to_string(currDistance));
 
 			if (currDistance >= distance)
-				return false;			
+				return false;
 		}
 
 	// Check if bullet has hit the edge of the map.
