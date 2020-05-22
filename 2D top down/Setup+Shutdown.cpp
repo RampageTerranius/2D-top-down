@@ -4,6 +4,8 @@
 #include <SDL_ttf.h>
 #include <cstdlib>
 #include <ctime>
+#include <sstream>
+#include "simpleini-4.17/SimpleIni.h"
 
 #include "Globals.h"
 #include "Texture.h"
@@ -14,46 +16,84 @@ bool SetupEngine()
 {
 	debug.showMessagesOnConsole = true;
 
-	debug.Log("Setup+Shutdown", "Setup", "Starting setup...");
+	debug.Log("Setup+Shutdown", "SetupEngine", "Starting setup...");
 
-	debug.Log("Setup+Shutdown", "Setup", "Initializing SDL sub-routines...");
-
-	srand(static_cast <unsigned> (time(0)));
+	debug.Log("Setup+Shutdown", "SetupEngine", "Initializing SDL sub-routines...");
 
 	if (SDL_Init(SDL_INIT_EVERYTHING) != 0)
 	{
 		std::string str = SDL_GetError();
-		debug.Log("Setup+Shutdown", "Setup", "SDL failed to initialize" + str);
+		debug.Log("Setup+Shutdown", "SetupEngine", "SDL failed to initialize" + str);
 		return false;
 	}
 
-	debug.Log("Setup+Shutdown", "Setup", "Initializing SDL_TTF sub-routines...");
+	debug.Log("Setup+Shutdown", "SetupEngine", "Initializing SDL_TTF sub-routines...");
 
 	if (TTF_Init() != 0)
 	{
 		std::string str = SDL_GetError();
 
-		debug.Log("Setup+Shutdown", "Setup", "TTF failed to initialize" + str);
+		debug.Log("Setup+Shutdown", "SetupEngine", "TTF failed to initialize" + str);
 		return false;
 	}
-	
-	debug.Log("Setup+Shutdown", "Setup", "Preparing SDL renderer and creating main window...");
 
-	// Create main window.
-	const int WINDOW_WIDTH = windowWidth;
-	const int WINDOW_HEIGHT = windowHeight;
+	debug.Log("Setup+Shutdown", "SetupEngine", "Loading setting file...");
 
-	Uint32 windowFlags = SDL_WINDOW_OPENGL;
-	mainWindow = SDL_CreateWindow(programName.c_str(), 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, windowFlags);
+	CSimpleIni ini;
+	if (ini.LoadFile((GetEXEPath() + "\\settings.ini.").c_str()) < 0)
+	{
+		debug.Log("Setup+Shutdown", "SetupEngine", "Failed to load Settings.ini.");
+		return false;
+	}
 
-	mainSurface = SDL_GetWindowSurface(mainWindow);
+	debug.Log("Setup+Shutdown", "SetupEngine", "Preparing SDL renderer and creating main window...");
 
-	Uint32 renderFlags = SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC;
-	mainRenderer = SDL_CreateRenderer(mainWindow, -1, renderFlags);	
+	{
+		std::stringstream sStr;	
+		int i = 0;
+
+		// Get window settings.
+		sStr << ini.GetValue("Window", "Width", "0");
+		sStr >> i;
+		windowWidth = i;
+
+		
+
+		sStr = std::stringstream();
+		sStr << ini.GetValue("Window", "Height", "0");
+		sStr >> i;
+		windowHeight = i;
+
+		const int WINDOW_WIDTH = windowWidth;
+		const int WINDOW_HEIGHT = windowHeight;
+		if (WINDOW_WIDTH < 640 || WINDOW_HEIGHT < 480)
+		{
+			debug.Log("Setup+Shutdown", "SetupEngine", "Invalid window width/height given. Widnow must be at least 640x480.");
+			return false;
+		}
+
+		// Create main window.
+		Uint32 windowFlags = SDL_WINDOW_OPENGL;
+		
+		mainWindow = SDL_CreateWindow(programName.c_str(), 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, windowFlags);
+
+		mainSurface = SDL_GetWindowSurface(mainWindow);
+
+		// Get vsync settings.
+		sStr = std::stringstream();
+		sStr << ini.GetValue("Video", "VSync", "0");
+		sStr >> i;
+
+		Uint32 renderFlags = SDL_RENDERER_ACCELERATED;
+		if (i == 1)
+			renderFlags = SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC;
+
+		mainRenderer = SDL_CreateRenderer(mainWindow, -1, renderFlags);
+	}
 
 	SDL_SetRenderDrawColor(mainRenderer, renderColorR, renderColorG, renderColorB, renderColorA);
 
-	debug.Log("Setup+Shutdown", "Setup", "Loading textures...");	
+	debug.Log("Setup+Shutdown", "SetupEngine", "Loading textures...");	
 
 	allTextures.CreateTexture(GetEXEPath() + "\\Direction Marker.png", "DirMarker");
 	allTextures.CreateTexture(GetEXEPath() + "\\Bullet.png", "Bullet");
@@ -65,13 +105,13 @@ bool SetupEngine()
 
 	if (allTextures.GetTexture("DirMarker") == nullptr || allTextures.GetTexture("Bullet") == nullptr || allTextures.GetTexture("AimMarkerTop") == nullptr || allTextures.GetTexture("AimMarkerBottom") == nullptr || allTextures.GetTexture("AimMarkerLeft") == nullptr || allTextures.GetTexture("AimMarkerRight") == nullptr || allTextures.GetTexture("RedDot") == nullptr)
 	{
-		debug.Log("Setup+Shutdown", "Setup", "failed to load textures");
+		debug.Log("Setup+Shutdown", "SetupEngine", "failed to load textures");
 		return false;
 	}
 
 	if (!ttfWeapon.SetFont(GetEXEPath() + "\\pxl.ttf", 20) || !ttfAmmo.SetFont(GetEXEPath() + "\\pxl.ttf", 20) || !ttfFPS.SetFont(GetEXEPath() + "\\pxl.ttf", 20) || !ttfDodges.SetFont(GetEXEPath() + "\\pxl.ttf", 20))
 	{
-		debug.Log("Setup+Shutdown", "Setup", "failed to load fonts");
+		debug.Log("Setup+Shutdown", "SetupEngine", "failed to load fonts");
 		return false;
 	}
 
@@ -80,177 +120,142 @@ bool SetupEngine()
 	ttfWeapon.SetColor(255, 255, 0);
 	ttfDodges.SetColor(255, 255, 0);
 
+	debug.Log("Setup+Shutdown", "SetupEngine", "Loading weapon file...");
+
 	// TODO: weapon array etc.
-	Weapon* wep = new Weapon;
-	wep->damage = 5;
-	wep->name = "Smg";
-	wep->projectileDistance = 500;
-	wep->projectileSpeed = 20;
-	wep->fireRate = 6;
-	wep->reloadTime = 90;
-	wep->deviation = 30;
-	wep->maxDeviation = 30;
-	wep->recoil = 0;
-	wep->recoilControlRate = 0;
-	wep->bulletsPerShot = 1;
-	wep->totalAmmo = 30;
-	wep->fireType = FireType::FullAuto;
-	wep->reloadType = ReloadType::Clip;
-	allWeapons.AddWeapon(wep);
+	ini.Reset();
 
-	Weapon* wep2 = new Weapon;
-	wep2->damage = 20;
-	wep2->name = "Battle Rifle";
-	wep2->projectileDistance = 1000;
-	wep2->projectileSpeed = 50;
-	wep2->fireRate = 15;
-	wep2->reloadTime = 110;
-	wep2->deviation = 20;
-	wep2->maxDeviation = 20;
-	wep2->recoil = 0;
-	wep2->recoilControlRate = 0;
-	wep2->bulletsPerShot = 1;
-	wep2->totalAmmo = 20;
-	wep2->fireType = FireType::FullAuto;
-	wep2->reloadType = ReloadType::Clip;
-	allWeapons.AddWeapon(wep2);
+	if (ini.LoadFile((GetEXEPath() + "\\weapons.ini.").c_str()) < 0)
+	{
+		debug.Log("Setup+Shutdown", "SetupEngine", "Failed to load weapon file.");
+		return false;
+	}
 
-	Weapon* wep3 = new Weapon;
-	wep3->damage = 4;
-	wep3->name = "Lmg";
-	wep3->projectileDistance = 400;
-	wep3->projectileSpeed = 30;
-	wep3->fireRate = 3;
-	wep3->reloadTime = 180;
-	wep3->deviation = 60;
-	wep3->maxDeviation = 60;
-	wep3->recoil = 0;
-	wep3->recoilControlRate = 0;
-	wep3->bulletsPerShot = 1;
-	wep3->totalAmmo = 100;
-	wep3->fireType = FireType::FullAuto;
-	wep3->reloadType = ReloadType::Clip;
-	allWeapons.AddWeapon(wep3);
+	CSimpleIniA::TNamesDepend sections;
+	ini.GetAllSections(sections);
 
-	Weapon* wep4 = new Weapon;
-	wep4->damage = 80;
-	wep4->name = "Bolt Rifle";
-	wep4->projectileDistance = 1000;
-	wep4->projectileSpeed = 50;
-	wep4->fireRate = 60;
-	wep4->reloadTime = 200;
-	wep4->deviation = 5;
-	wep4->maxDeviation = 5;
-	wep4->recoil = 0;
-	wep4->recoilControlRate = 0;
-	wep4->bulletsPerShot = 1;
-	wep4->totalAmmo = 5;
-	wep4->fireType = FireType::SemiAuto;
-	wep4->reloadType = ReloadType::Clip;
-	allWeapons.AddWeapon(wep4);
+	for (CSimpleIniA::Entry entry : sections)
+	{
+		CSimpleIniA::TNamesDepend keys;
+		ini.GetAllKeys(entry.pItem, keys);
+		Weapon* wep = new Weapon();
 
-	Weapon* wep5 = new Weapon;
-	wep5->damage = 50;
-	wep5->name = "Test - No speed";
-	wep5->projectileDistance = 100;
-	wep5->projectileSpeed = 0;
-	wep5->fireRate = 30;
-	wep5->reloadTime = 1;
-	wep5->deviation = 1;
-	wep5->maxDeviation = 1;
-	wep5->recoil = 0;
-	wep5->recoilControlRate = 0;
-	wep5->bulletsPerShot = 1;
-	wep5->totalAmmo = 30;
-	wep5->fireType = FireType::FullAuto;
-	wep5->reloadType = ReloadType::Clip;
-	allWeapons.AddWeapon(wep5);
+		wep->name = entry.pItem;
 
-	Weapon* wep6 = new Weapon;
-	wep6->damage = 9999999;
-	wep6->name = "Test - Wall Breaker";
-	wep6->projectileDistance = 1000;
-	wep6->projectileSpeed = 10;
-	wep6->fireRate = 30;
-	wep6->reloadTime = 1;
-	wep6->deviation = 0;
-	wep6->maxDeviation = 0;
-	wep6->recoil = 0;
-	wep6->recoilControlRate = 0;
-	wep6->bulletsPerShot = 1;
-	wep6->totalAmmo = 30;
-	wep6->fireType = FireType::FullAuto;
-	wep6->reloadType = ReloadType::Clip;
-	allWeapons.AddWeapon(wep6);
+		for (CSimpleIniA::TNamesDepend::const_iterator it = keys.begin(); it != keys.end(); ++it)
+		{
+			std::string str = it->pItem;
 
-	Weapon* wep7 = new Weapon;
-	wep7->damage = 5;
-	wep7->name = "Shotgun";
-	wep7->projectileDistance = 200;
-	wep7->projectileSpeed = 5;
-	wep7->fireRate = 40;
-	wep7->reloadTime = 30;
-	wep7->deviation = 60;
-	wep7->maxDeviation = 60;
-	wep7->recoil = 0;
-	wep7->recoilControlRate = 0;
-	wep7->bulletsPerShot = 12;
-	wep7->totalAmmo = 7;
-	wep7->fireType = FireType::SemiAuto;
-	wep7->reloadType = ReloadType::Single;
-	allWeapons.AddWeapon(wep7);
+			// TODO: There HAS to be a better way of going about loading each weapons data... is there a way to somehow use strings in a switch statement?
+			if (str == "damage")
+			{
+				int i = 0;
+				std::stringstream sStr;
+				sStr << ini.GetValue(entry.pItem, it->pItem, "0");
+				sStr >> i;
+				wep->damage = i;
+			} 
+			else if (str == "projectileDistance")
+			{
+				int i = 0;
+				std::stringstream sStr;
+				sStr << ini.GetValue(entry.pItem, it->pItem, "0");;
+				sStr >> i;
+				wep->projectileDistance = i;
+			}
+			else if (str == "projectileSpeed")
+			{
+				float f = 0.0f;
+				std::stringstream sStr;
+				sStr << ini.GetValue(entry.pItem, it->pItem, "0");;
+				sStr >> f;
+				wep->projectileSpeed = f;
+			}
+			else if (str == "fireRate")
+			{
+				int i = 0;
+				std::stringstream sStr;
+				sStr << ini.GetValue(entry.pItem, it->pItem, "0");;
+				sStr >> i;
+				wep->fireRate = i;
+			}
+			else if (str == "reloadTime")
+			{
+				int i = 0;
+				std::stringstream sStr;
+				sStr << ini.GetValue(entry.pItem, it->pItem, "0");;
+				sStr >> i;
+				wep->reloadTime = i;
+			}
+			else if (str == "deviation")
+			{
+				float f = 0.0f;
+				std::stringstream sStr;
+				sStr << ini.GetValue(entry.pItem, it->pItem, "0");;
+				sStr >> f;
+				wep->deviation = f;
+			}
+			else if (str == "maxDeviation")
+			{
+				float f = 0.0f;
+				std::stringstream sStr;
+				sStr << ini.GetValue(entry.pItem, it->pItem, "0");;
+				sStr >> f;
+				wep->maxDeviation = f;
+			}
+			else if (str == "recoil")
+			{
+				float f = 0.0f;
+				std::stringstream sStr;
+				sStr << ini.GetValue(entry.pItem, it->pItem, "0");;
+				sStr >> f;
+				wep->recoil = f;
+			}
+			else if (str == "recoilControlRate")
+			{
+				float f = 0.0f;
+				std::stringstream sStr;
+				sStr << ini.GetValue(entry.pItem, it->pItem, "0");;
+				sStr >> f;
+				wep->recoilControlRate = f;
+			}
+			else if (str == "bulletsPerShot")
+			{
+				int i = 0;
+				std::stringstream sStr;
+				sStr << ini.GetValue(entry.pItem, it->pItem, "0");;
+				sStr >> i;
+				wep->bulletsPerShot = i;
+			}
+			else if (str == "totalAmmo")
+			{
+				int i = 0;
+				std::stringstream sStr;
+				sStr << ini.GetValue(entry.pItem, it->pItem, "0");;
+				sStr >> i;
+				wep->totalAmmo = i;
+			}
+			else if (str == "fireType")
+			{
+				int i = 0;
+				std::stringstream sStr;
+				sStr << ini.GetValue(entry.pItem, it->pItem, "0");;
+				sStr >> i;
+				wep->fireType = static_cast<FireType> (i);
+			}
+			else if (str == "reloadType")
+			{
+				int i = 0;
+				std::stringstream sStr;
+				sStr << ini.GetValue(entry.pItem, it->pItem, "0");;
+				sStr >> i;
+				wep->reloadType = static_cast<ReloadType> (i);
+			}
+		}
 
-	Weapon* wep8 = new Weapon;
-	wep8->damage = 3;
-	wep8->name = "Auto-Shotgun";
-	wep8->projectileDistance = 200;
-	wep8->projectileSpeed = 5;
-	wep8->fireRate = 20;
-	wep8->reloadTime = 150;
-	wep8->deviation = 80;
-	wep8->maxDeviation = 80;
-	wep8->recoil = 0;
-	wep8->recoilControlRate = 0;
-	wep8->bulletsPerShot = 12;
-	wep8->totalAmmo = 15;
-	wep8->fireType = FireType::FullAuto;
-	wep8->reloadType = ReloadType::Clip;
-	allWeapons.AddWeapon(wep8);
+		allWeapons.AddWeapon(wep);
+	}
 
-	Weapon* wep9 = new Weapon;
-	wep9->damage = 5;
-	wep9->name = "Test - Slow Projectile";
-	wep9->projectileDistance = 200;
-	wep9->projectileSpeed = 0.1f;
-	wep9->fireRate = 3;
-	wep9->reloadTime = 1;
-	wep9->deviation = 10;
-	wep9->maxDeviation = 10;
-	wep9->recoil = 0;
-	wep9->recoilControlRate = 0;
-	wep9->bulletsPerShot = 1;
-	wep9->totalAmmo = 30;
-	wep9->fireType = FireType::FullAuto;
-	wep9->reloadType = ReloadType::Clip;
-	allWeapons.AddWeapon(wep9);
-
-	Weapon* wep10 = new Weapon;
-	wep10->damage = 5;
-	wep10->name = "Test - Fast Firing";
-	wep10->projectileDistance = 500;
-	wep10->projectileSpeed = 20;
-	wep10->fireRate = 1;
-	wep10->reloadTime = 1;
-	wep10->deviation = 30;
-	wep10->maxDeviation = 30;
-	wep10->recoil = 0;
-	wep10->recoilControlRate = 0;
-	wep10->bulletsPerShot = 1;
-	wep10->totalAmmo = 300;
-	wep10->fireType = FireType::FullAuto;
-	wep10->reloadType = ReloadType::Clip;
-	allWeapons.AddWeapon(wep10);
-	// TODO	
 
 	testPlayer = allPlayers.CreatePlayer("TestPlayer");
 	testPlayer->texture = allTextures.GetTexture("DirMarker");
@@ -260,7 +265,7 @@ bool SetupEngine()
 	for (auto& wep : allWeapons.weaponList)
 		testPlayer->AddWeapon(wep);
 
-	debug.Log("Setup+Shutdown", "Setup", "Setup completed");
+
 
 	if (HardwareCursor)
 		SDL_ShowCursor(SDL_ENABLE);
@@ -330,13 +335,15 @@ bool SetupEngine()
 		for (int n = 100; n <= map.GetSizeY() - 100; n++)
 			map.SetDataAt(i, n, MapDataType::Wall, baseWallHealth);
 
+	debug.Log("Setup+Shutdown", "SetupEngine", "Setup completed");
+
 	return true;
 }
 
 // Shutdown the engine, cleaning up everything as required.
 void ShutdownEngine()
 {
-	debug.Log("Setup+Shutdown", "Shutdown", "Shutting down engine...");
+	debug.Log("Setup+Shutdown", "ShutdownEngine", "Shutting down engine...");
 	   
 	SDL_Quit();
 
@@ -357,5 +364,5 @@ void ShutdownEngine()
 	allProjectiles.DestroyAllProjectiles();	
 	allTextures.Cleanup();
 
-	debug.Log("Setup+Shutdown", "Shutdown", "Shutdown completed");
+	debug.Log("Setup+Shutdown", "ShutdownEngine", "Shutdown completed");
 }
