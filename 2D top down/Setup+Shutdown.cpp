@@ -73,7 +73,16 @@ bool SetupEngine()
 		}
 
 		// Create main window.
-		Uint32 windowFlags = SDL_WINDOW_OPENGL;
+		sStr = std::stringstream();
+		sStr << ini.GetValue("Video", "FullScreen", "0");
+		sStr >> i;
+
+		Uint32 windowFlags;
+
+		if (i == 0)
+			windowFlags = SDL_WINDOW_OPENGL;
+		else if (i == 1)
+			windowFlags = SDL_WINDOW_FULLSCREEN;
 		
 		mainWindow = SDL_CreateWindow(programName.c_str(), 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, windowFlags);
 
