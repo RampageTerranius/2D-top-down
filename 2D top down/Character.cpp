@@ -166,7 +166,7 @@ void Player::FireWeapon()
 					{
 						SDL_Point tempPoint = GetMapCoordFromCursor();
 
-						Vector2D aimLoc = Vector2D(tempPoint.x, tempPoint.y);
+						Vector2D aimLoc = Vector2D(static_cast <float> (tempPoint.x), static_cast <float>  (tempPoint.y) );
 
 						// Calculate deviation/recoil etc.
 						calcDeviation = this->weapon[this->selectedWeapon]->deviation + currentRecoil;
