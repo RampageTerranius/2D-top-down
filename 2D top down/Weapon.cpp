@@ -8,11 +8,8 @@ Weapon::Weapon()
 	this->totalAmmo = 0;
 	this->fireRate = 0;
 	this->reloadTime = 0;
-	this->projectileSpeed = 0.0;
-	this->deviation = 0.0;
-	this->maxDeviation = 0.0;
-	this->recoil = 0.0;
-	this->recoilControlRate = 0.0;
+	this->projectileSpeed = 0.0f;
+	this->deviation = 0.0f;
 	this->bulletsPerShot = 0;
 	this->projectileDistance = 0;
 	this->bulletType = ProjectileType::Bullet;
@@ -24,12 +21,6 @@ void Weapons::AddWeapon(Weapon* weapon)
 {
 	if (weapon != nullptr)
 	{
-		// Drop the projectile speed by a factor of 100 or bullets will move at mach 10.
-		//weapon->projectileSpeed /= 100;
-
-		// Drop the recoil control rate by the firerate to keep it consistant no matter the fire rate.
-		//weapon->recoilControlRate /= weapon->fireRate;
-
 		// Push the new weapon into the list then send a log of the weapon to the console.
 		weaponList.push_back(weapon);
 
@@ -41,9 +32,6 @@ void Weapons::AddWeapon(Weapon* weapon)
 		debug.Log("Weapon", "AddWeapon", "ReloadTime: " + std::to_string(weapon->reloadTime));
 		debug.Log("Weapon", "AddWeapon", "ProjectileSpeed: " + std::to_string(weapon->projectileSpeed));
 		debug.Log("Weapon", "AddWeapon", "Deviation: " + std::to_string(weapon->deviation));
-		debug.Log("Weapon", "AddWeapon", "MaxDeviation: " + std::to_string(weapon->maxDeviation));
-		debug.Log("Weapon", "AddWeapon", "Recoil: " + std::to_string(weapon->recoil));
-		debug.Log("Weapon", "AddWeapon", "RecoilControlRate: " + std::to_string(weapon->recoilControlRate));
 		debug.Log("Weapon", "AddWeapon", "BulletsPerShot: " + std::to_string(weapon->bulletsPerShot));
 		debug.Log("Weapon", "AddWeapon", "ProjectileDistance: " + std::to_string(weapon->projectileDistance));
 		debug.Log("Weapon", "AddWeapon", "BulletType: " + std::to_string(static_cast<int> (weapon->bulletType)));
