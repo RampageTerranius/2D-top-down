@@ -41,7 +41,7 @@ void Vector2D::Normalize()
 
 float Vector2D::Length()
 {
-	return sqrt((x * x) + (y * y));
+	return static_cast <float> ( sqrt( (x * x) + (y * y) ) );
 };
 
 std::string Vector2D::ToString()

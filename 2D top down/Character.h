@@ -33,7 +33,6 @@ public:
 
 	int health;
 
-	float currentRecoil;
 	bool isFiring;
 
 	std::vector<Weapon*> weapon;

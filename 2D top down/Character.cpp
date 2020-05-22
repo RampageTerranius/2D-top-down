@@ -86,7 +86,6 @@ Player::Player()
 
 	this->health = 0;
 
-	this->currentRecoil = 0;
 	this->isFiring = 0;
 
 	this->weapon.clear();
@@ -160,19 +159,15 @@ void Player::FireWeapon()
 
 					int tempProjectilesToLaunch = this->weapon[this->selectedWeapon]->bulletsPerShot;
 
-					float calcDeviation = 0.0;
-
 					while (tempProjectilesToLaunch > 0)
 					{
 						SDL_Point tempPoint = GetMapCoordFromCursor();
 
-						Vector2D aimLoc = Vector2D(tempPoint.x, tempPoint.y);
+						Vector2D aimLoc = Vector2D(static_cast <float> (tempPoint.x), static_cast <float> (tempPoint.y));
 
-						// Calculate deviation/recoil etc.
-						calcDeviation = this->weapon[this->selectedWeapon]->deviation + currentRecoil;
-
-						float randomDeviationX = RandomFloat(-(calcDeviation / 2), calcDeviation / 2);
-						float randomDeviationY = RandomFloat(-(calcDeviation / 2), calcDeviation / 2);
+						// Calculate deviation etc.
+						float randomDeviationX = RandomFloat(-(this->weapon[this->selectedWeapon]->deviation / 2), this->weapon[this->selectedWeapon]->deviation / 2);
+						float randomDeviationY = RandomFloat(-(this->weapon[this->selectedWeapon]->deviation / 2), this->weapon[this->selectedWeapon]->deviation / 2);
 
 						aimLoc.x += static_cast<int> (round(randomDeviationX));
 						aimLoc.y += static_cast<int> (round(randomDeviationY));
@@ -183,11 +178,7 @@ void Player::FireWeapon()
 						tempProjectilesToLaunch--;
 					}
 
-					debug.Log("Character", "FireWeapon", "fired round. deviation of :" + std::to_string(calcDeviation));
-
-					this->currentRecoil += this->weapon[this->selectedWeapon]->recoil;
-					if (currentRecoil > this->weapon[this->selectedWeapon]->maxDeviation)
-						currentRecoil = this->weapon[this->selectedWeapon]->maxDeviation;
+					debug.Log("Character", "FireWeapon", "fired round. deviation of :" + std::to_string(this->weapon[this->selectedWeapon]->deviation));
 
 					this->fireTimer = this->weapon[this->selectedWeapon]->fireRate;
 
@@ -209,28 +200,27 @@ void Player::RenderAimer()
 
 	if (this->weapon.size() > 0)
 	{
-		float tempRecoil = (this->currentRecoil + this->weapon[this->selectedWeapon]->deviation) / 2;
-		if (((this->currentRecoil + this->weapon[this->selectedWeapon]->deviation) / 2) > 0)
+		if (this->weapon[this->selectedWeapon]->deviation > 0)
 		{
-		aimer.texture = allTextures.GetTexture("AimMarkerTop");
-		aimer.loc.x = static_cast<float> (mouse.x);
-		aimer.loc.y = static_cast<float> (mouse.y) - tempRecoil - static_cast<float> (aimer.texture->Rect().h);
-		aimer.Render(0);
+			aimer.texture = allTextures.GetTexture("AimMarkerTop");
+			aimer.loc.x = static_cast<float> (mouse.x);
+			aimer.loc.y = static_cast<float> (mouse.y) - (this->weapon[this->selectedWeapon]->deviation / 2) - static_cast<float> (aimer.texture->Rect().h);
+			aimer.Render(0);
 
-		aimer.texture = allTextures.GetTexture("AimMarkerBottom");
-		aimer.loc.x = static_cast<float> (mouse.x);
-		aimer.loc.y = static_cast<float> (mouse.y) + tempRecoil + static_cast<float> (aimer.texture->Rect().h) - 1;
-		aimer.Render(0);
+			aimer.texture = allTextures.GetTexture("AimMarkerBottom");
+			aimer.loc.x = static_cast<float> (mouse.x);
+			aimer.loc.y = static_cast<float> (mouse.y) + (this->weapon[this->selectedWeapon]->deviation / 2) + static_cast<float> (aimer.texture->Rect().h) - 1;
+			aimer.Render(0);
 
-		aimer.texture = allTextures.GetTexture("AimMarkerLeft");
-		aimer.loc.x = static_cast<float> (mouse.x) - tempRecoil - static_cast<float> (aimer.texture->Rect().w);
-		aimer.loc.y = static_cast<float> (mouse.y);
-		aimer.Render(0);
+			aimer.texture = allTextures.GetTexture("AimMarkerLeft");
+			aimer.loc.x = static_cast<float> (mouse.x) - (this->weapon[this->selectedWeapon]->deviation / 2) - static_cast<float> (aimer.texture->Rect().w);
+			aimer.loc.y = static_cast<float> (mouse.y);
+			aimer.Render(0);
 
-		aimer.texture = allTextures.GetTexture("AimMarkerRight");
-		aimer.loc.x = static_cast<float> (mouse.x) + tempRecoil + static_cast<float> (aimer.texture->Rect().w) - 1;
-		aimer.loc.y = static_cast<float> (mouse.y);
-		aimer.Render(0);
+			aimer.texture = allTextures.GetTexture("AimMarkerRight");
+			aimer.loc.x = static_cast<float> (mouse.x) + (this->weapon[this->selectedWeapon]->deviation / 2) + static_cast<float> (aimer.texture->Rect().w) - 1;
+			aimer.loc.y = static_cast<float> (mouse.y);
+			aimer.Render(0);
 		}
 	}
 
@@ -379,17 +369,6 @@ void Players::HandlePlayerEvents()
 		// Reduce the fire timer each tick so that weapons fire when required.
 		if (pl->fireTimer > 0 && pl->reloadTimer == 0)
 			pl->fireTimer--;
-
-		if (pl->currentRecoil > 0/* && !pl->isFiring && pl->fireTimer == 0*/)
-		{
-			pl->currentRecoil-= pl->weapon[pl->selectedWeapon]->recoilControlRate;
-
-			if (pl->currentRecoil < 0)
-				pl->currentRecoil = 0;
-
-			if (pl->isFiring)
-				pl->currentRecoil = pl->currentRecoil;
-		}
 
 		// dodging logic.
 		if (pl->currentMovementVel > pl->baseMovementVel)

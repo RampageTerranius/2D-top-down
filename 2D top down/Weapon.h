@@ -25,9 +25,6 @@ public:
 	int reloadTime;
 	float projectileSpeed;
 	float deviation;
-	float maxDeviation;
-	float recoil;
-	float recoilControlRate;
 	int bulletsPerShot;
 	int projectileDistance;
 	ProjectileType bulletType;

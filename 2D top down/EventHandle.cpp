@@ -525,8 +525,8 @@ void EventHandle(SDL_Event& event)
 
 	SDL_Point facing = GetMapCoordFromCursor();
 
-	testPlayer->directionFacing.x = facing.x;
-	testPlayer->directionFacing.y = facing.y;
+	testPlayer->directionFacing.x = static_cast <float> (facing.x);
+	testPlayer->directionFacing.y = static_cast <float> (facing.y);
 
 	testPlayer->MovePlayerAccordingToInput();
 

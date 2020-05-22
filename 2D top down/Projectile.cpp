@@ -134,7 +134,7 @@ bool Projectile::CalcProjectile()
 
 	float distance = sqrt(pow(this->target.x - this->start.x, 2) + pow(this->target.y - this->start.y, 2));
 	if (distance > this->maxDistance)
-		distance = this->maxDistance;
+		distance = static_cast <float> (this->maxDistance);
 
 	Vector2D diffVec(this->target.x - this->start.x, this->target.y - this->start.y);
 	diffVec.Normalize();
