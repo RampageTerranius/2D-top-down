@@ -55,9 +55,7 @@ bool SetupEngine()
 		// Get window settings.
 		sStr << ini.GetValue("Window", "Width", "0");
 		sStr >> i;
-		windowWidth = i;
-
-		
+		windowWidth = i;		
 
 		sStr = std::stringstream();
 		sStr << ini.GetValue("Window", "Height", "0");
@@ -68,7 +66,7 @@ bool SetupEngine()
 		const int WINDOW_HEIGHT = windowHeight;
 		if (WINDOW_WIDTH < 640 || WINDOW_HEIGHT < 480)
 		{
-			debug.Log("Setup+Shutdown", "SetupEngine", "Invalid window width/height given. Widnow must be at least 640x480.");
+			debug.Log("Setup+Shutdown", "SetupEngine", "Invalid window width/height given. Window must be at least 640x480.");
 			return false;
 		}
 
@@ -77,11 +75,9 @@ bool SetupEngine()
 		sStr << ini.GetValue("Video", "FullScreen", "0");
 		sStr >> i;
 
-		Uint32 windowFlags;
-
-		if (i == 0)
-			windowFlags = SDL_WINDOW_OPENGL;
-		else if (i == 1)
+		Uint32 windowFlags = SDL_WINDOW_OPENGL;
+		
+		if (i == 1)
 			windowFlags = SDL_WINDOW_FULLSCREEN;
 		
 		mainWindow = SDL_CreateWindow(programName.c_str(), 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, windowFlags);
@@ -265,7 +261,6 @@ bool SetupEngine()
 		allWeapons.AddWeapon(wep);
 	}
 
-
 	testPlayer = allPlayers.CreatePlayer("TestPlayer");
 	testPlayer->texture = allTextures.GetTexture("DirMarker");
 	testPlayer->loc.x = round(static_cast<float> ((map.GetSizeX() - 1) / 2));
@@ -273,8 +268,6 @@ bool SetupEngine()
 
 	for (auto& wep : allWeapons.weaponList)
 		testPlayer->AddWeapon(wep);
-
-
 
 	if (HardwareCursor)
 		SDL_ShowCursor(SDL_ENABLE);
