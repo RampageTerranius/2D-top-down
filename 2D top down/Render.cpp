@@ -2,7 +2,6 @@
 
 #include "Projectile.h"
 #include "UI.h"
-#include "Mouse.h"
 #include "Globals.h"
 
 #include <math.h>

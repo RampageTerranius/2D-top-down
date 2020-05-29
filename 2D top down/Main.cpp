@@ -7,13 +7,21 @@
 int main(int argc, char* argv[])
 {
 	// Run setup.
-	running = SetupEngine();
+	bool running = true;
 
-	SDL_Event event;
+	running = SetupEngine();	
+
+	std::vector<Command*> CommandList;
 
 	while (running)
 	{
-		EventHandle(event);
+		running = iManager->GenerateInput(CommandList);
+
+		while (!CommandList.empty())
+		{
+			CommandList.back()->Execute(testPlayer);
+			CommandList.pop_back();
+		}
 
 		Render();
 	}

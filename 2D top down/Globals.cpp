@@ -4,8 +4,9 @@ Debug debug = Debug();
 
 std::string programName = "Test";
 
-bool running = false;
 bool HardwareCursor = false;
+
+InputManager* iManager = new InputManager();
 
 int windowWidth = 640;
 int windowHeight = 480;

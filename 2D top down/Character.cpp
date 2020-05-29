@@ -1,6 +1,5 @@
 #include "Character.h"
 #include "UI.h"
-#include "Mouse.h"
 #include "globals.h"
 #include "Math functions.h"
 #include "Vector2D.h"
@@ -22,7 +21,11 @@ bool Character::Render()
 		rect.x = static_cast<int> (round((windowWidth / 2) - (rect.w / 2)));
 		rect.y = static_cast<int> (round((windowHeight / 2) - (rect.h / 2)));
 
-		if (SDL_RenderCopyEx(mainRenderer, texture->Tex(), NULL, &rect, GetAngleAsDegrees(this->loc.x, this->loc.y, this->directionFacing.x, this->directionFacing.y) + 90, NULL, SDL_FLIP_NONE) >= 0)
+		SDL_Point facing = GetMapCoordFromCursor();
+
+		Vector2D vec2d = Vector2D(static_cast <float> (facing.x), static_cast <float> (facing.y));
+
+		if (SDL_RenderCopyEx(mainRenderer, texture->Tex(), NULL, &rect, GetAngleAsDegrees(this->loc.x, this->loc.y, vec2d.x, vec2d.y) + 90, NULL, SDL_FLIP_NONE) >= 0)
 			return true;
 	}
 
@@ -206,6 +209,8 @@ void Player::RenderAimer()
 
 	// TODO: bottom and right aimer are 1 pixel off and need to be minused by 1, fix this.
 	
+	SDL_Point mouse = iManager->GetMouseLocation();
+
 
 	if (this->weapon.size() > 0)
 	{

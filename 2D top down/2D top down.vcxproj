@@ -145,7 +145,7 @@
     <ClCompile Include="Character.cpp" />
     <ClCompile Include="Debug.cpp" />
     <ClCompile Include="Entity.cpp" />
-    <ClCompile Include="EventHandle.cpp" />
+    <ClCompile Include="EventHandler.cpp" />
     <ClCompile Include="Globals.cpp" />
     <ClCompile Include="Keyboard.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -166,7 +166,7 @@
     <ClInclude Include="Character.h" />
     <ClInclude Include="Debug.h" />
     <ClInclude Include="Entity.h" />
-    <ClInclude Include="EventHandle.h" />
+    <ClInclude Include="EventHandler.h" />
     <ClInclude Include="Globals.h" />
     <ClInclude Include="Keyboard.h" />
     <ClInclude Include="Main.h" />

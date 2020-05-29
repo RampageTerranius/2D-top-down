@@ -10,9 +10,12 @@
 #include "Character.h"
 #include "Projectile.h"
 #include "Weapon.h"
+#include "EventHandler.h"
 
 // Debugging stuff.
 extern Debug debug;
+
+extern InputManager* iManager;
 
 // General application settings.
 extern std::string programName;
@@ -31,7 +34,6 @@ extern SDL_Renderer* mainRenderer;
 extern SDL_Surface* mainSurface;
 
 // Other stuff.
-extern bool running;
 
 // Lists.
 extern Textures allTextures;

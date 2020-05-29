@@ -11,8 +11,6 @@ public:
 	void MoveBy(float x, float y);
 
 	bool Render();
-	
-	Vector2D directionFacing{ 0,0 };
 };
 
 class Player : public Character
