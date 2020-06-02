@@ -76,28 +76,28 @@ public:
 class CommandMoveUp : public Command
 {
 public:
-	void Execute(Player* player) {  }
+	void Execute(Player* player) { player->MoveBy(0, -player->currentMovementVel); }
 	InputType GetInputType() { return INPUTTYPE_STATE; }
 };
 
 class CommandMoveDown : public Command
 {
 public:
-	void Execute(Player* player) {  }
+	void Execute(Player* player) { player->MoveBy(0, player->currentMovementVel); }
 	InputType GetInputType() { return INPUTTYPE_STATE; }
 };
 
 class CommandMoveLeft : public Command
 {
 public:
-	void Execute(Player* player) {  }
+	void Execute(Player* player) { player->MoveBy(-player->currentMovementVel, 0); }
 	InputType GetInputType() { return INPUTTYPE_STATE; }
 };
 
 class CommandMoveRight : public Command
 {
 public:
-	void Execute(Player* player) {  }
+	void Execute(Player* player) { player->MoveBy(player->currentMovementVel, 0); }
 	InputType GetInputType() { return INPUTTYPE_STATE; }
 };
 
@@ -142,3 +142,5 @@ private:
 	bool IsHeld(int key);
 	bool WasPressed(int key);
 };
+
+void HandleEvents();

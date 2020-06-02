@@ -112,33 +112,11 @@ Player::Player()
 	this->dodgeChargeTimer = 0;
 }
 
-// Logic for determining how the player is moving, refer to EventHandle for how xVel and yVel is determined.
-void Player::MovePlayerAccordingToInput()
-{	
-	switch (xVel)
-	{
-	case -1:
-		MoveBy(-this->currentMovementVel, 0);
-		break;
-	case 1:
-		MoveBy(this->currentMovementVel, 0);
-		break;
-	}
-
-	switch (yVel)
-	{
-	case -1:
-		MoveBy(0, -this->currentMovementVel);
-		break;
-	case 1:
-		MoveBy(0, this->currentMovementVel);
-		break;
-	}
-
-	// TODO: camera is currently calculating ALL players, this will need to be updated in the future.
-	camera.x = static_cast<int> ((windowWidth/2) - testPlayer->loc.x);
+void Player::MoveCameraToThisPlayer()
+{
+	camera.x = static_cast<int> ((windowWidth / 2) - testPlayer->loc.x);
 	camera.w = map.GetSizeX();
-	camera.y = static_cast<int> ((windowHeight/2) - testPlayer->loc.y);
+	camera.y = static_cast<int> ((windowHeight / 2) - testPlayer->loc.y);
 	camera.h = map.GetSizeY();
 }
 

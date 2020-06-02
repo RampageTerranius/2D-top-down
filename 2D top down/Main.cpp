@@ -23,6 +23,8 @@ int main(int argc, char* argv[])
 			CommandList.pop_back();
 		}
 
+		HandleEvents();
+
 		Render();
 	}
 

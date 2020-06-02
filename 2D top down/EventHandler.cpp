@@ -1,7 +1,20 @@
 #include "EventHandler.h"
 #include "Math functions.h"
+#include "Globals.h"
 
 #include <SDL.h>
+
+void HandleEvents()
+{
+	// calculate all physics for all currently existing projectiles.
+	allProjectiles.CalcAllProjectiles();
+
+	// handle all player based events (reloading, recoil etc...)
+	allPlayers.HandlePlayerEvents();
+
+	// TODO: set this up to always move camera to the current player (for when dead and alive)
+	testPlayer->MoveCameraToThisPlayer();
+}
 
 InputManager::InputManager()
 {
@@ -20,7 +33,7 @@ InputManager::InputManager()
 	commands[SDLK_w] = moveUp;
 	commands[SDLK_s] = moveDown;
 	commands[SDLK_a] = moveLeft;
-	commands[SDLK_d] = moveLeft;
+	commands[SDLK_d] = moveRight;
 	commands[SDL_BUTTON_LEFT] = fire;
 	commands[SDLK_r] = reload;
 	commands[SDL_BUTTON_RIGHT] = build;
@@ -50,15 +63,13 @@ bool InputManager::InputToActions()
 		case SDL_QUIT:
 			return false;
 
-		case SDL_KEYDOWN:
-		
+		case SDL_KEYDOWN:		
 			if (event.key.keysym.sym == SDLK_ESCAPE)
 				return false;
 			OnKeyDownInput(event);
 			break;
 
-		case SDL_KEYUP:
-		
+		case SDL_KEYUP:		
 			OnKeyUpInput(event);
 			break;
 

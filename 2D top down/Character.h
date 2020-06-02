@@ -26,6 +26,7 @@ public:
 	void RemoveWeapon(int weaponIndex);
 	void SwitchToNextWeapon();
 	void SwitchToLastWeapon();
+	void MoveCameraToThisPlayer();
 
 	std::string name;
 
