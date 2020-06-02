@@ -104,16 +104,16 @@ void InputManager::DispatchCommands(std::vector<Command*>& command_queue)
 			command_queue.push_back(iter->second);
 }
 
-// Check if the key is currently being held.
-bool InputManager::IsHeld(int key)
+bool InputManager::GenerateInput(std::vector<Command*>& CommandVector)
 {
-	return state[key];
-}
-
-// Check if the key was pressed.
-bool InputManager::WasPressed(int key)
-{
-	return action[key];
+	if (!InputToActions())
+		return false;
+	else
+	{
+		DispatchCommands(CommandVector);
+		action.clear();
+		return true;
+	}
 }
 
 void InputManager::OnMouseMotion(SDL_Event& event)
@@ -125,8 +125,13 @@ void InputManager::OnKeyDownInput(SDL_Event& event)
 {
 	if (state[event.key.keysym.sym] == KEYSTATE_RELEASED)
 		action[event.key.keysym.sym] = ACTIONSTATE_EXECUTE;
+
 	previousState[event.key.keysym.sym] = state[event.key.keysym.sym];
-	state[event.key.keysym.sym] = KEYSTATE_PRESSED;
+
+	if (state[event.key.keysym.sym] = KEYSTATE_RELEASED)
+		state[event.key.keysym.sym] = KEYSTATE_PRESSED;
+	else
+		state[event.key.keysym.sym] = KEYSTATE_HELD;
 }
 
 void InputManager::OnKeyUpInput(SDL_Event& event)
@@ -139,8 +144,13 @@ void InputManager::OnMouseDownInput(SDL_Event& event)
 {
 	if (state[event.button.button] == KEYSTATE_RELEASED)
 		action[event.button.button] = ACTIONSTATE_EXECUTE;
+
 	previousState[event.button.button] = state[event.button.button];
-	state[event.button.button] = KEYSTATE_PRESSED;	
+
+	if (state[event.button.button] = KEYSTATE_RELEASED)
+		state[event.button.button] = KEYSTATE_PRESSED;
+	else
+		state[event.button.button] = KEYSTATE_HELD;
 }
 
 void InputManager::OnMouseUpInput(SDL_Event& event)
@@ -149,18 +159,19 @@ void InputManager::OnMouseUpInput(SDL_Event& event)
 	state[event.button.button] = KEYSTATE_RELEASED;
 }
 
+// Check if the key is currently being held.
+bool InputManager::IsHeld(int key)
+{
+	return state[key];
+}
+
+// Check if the key was pressed.
+bool InputManager::WasPressed(int key)
+{
+	return action[key];
+}
+
 void InputManager::Bind(int key, Command* command)
 {
 	commands[key] = command;
-}
-
-bool InputManager::GenerateInput(std::vector<Command*>& CommandVector)
-{
-	if (!InputToActions())
-		return false;
-	else
-	{
-		DispatchCommands(CommandVector);
-		return true;
-	}
 }

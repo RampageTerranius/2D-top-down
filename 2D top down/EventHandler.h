@@ -11,9 +11,10 @@
 // https://codereview.stackexchange.com/questions/55365/input-handling-system-using-the-command-pattern
 
 enum KeyState
-{
-	KEYSTATE_PRESSED = true,
-	KEYSTATE_RELEASED = false
+{	
+	KEYSTATE_RELEASED,
+	KEYSTATE_PRESSED,
+	KEYSTATE_HELD
 };
 
 enum ActionState
