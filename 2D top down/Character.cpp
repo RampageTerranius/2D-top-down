@@ -392,5 +392,9 @@ void Players::HandlePlayerEvents()
 				pl->dodgeChargeTimer = 0;
 			}
 		}
+
+		// Reset is firing to false each frame.
+		// Each time the user fires it will set this to true.
+		pl->isFiring = false;
 	}
 }

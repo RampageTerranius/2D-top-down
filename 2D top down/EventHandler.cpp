@@ -119,11 +119,13 @@ void InputManager::OnKeyDownInput(SDL_Event& event)
 {
 	if (state[event.key.keysym.sym] == KEYSTATE_RELEASED)
 		action[event.key.keysym.sym] = ACTIONSTATE_EXECUTE;
+	previousState[event.key.keysym.sym] = state[event.key.keysym.sym];
 	state[event.key.keysym.sym] = KEYSTATE_PRESSED;
 }
 
 void InputManager::OnKeyUpInput(SDL_Event& event)
 {
+	previousState[event.key.keysym.sym] = state[event.key.keysym.sym];
 	state[event.key.keysym.sym] = KEYSTATE_RELEASED;
 }
 
@@ -131,11 +133,13 @@ void InputManager::OnMouseDownInput(SDL_Event& event)
 {
 	if (state[event.button.button] == KEYSTATE_RELEASED)
 		action[event.button.button] = ACTIONSTATE_EXECUTE;
+	previousState[event.button.button] = state[event.button.button];
 	state[event.button.button] = KEYSTATE_PRESSED;	
 }
 
 void InputManager::OnMouseUpInput(SDL_Event& event)
 {
+	previousState[event.button.button] = state[event.button.button];
 	state[event.button.button] = KEYSTATE_RELEASED;
 }
 

@@ -18,7 +18,6 @@ class Player : public Character
 public:
 	Player();
 
-	void MovePlayerAccordingToInput();
 	void FireWeapon();
 	void ReloadWeapon();
 	void RenderAimer();

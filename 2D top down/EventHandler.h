@@ -42,6 +42,7 @@ class CommandFireWeapon : public Command
 {
 public:
 	void Execute(Player* player) { player->FireWeapon(); }
+	
 	InputType GetInputType() { return INPUTTYPE_STATE; }
 };
 
@@ -125,6 +126,7 @@ private:
 	// Commands and keystates.
 	std::map <int, Command*> commands;
 	std::map <int, KeyState> state;
+	std::map <int, KeyState> previousState;
 	std::map <int, ActionState> action;
 
 	SDL_Point mouse;
