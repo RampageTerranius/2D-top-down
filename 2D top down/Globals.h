@@ -42,7 +42,7 @@ extern Weapons allWeapons;
 extern Players allPlayers;
 
 // Test Player.
-extern Player* testPlayer;
+extern Player* currentPlayer;
 extern SDL_Rect camera;
 
 // Map data;

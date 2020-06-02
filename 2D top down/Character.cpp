@@ -7,7 +7,8 @@
 Character::Character()
 {		
 	this->ID = 0;	
-	this->texture = nullptr;	
+	this->texture = nullptr;
+	this->directionFacing = Vector2D(0, 0);
 }
 
 bool Character::Render()
@@ -18,15 +19,18 @@ bool Character::Render()
 
 		rect.w = texture->Rect().w;
 		rect.h = texture->Rect().h;
-		rect.x = static_cast<int> (round((windowWidth / 2) - (rect.w / 2)));
-		rect.y = static_cast<int> (round((windowHeight / 2) - (rect.h / 2)));
 
-		SDL_Point facing = GetMapCoordFromCursor();
+		SDL_Point charPoint{ this->loc.x, this->loc.y };
 
-		Vector2D vec2d = Vector2D(static_cast <float> (facing.x), static_cast <float> (facing.y));
+		SDL_Point mapPoint = GetScreenCoordFromMapPoint(charPoint);
 
-		if (SDL_RenderCopyEx(mainRenderer, texture->Tex(), NULL, &rect, GetAngleAsDegrees(this->loc.x, this->loc.y, vec2d.x, vec2d.y) + 90, NULL, SDL_FLIP_NONE) >= 0)
-			return true;
+		rect.x = static_cast<int> (mapPoint.x - (rect.w / 2));
+		rect.y = static_cast<int> (mapPoint.y - (rect.h / 2));
+
+		if (rect.x >= (0 - rect.w) && rect.x < windowWidth)
+			if (rect.y >= (0 - rect.h) && rect.y < windowHeight)
+				if (SDL_RenderCopyEx(mainRenderer, texture->Tex(), NULL, &rect, GetAngleAsDegrees(this->loc.x, this->loc.y, this->directionFacing.x, this->directionFacing.y) + 90, NULL, SDL_FLIP_NONE) >= 0)
+					return true;
 	}
 
 	debug.Log("Character", "Render", "failed to render entity (" + std::to_string(ID) + ") : " + SDL_GetError());
@@ -81,6 +85,14 @@ void Character::MoveBy(float x, float y)
 	}
 }
 
+void Character::MoveCameraToHere()
+{
+	camera.x = static_cast<int> ((windowWidth / 2) - this->loc.x);
+	camera.w = map.GetSizeX();
+	camera.y = static_cast<int> ((windowHeight / 2) - this->loc.y);
+	camera.h = map.GetSizeY();
+}
+
 Player::Player()
 {
 	Character();
@@ -112,14 +124,6 @@ Player::Player()
 	this->dodgeChargeTimer = 0;
 }
 
-void Player::MoveCameraToThisPlayer()
-{
-	camera.x = static_cast<int> ((windowWidth / 2) - testPlayer->loc.x);
-	camera.w = map.GetSizeX();
-	camera.y = static_cast<int> ((windowHeight / 2) - testPlayer->loc.y);
-	camera.h = map.GetSizeY();
-}
-
 // Logic for the player firing their weapon.
 void Player::FireWeapon()
 {
@@ -137,7 +141,7 @@ void Player::FireWeapon()
 				if (this->reloadTimer == 0 && this->fireTimer == 0)
 				{
 					// Get the point of the player.
-					Vector2D plPoint{ round(testPlayer->loc.x), round(testPlayer->loc.y) };
+					Vector2D plPoint{ round(this->loc.x), round(this->loc.y) };
 
 					int tempProjectilesToLaunch = this->weapon[this->selectedWeapon]->bulletsPerShot;
 
@@ -276,7 +280,7 @@ Player* Players::CreatePlayer(std::string playerName)
 {
 	Player* pl = new Player();
 
-	pl->texture = allTextures.GetTexture("DirMarker");
+	pl->name = playerName;
 
 	this->playerList.push_back(pl);
 
@@ -309,11 +313,11 @@ void Players::DeleteAllPlayers()
 {
 	int i = 0;
 
-	for (Player* pl : playerList)
+	for (int i = 0; i < playerList.size(); i++)
 	{
-		playerList.erase(playerList.begin() + i);
+		Player* pl = playerList[i];
+		playerList.erase(playerList.begin());
 		delete pl;
-		i++;
 	}
 
 	debug.Log("Players", "DeleteAllPlayers", "Deleted all players");

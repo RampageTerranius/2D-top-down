@@ -13,7 +13,13 @@ void HandleEvents()
 	allPlayers.HandlePlayerEvents();
 
 	// TODO: set this up to always move camera to the current player (for when dead and alive)
-	testPlayer->MoveCameraToThisPlayer();
+	currentPlayer->MoveCameraToHere();
+	//allPlayers.GetPlayer("Player2")->MoveCameraToHere();
+
+	SDL_Point point = GetMapCoordFromCursor();
+
+	currentPlayer->directionFacing.x = point.x;
+	currentPlayer->directionFacing.y = point.y;
 }
 
 InputManager::InputManager()

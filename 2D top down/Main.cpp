@@ -19,7 +19,7 @@ int main(int argc, char* argv[])
 
 		while (!CommandList.empty())
 		{
-			CommandList.back()->Execute(testPlayer);
+			CommandList.back()->Execute(currentPlayer);
 			CommandList.pop_back();
 		}
 

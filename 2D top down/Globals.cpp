@@ -25,7 +25,7 @@ Projectiles allProjectiles = Projectiles();
 Weapons allWeapons = Weapons();
 Players allPlayers = Players();
 
-Player* testPlayer;
+Player* currentPlayer;
 SDL_Rect camera = {0, 0, windowWidth, windowHeight};
 
 

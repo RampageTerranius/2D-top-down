@@ -11,6 +11,9 @@ public:
 	void MoveBy(float x, float y);
 
 	bool Render();
+	void MoveCameraToHere();
+
+	Vector2D directionFacing = { 0, 0 };
 };
 
 class Player : public Character
@@ -24,8 +27,7 @@ public:
 	void AddWeapon(Weapon* wep);
 	void RemoveWeapon(int weaponIndex);
 	void SwitchToNextWeapon();
-	void SwitchToLastWeapon();
-	void MoveCameraToThisPlayer();
+	void SwitchToLastWeapon();	
 
 	std::string name;
 

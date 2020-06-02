@@ -101,6 +101,7 @@ bool SetupEngine()
 	debug.Log("Setup+Shutdown", "SetupEngine", "Loading textures...");	
 
 	allTextures.CreateTexture(GetEXEPath() + "\\Direction Marker.png", "DirMarker");
+	allTextures.CreateTexture(GetEXEPath() + "\\Direction Marker2.png", "DirMarker2");
 	allTextures.CreateTexture(GetEXEPath() + "\\Bullet.png", "Bullet");
 	allTextures.CreateTexture(GetEXEPath() + "\\Aim Marker Top.png", "AimMarkerTop");
 	allTextures.CreateTexture(GetEXEPath() + "\\Aim Marker Bottom.png", "AimMarkerBottom");
@@ -261,13 +262,23 @@ bool SetupEngine()
 		allWeapons.AddWeapon(wep);
 	}
 
-	testPlayer = allPlayers.CreatePlayer("TestPlayer");
-	testPlayer->texture = allTextures.GetTexture("DirMarker");
-	testPlayer->loc.x = round(static_cast<float> ((map.GetSizeX() - 1) / 2));
-	testPlayer->loc.y = round(static_cast<float> ((map.GetSizeY() - 1) / 2));
+	allPlayers.CreatePlayer("Player1");
+	allPlayers.CreatePlayer("Player2");
+
+	currentPlayer = allPlayers.GetPlayer("Player1");
+	currentPlayer->texture = allTextures.GetTexture("DirMarker");
+	currentPlayer->loc.x = round(static_cast<float> ((map.GetSizeX() - 1) / 2));
+	currentPlayer->loc.y = round(static_cast<float> ((map.GetSizeY() - 1) / 2));
+
+	
+	Player* tempPlayer = allPlayers.GetPlayer("Player2");
+	tempPlayer->texture = allTextures.GetTexture("DirMarker2");
+	tempPlayer->loc.x = round(static_cast<float> (map.GetSizeX() - 50));
+	tempPlayer->loc.y = round(static_cast<float> (map.GetSizeY() - 50));
+	
 
 	for (auto& wep : allWeapons.weaponList)
-		testPlayer->AddWeapon(wep);
+		currentPlayer->AddWeapon(wep);
 
 	if (HardwareCursor)
 		SDL_ShowCursor(SDL_ENABLE);
