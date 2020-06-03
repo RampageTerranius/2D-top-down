@@ -18,8 +18,8 @@ void HandleEvents()
 
 	SDL_Point point = GetMapCoordFromCursor();
 
-	currentPlayer->directionFacing.x = point.x;
-	currentPlayer->directionFacing.y = point.y;
+	currentPlayer->directionFacing.x = static_cast <float> (point.x);
+	currentPlayer->directionFacing.y = static_cast <float> (point.y);
 }
 
 InputManager::InputManager()
@@ -125,10 +125,9 @@ void InputManager::OnKeyDownInput(SDL_Event& event)
 {
 	if (state[event.key.keysym.sym] == KEYSTATE_RELEASED)
 		action[event.key.keysym.sym] = ACTIONSTATE_EXECUTE;
-
 	previousState[event.key.keysym.sym] = state[event.key.keysym.sym];
 
-	if (state[event.key.keysym.sym] = KEYSTATE_RELEASED)
+	if (state[event.key.keysym.sym] == KEYSTATE_RELEASED)
 		state[event.key.keysym.sym] = KEYSTATE_PRESSED;
 	else
 		state[event.key.keysym.sym] = KEYSTATE_HELD;
@@ -144,10 +143,9 @@ void InputManager::OnMouseDownInput(SDL_Event& event)
 {
 	if (state[event.button.button] == KEYSTATE_RELEASED)
 		action[event.button.button] = ACTIONSTATE_EXECUTE;
-
 	previousState[event.button.button] = state[event.button.button];
 
-	if (state[event.button.button] = KEYSTATE_RELEASED)
+	if (state[event.button.button] == KEYSTATE_RELEASED)
 		state[event.button.button] = KEYSTATE_PRESSED;
 	else
 		state[event.button.button] = KEYSTATE_HELD;

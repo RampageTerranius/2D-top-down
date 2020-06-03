@@ -20,17 +20,21 @@ bool Character::Render()
 		rect.w = texture->Rect().w;
 		rect.h = texture->Rect().h;
 
-		SDL_Point charPoint{ this->loc.x, this->loc.y };
+		SDL_Point charPoint{ static_cast <int> (round(this->loc.x)), static_cast <int> (round(this->loc.y)) };
 
 		SDL_Point mapPoint = GetScreenCoordFromMapPoint(charPoint);
 
 		rect.x = static_cast<int> (mapPoint.x - (rect.w / 2));
 		rect.y = static_cast<int> (mapPoint.y - (rect.h / 2));
 
-		if (rect.x >= (0 - rect.w) && rect.x < windowWidth)
-			if (rect.y >= (0 - rect.h) && rect.y < windowHeight)
-				if (SDL_RenderCopyEx(mainRenderer, texture->Tex(), NULL, &rect, GetAngleAsDegrees(this->loc.x, this->loc.y, this->directionFacing.x, this->directionFacing.y) + 90, NULL, SDL_FLIP_NONE) >= 0)
-					return true;
+		// TODO: modify this code to help keep rendering quick and fast
+		// Probably best to make this check if its in range of the camera currenty
+		/*if (!(rect.x >= (0 - rect.w) && rect.x < windowWidth))
+			if (!(rect.y >= (0 - rect.h) && rect.y < windowHeight))
+				return false;*/
+
+		if (SDL_RenderCopyEx(mainRenderer, texture->Tex(), NULL, &rect, GetAngleAsDegrees(this->loc.x, this->loc.y, this->directionFacing.x, this->directionFacing.y) + 90, NULL, SDL_FLIP_NONE) >= 0)
+			return true;
 	}
 
 	debug.Log("Character", "Render", "failed to render entity (" + std::to_string(ID) + ") : " + SDL_GetError());
