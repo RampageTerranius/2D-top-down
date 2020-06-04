@@ -1,6 +1,8 @@
 #pragma once
 
 #include "Character.h"
+#include "Math functions.h"
+#include "Map.h"
 
 #include <string>
 #include <map>
@@ -38,7 +40,14 @@ public:
 class CommandBuild : public Command
 {
 public:
-	void Execute(Player* player) {  }
+	void Execute(Player* player) 
+	{
+		SDL_Point mapPoint = GetMapCoordFromCursor();
+
+		for (int x = mapPoint.x - 2; x <= mapPoint.x + 2; x++)
+			for (int y = mapPoint.y - 2; y <= mapPoint.y + 2; y++)				
+				map.SetDataAt(x, y, MapDataType::Wall, baseWallHealth);
+	}
 };
 
 class CommandChangeWeaponNext : public Command

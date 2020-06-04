@@ -34,3 +34,6 @@ private:
 
 	MapData** mapData;
 };
+
+extern Map map;
+extern int baseWallHealth;

@@ -28,12 +28,6 @@ Players allPlayers = Players();
 Player* currentPlayer;
 SDL_Rect camera = {0, 0,};
 
-
-// Map data;
-Map map = Map(1000, 1000);
-
-int baseWallHealth = 1;
-
 TTF ttfFPS = TTF();
 TTF ttfWeapon = TTF();
 TTF ttfAmmo = TTF();

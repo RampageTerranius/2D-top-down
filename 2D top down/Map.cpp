@@ -2,6 +2,12 @@
 #include "Globals.h"
 #include <SDL.h>
 
+// Map data;
+Map map = Map(1000, 1000);
+
+int baseWallHealth = 1;
+
+
 // Basic constructor for automatically creating the map at the given size.
 Map::Map(int newSizeX, int newSizeY)
 {
@@ -29,8 +35,6 @@ void Map::Create(int newSizeX, int newSizeY)
 			mapData[i][n].type = MapDataType::Empty;
 			mapData[i][n].health = 0;
 		}
-
-
 }
 
 void Map::Delete()

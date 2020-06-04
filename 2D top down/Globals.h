@@ -45,12 +45,6 @@ extern Players allPlayers;
 extern Player* currentPlayer;
 extern SDL_Rect camera;
 
-// Map data;
-extern Map map;
-
-extern int baseWallHealth;
-extern int projectileCalcsPerTick;
-
 // TTF Fonts.
 extern TTF ttfFPS;
 extern TTF ttfWeapon;
