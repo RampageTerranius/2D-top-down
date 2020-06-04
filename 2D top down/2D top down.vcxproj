@@ -157,6 +157,7 @@
     <ClCompile Include="Render.cpp" />
     <ClCompile Include="Setup+Shutdown.cpp" />
     <ClCompile Include="Texture.cpp" />
+    <ClCompile Include="Timer.cpp" />
     <ClCompile Include="TTF.cpp" />
     <ClCompile Include="UI.cpp" />
     <ClCompile Include="Vector2D.cpp" />
@@ -181,6 +182,7 @@
     <ClInclude Include="Render.h" />
     <ClInclude Include="Setup+Shutdown.h" />
     <ClInclude Include="Texture.h" />
+    <ClInclude Include="Timer.h" />
     <ClInclude Include="TTF.h" />
     <ClInclude Include="UI.h" />
     <ClInclude Include="Vector2D.h" />

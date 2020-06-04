@@ -28,7 +28,7 @@ public:
 	void AddWeapon(Weapon* wep);
 	void RemoveWeapon(int weaponIndex);
 	void SwitchToNextWeapon();
-	void SwitchToLastWeapon();	
+	void SwitchToLastWeapon();
 
 	std::string name;
 

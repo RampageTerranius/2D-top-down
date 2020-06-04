@@ -55,12 +55,16 @@ bool SetupEngine()
 		// Get window settings.
 		sStr << ini.GetValue("Window", "Width", "0");
 		sStr >> i;
-		windowWidth = i;		
+		windowWidth = i;
+
+		debug.Log("Setup+Shutdown", "SetupEngine", "Window width set at " + std::to_string(windowWidth));
 
 		sStr = std::stringstream();
 		sStr << ini.GetValue("Window", "Height", "0");
 		sStr >> i;
 		windowHeight = i;
+
+		debug.Log("Setup+Shutdown", "SetupEngine", "Window height set at " + std::to_string(windowHeight));
 
 		const int WINDOW_WIDTH = windowWidth;
 		const int WINDOW_HEIGHT = windowHeight;
@@ -75,6 +79,21 @@ bool SetupEngine()
 		sStr << ini.GetValue("Video", "FullScreen", "0");
 		sStr >> i;
 
+		if (i)
+			debug.Log("Setup+Shutdown", "SetupEngine", "Window set to fullscreen");
+		else if (!i)
+			debug.Log("Setup+Shutdown", "SetupEngine", "Window set to windowed");
+		else
+			debug.Log("Setup+Shutdown", "SetupEngine", "Fullscreen mode given unknown parameter");
+
+		sStr = std::stringstream();
+		sStr << ini.GetValue("Video", "Framerate", "30");
+		sStr >> i;
+		frameRate = i;
+		ticksPerFrame = 1000 / frameRate;
+
+		debug.Log("Setup+Shutdown", "SetupEngine", "Framerate set at " + std::to_string(frameRate));
+
 		Uint32 windowFlags = SDL_WINDOW_OPENGL;
 		
 		if (i == 1)
@@ -88,6 +107,13 @@ bool SetupEngine()
 		sStr = std::stringstream();
 		sStr << ini.GetValue("Video", "VSync", "0");
 		sStr >> i;
+
+		if (!i)
+			debug.Log("Setup+Shutdown", "SetupEngine", "Vsync set to off");
+		else if (i)
+			debug.Log("Setup+Shutdown", "SetupEngine", "Vsync set to on");
+		else
+			debug.Log("Setup+Shutdown", "SetupEngine", "Vsync mode given unknown parameter");
 
 		Uint32 renderFlags = SDL_RENDERER_ACCELERATED;
 		if (i == 1)

@@ -11,6 +11,7 @@
 #include "Projectile.h"
 #include "Weapon.h"
 #include "EventHandler.h"
+#include "Timer.h"
 
 // Debugging stuff.
 extern Debug debug;
@@ -45,8 +46,18 @@ extern Players allPlayers;
 extern Player* currentPlayer;
 extern SDL_Rect camera;
 
+// Frame rate.
+extern int frameRate;
+extern int ticksPerFrame;
+extern bool capFrameRate;
+
 // TTF Fonts.
 extern TTF ttfFPS;
 extern TTF ttfWeapon;
 extern TTF ttfAmmo;
 extern TTF ttfDodges;
+
+// Timers.
+extern Timer fpsTimer;
+extern Timer capTimer;
+extern float avgFPS;

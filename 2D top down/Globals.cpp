@@ -28,7 +28,17 @@ Players allPlayers = Players();
 Player* currentPlayer;
 SDL_Rect camera = {0, 0,};
 
+// Frame rate.
+int frameRate = 60;
+int ticksPerFrame = 1000 / frameRate;
+bool capFrameRate = true;
+
 TTF ttfFPS = TTF();
 TTF ttfWeapon = TTF();
 TTF ttfAmmo = TTF();
 TTF ttfDodges = TTF();
+
+// Timers.
+Timer fpsTimer = Timer();
+Timer capTimer = Timer();
+float avgFPS = 0;

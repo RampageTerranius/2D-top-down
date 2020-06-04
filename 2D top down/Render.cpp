@@ -40,8 +40,10 @@ void Render()
 
 	// Render the dodges count.
 	ttfDodges.SetText(mainRenderer, "Dodges: " + std::to_string(currentPlayer->dodgesLeft));
-
 	ttfDodges.Draw(mainRenderer, 5, windowHeight - 75);
+
+	ttfFPS.SetText(mainRenderer, (std::to_string(static_cast<int> (round(avgFPS)))));
+	ttfFPS.Draw(mainRenderer, windowWidth - 25, windowHeight - 25);
 	
 	SDL_RenderPresent(mainRenderer);
 }
