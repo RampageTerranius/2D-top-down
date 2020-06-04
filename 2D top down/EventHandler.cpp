@@ -32,21 +32,12 @@ InputManager::InputManager()
 	moveRight = new CommandMoveRight();
 	fire = new CommandFireWeapon();
 	reload = new CommandReloadWeapon();
+	dodge = new CommandDodge();
 	build = new CommandBuild();
 	changeWeaponNext = new CommandChangeWeaponNext();
 	changeWeaponLast = new CommandChangeWeaponLast();
 
 	mouse = SDL_Point{ 0,0 };
-
-	commands[SDLK_w] = moveUp;
-	commands[SDLK_s] = moveDown;
-	commands[SDLK_a] = moveLeft;
-	commands[SDLK_d] = moveRight;
-	commands[SDL_BUTTON_LEFT] = fire;
-	commands[SDLK_r] = reload;
-	commands[SDL_BUTTON_RIGHT] = build;
-	commands[SDLK_e] = changeWeaponNext;
-	commands[SDLK_q] = changeWeaponLast;
 }
 
 // Delete all command pointers on deconstruction.
@@ -149,4 +140,36 @@ bool InputManager::IsHeld(int key)
 void InputManager::Bind(int key, Command* command)
 {
 	commands[key] = command;
+}
+
+void InputManager::Bind(int key, std::string str)
+{
+	Command* command = nullptr;
+
+	// TODO: once again... there has to be a better way to do this... switches of type string dont work but surely there is a better way to go about this then a nest of if/else
+	if (str == "MoveUp")
+		command = moveUp;
+	else if (str == "MoveDown")
+		command = moveDown;
+	else if (str == "MoveLeft")
+		command = moveLeft;
+	else if (str == "MoveRight")
+		command = moveRight;
+	else if (str == "Fire")
+		command = fire;
+	else if (str == "Reload")
+		command = reload;
+	else if (str == "Dodge")
+		command = dodge;
+	else if (str == "Build")
+		command = build;
+	else if (str == "NextWeapon")
+		command = changeWeaponNext;
+	else if (str == "LastWeapon")
+		command = changeWeaponLast;
+
+	if (command != nullptr)	
+		Bind(key, command);	
+	else
+		debug.Log("InputManager", "Bind", "Failed to find a command that '" + str + "' could be bound to");
 }

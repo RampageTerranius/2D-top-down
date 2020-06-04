@@ -246,6 +246,24 @@ void Player::RenderAimer()
 	aimer.Render(0);
 }
 
+void Player::Dodge()
+{
+	// Stop palyer from dodging if they have no dodge charges.
+	if (this->dodgesLeft <= 0)
+		return;
+
+	// Player must let go of key before they can dodge again.
+	if (this->dodgedLastTick)
+	{
+		this->dodgedThisTick = true;
+		return;
+	}
+
+	this->currentMovementVel = this->dodgeVel;
+	this->dodgesLeft--;
+	this->dodgedThisTick = true;
+}
+
 void Player::AddWeapon(Weapon* wep)
 {
 	this->weapon.push_back(wep);
@@ -438,5 +456,7 @@ void Players::HandlePlayerEvents()
 		pl->firedThisTick = false;
 		pl->changedWeaponLastTick = pl->changedWeaponThisTick;
 		pl->changedWeaponThisTick = false;
+		pl->dodgedLastTick = pl->dodgedThisTick;
+		pl->dodgedThisTick = false;
 	}
 }

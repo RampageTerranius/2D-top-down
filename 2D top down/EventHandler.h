@@ -37,6 +37,12 @@ public:
 	void Execute(Player* player) { player->ReloadWeapon(); }
 };
 
+class CommandDodge : public Command
+{
+public:
+	void Execute(Player* player) { player->Dodge(); }
+};
+
 class CommandBuild : public Command
 {
 public:
@@ -93,6 +99,7 @@ public:
 	InputManager();
 	bool GenerateInput(std::vector<Command*>& commandVector);
 	void Bind(int key, Command* command);
+	void Bind(int key, std::string str);
 	SDL_Point GetMouseLocation();
 
 private:
@@ -103,6 +110,7 @@ private:
 	Command* moveRight;
 	Command* fire;
 	Command* reload;
+	Command* dodge;
 	Command* build;
 	Command* changeWeaponNext;
 	Command* changeWeaponLast;

@@ -23,6 +23,7 @@ public:
 
 	void FireWeapon();
 	void ReloadWeapon();
+	void Dodge();
 	void RenderAimer();
 	void AddWeapon(Weapon* wep);
 	void RemoveWeapon(int weaponIndex);
@@ -36,6 +37,8 @@ public:
 	float currentRecoil;
 	bool firedThisTick;
 	bool firedLastTick;
+	bool dodgedThisTick;
+	bool dodgedLastTick;
 	bool changedWeaponThisTick;
 	bool changedWeaponLastTick;
 

@@ -96,6 +96,25 @@ bool SetupEngine()
 		mainRenderer = SDL_CreateRenderer(mainWindow, -1, renderFlags);
 	}
 
+	// Get input binds.
+	{
+		debug.Log("Setup+Shutdown", "SetupEngine", "Loading input binds...");
+		
+		CSimpleIniA::TNamesDepend keys;
+		ini.GetAllKeys("Input", keys);
+
+		for (CSimpleIniA::TNamesDepend::const_iterator it = keys.begin(); it != keys.end(); ++it)
+		{
+			std::string str = it->pItem;
+
+			int i = 0;
+			std::stringstream sStr;
+			sStr << ini.GetValue("Input", str.c_str(), "0");
+			sStr >> i;
+			iManager->Bind(i, str);			
+		}
+	}
+
 	SDL_SetRenderDrawColor(mainRenderer, renderColorR, renderColorG, renderColorB, renderColorA);
 
 	debug.Log("Setup+Shutdown", "SetupEngine", "Loading textures...");	
