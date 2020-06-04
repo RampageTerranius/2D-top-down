@@ -306,11 +306,12 @@ void Player::SwitchToLastWeapon()
 void Player::ReloadWeapon()
 {
 	if (this->weapon.size() > 0)
-		if (this->reloadTimer == 0)
-		{
-			this->reloadTimer = this->weapon[this->selectedWeapon]->reloadTime;
-			this->fireTimer = this->weapon[this->selectedWeapon]->fireRate;
-		}
+		if (this->ammoLeft[this->selectedWeapon] < this->weapon[this->selectedWeapon]->totalAmmo)
+			if (this->reloadTimer == 0)
+			{
+				this->reloadTimer = this->weapon[this->selectedWeapon]->reloadTime;
+				this->fireTimer = this->weapon[this->selectedWeapon]->fireRate;
+			}
 }
 
 Player* Players::CreatePlayer(std::string playerName)
