@@ -91,9 +91,9 @@ void Character::MoveBy(float x, float y)
 
 void Character::MoveCameraToHere()
 {
-	camera.x = static_cast<int> ((windowWidth / 2) - this->loc.x);
+	camera.x = static_cast<int> ((windowWidth / 2) - round(this->loc.x));
 	camera.w = map.GetSizeX();
-	camera.y = static_cast<int> ((windowHeight / 2) - this->loc.y);
+	camera.y = static_cast<int> ((windowHeight / 2) - round(this->loc.y));
 	camera.h = map.GetSizeY();
 }
 
