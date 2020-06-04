@@ -12,23 +12,8 @@
 
 enum KeyState
 {	
-	KEYSTATE_RELEASED,
-	KEYSTATE_PRESSED,
-	KEYSTATE_HELD
-};
-
-enum ActionState
-{
-	ACTIONSTATE_EXECUTE = true,
-	ACTIONSTATE_STOP = false
-};
-
-enum InputType
-{
-	INPUTTYPE_UNDEFINED,
-	INPUTTYPE_ACTION,
-	INPUTTYPE_STATE,
-	INPUTTYPE_RANGE
+	KEYSTATE_RELEASED = false,
+	KEYSTATE_PRESSED = true
 };
 
 class Command
@@ -36,71 +21,60 @@ class Command
 public:
 	virtual ~Command() {};
 	virtual void Execute(Player* player) = 0;
-	virtual InputType GetInputType() = 0;
 };
 
 class CommandFireWeapon : public Command
 {
 public:
 	void Execute(Player* player) { player->FireWeapon(); }
-	
-	InputType GetInputType() { return INPUTTYPE_STATE; }
 };
 
 class CommandReloadWeapon : public Command
 {
 public:
 	void Execute(Player* player) { player->ReloadWeapon(); }
-	InputType GetInputType() { return INPUTTYPE_STATE; }
 };
 
 class CommandBuild : public Command
 {
 public:
 	void Execute(Player* player) {  }
-	InputType GetInputType() { return INPUTTYPE_STATE; }
 };
 
 class CommandChangeWeaponNext : public Command
 {
 public:
 	void Execute(Player* player) { player->SwitchToNextWeapon(); }
-	InputType GetInputType() { return INPUTTYPE_STATE; }
 };
 
 class CommandChangeWeaponLast : public Command
 {
 public:
 	void Execute(Player* player) { player->SwitchToLastWeapon(); }
-	InputType GetInputType() { return INPUTTYPE_STATE; }
 };
 
 class CommandMoveUp : public Command
 {
 public:
 	void Execute(Player* player) { player->MoveBy(0, -player->currentMovementVel); }
-	InputType GetInputType() { return INPUTTYPE_STATE; }
 };
 
 class CommandMoveDown : public Command
 {
 public:
 	void Execute(Player* player) { player->MoveBy(0, player->currentMovementVel); }
-	InputType GetInputType() { return INPUTTYPE_STATE; }
 };
 
 class CommandMoveLeft : public Command
 {
 public:
 	void Execute(Player* player) { player->MoveBy(-player->currentMovementVel, 0); }
-	InputType GetInputType() { return INPUTTYPE_STATE; }
 };
 
 class CommandMoveRight : public Command
 {
 public:
 	void Execute(Player* player) { player->MoveBy(player->currentMovementVel, 0); }
-	InputType GetInputType() { return INPUTTYPE_STATE; }
 };
 
 class InputManager
@@ -128,7 +102,6 @@ private:
 	std::map <int, Command*> commands;
 	std::map <int, KeyState> state;
 	std::map <int, KeyState> previousState;
-	std::map <int, ActionState> action;
 
 	SDL_Point mouse;
 
@@ -143,7 +116,6 @@ private:
 	void OnMouseUpInput(SDL_Event& event);
 
 	bool IsHeld(int key);
-	bool WasPressed(int key);
 };
 
 void HandleEvents();

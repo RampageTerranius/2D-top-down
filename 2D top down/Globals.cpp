@@ -26,7 +26,7 @@ Weapons allWeapons = Weapons();
 Players allPlayers = Players();
 
 Player* currentPlayer;
-SDL_Rect camera = {0, 0, windowWidth, windowHeight};
+SDL_Rect camera = {0, 0,};
 
 
 // Map data;

@@ -12,6 +12,8 @@ void HandleEvents()
 	// handle all player based events (reloading, recoil etc...)
 	allPlayers.HandlePlayerEvents();
 
+	// Handle all events to do with current player only (camera, facing etc...)
+
 	// TODO: set this up to always move camera to the current player (for when dead and alive)
 	currentPlayer->MoveCameraToHere();
 	//allPlayers.GetPlayer("Player2")->MoveCameraToHere();
@@ -98,9 +100,7 @@ bool InputManager::InputToActions()
 void InputManager::DispatchCommands(std::vector<Command*>& command_queue)
 {
 	for (std::map<int, Command*>::iterator iter = commands.begin(); iter != commands.end(); iter++)
-		if (IsHeld(iter->first) && iter->second->GetInputType() == INPUTTYPE_STATE)
-			command_queue.push_back(iter->second);
-		else if (WasPressed(iter->first) && iter->second->GetInputType() == INPUTTYPE_ACTION)
+		if (IsHeld(iter->first))
 			command_queue.push_back(iter->second);
 }
 
@@ -111,7 +111,6 @@ bool InputManager::GenerateInput(std::vector<Command*>& CommandVector)
 	else
 	{
 		DispatchCommands(CommandVector);
-		action.clear();
 		return true;
 	}
 }
@@ -123,37 +122,21 @@ void InputManager::OnMouseMotion(SDL_Event& event)
 
 void InputManager::OnKeyDownInput(SDL_Event& event)
 {
-	if (state[event.key.keysym.sym] == KEYSTATE_RELEASED)
-		action[event.key.keysym.sym] = ACTIONSTATE_EXECUTE;
-	previousState[event.key.keysym.sym] = state[event.key.keysym.sym];
-
-	if (state[event.key.keysym.sym] == KEYSTATE_RELEASED)
-		state[event.key.keysym.sym] = KEYSTATE_PRESSED;
-	else
-		state[event.key.keysym.sym] = KEYSTATE_HELD;
+	state[event.key.keysym.sym] = KEYSTATE_PRESSED;
 }
 
 void InputManager::OnKeyUpInput(SDL_Event& event)
 {
-	previousState[event.key.keysym.sym] = state[event.key.keysym.sym];
 	state[event.key.keysym.sym] = KEYSTATE_RELEASED;
 }
 
 void InputManager::OnMouseDownInput(SDL_Event& event)
 {
-	if (state[event.button.button] == KEYSTATE_RELEASED)
-		action[event.button.button] = ACTIONSTATE_EXECUTE;
-	previousState[event.button.button] = state[event.button.button];
-
-	if (state[event.button.button] == KEYSTATE_RELEASED)
-		state[event.button.button] = KEYSTATE_PRESSED;
-	else
-		state[event.button.button] = KEYSTATE_HELD;
+	state[event.button.button] = KEYSTATE_PRESSED;
 }
 
 void InputManager::OnMouseUpInput(SDL_Event& event)
 {
-	previousState[event.button.button] = state[event.button.button];
 	state[event.button.button] = KEYSTATE_RELEASED;
 }
 
@@ -161,12 +144,6 @@ void InputManager::OnMouseUpInput(SDL_Event& event)
 bool InputManager::IsHeld(int key)
 {
 	return state[key];
-}
-
-// Check if the key was pressed.
-bool InputManager::WasPressed(int key)
-{
-	return action[key];
 }
 
 void InputManager::Bind(int key, Command* command)

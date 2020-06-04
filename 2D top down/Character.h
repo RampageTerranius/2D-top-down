@@ -34,7 +34,10 @@ public:
 	int health;
 
 	float currentRecoil;
-	bool isFiring;
+	bool firedThisTick;
+	bool firedLastTick;
+	bool changedWeaponThisTick;
+	bool changedWeaponLastTick;
 
 	std::vector<Weapon*> weapon;
 	int selectedWeapon;

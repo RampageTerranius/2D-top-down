@@ -106,7 +106,12 @@ Player::Player()
 	this->health = 0;
 
 	this->currentRecoil = 0;
-	this->isFiring = 0;
+
+	this->firedThisTick = false;
+	this->firedLastTick = false;
+	this->changedWeaponThisTick = false;
+	this->changedWeaponLastTick = false;
+	
 
 	this->weapon.clear();
 	this->ammoLeft.clear();
@@ -131,6 +136,14 @@ Player::Player()
 // Logic for the player firing their weapon.
 void Player::FireWeapon()
 {
+	// If the user is holding the fire button check if we can continue to shoot.
+	if (this->weapon[this->selectedWeapon]->fireType == FireType::SemiAuto)
+		if (this->firedLastTick)
+		{
+			this->firedThisTick = true;
+			return;
+		}
+
 	if (this->weapon.size() > 0)
 		if (this->weapon[this->selectedWeapon] != nullptr)
 			if (this->ammoLeft[this->selectedWeapon] > 0)
@@ -170,9 +183,7 @@ void Player::FireWeapon()
 						allProjectiles.CreateProjectile(plPoint, aimLoc, this->weapon[this->selectedWeapon], this);
 
 						tempProjectilesToLaunch--;
-					}
-
-					debug.Log("Character", "FireWeapon", "fired round. deviation of :" + std::to_string(calcDeviation));
+					}					
 
 					this->currentRecoil += this->weapon[this->selectedWeapon]->recoil;
 					if (currentRecoil > this->weapon[this->selectedWeapon]->maxDeviation)
@@ -181,6 +192,10 @@ void Player::FireWeapon()
 					this->fireTimer = this->weapon[this->selectedWeapon]->fireRate;
 
 					this->ammoLeft[this->selectedWeapon]--;
+
+					this->firedThisTick = true;
+
+					debug.Log("Character", "FireWeapon", "fired round. deviation of :" + std::to_string(calcDeviation));
 				}
 				// TODO: player tryed to fire while gun was reloading/between shots. make a sound or something to let the player know.
 			}
@@ -245,6 +260,13 @@ void Player::RemoveWeapon(int weaponIndex)
 
 void Player::SwitchToNextWeapon()
 {
+	// If the user is holding the button stop it from continuously cycling weapons.
+	if (this->changedWeaponLastTick)
+	{
+		this->changedWeaponThisTick = true;
+		return;
+	}
+
 	if (this->weapon.size() > 0)
 	{
 		this->selectedWeapon++;
@@ -253,11 +275,20 @@ void Player::SwitchToNextWeapon()
 
 		this->fireTimer = this->weapon[this->selectedWeapon]->fireRate;
 		this->reloadTimer = 0;
+
+		this->changedWeaponThisTick = true;
 	}
 }
 
 void Player::SwitchToLastWeapon()
 {
+	// If the user is holding the button stop it from continuously cycling weapons.
+	if (this->changedWeaponLastTick)
+	{
+		this->changedWeaponThisTick = true;
+		return;
+	}
+
 	if (this->weapon.size() > 0)
 	{
 		this->selectedWeapon--;
@@ -266,6 +297,8 @@ void Player::SwitchToLastWeapon()
 
 		this->fireTimer = this->weapon[this->selectedWeapon]->fireRate;
 		this->reloadTimer = 0;
+
+		this->changedWeaponThisTick = true;
 	}
 }
 
@@ -377,9 +410,6 @@ void Players::HandlePlayerEvents()
 
 			if (pl->currentRecoil < 0)
 				pl->currentRecoil = 0;
-
-			if (pl->isFiring)
-				pl->currentRecoil = pl->currentRecoil;
 		}
 
 		// dodging logic.
@@ -403,6 +433,9 @@ void Players::HandlePlayerEvents()
 
 		// Reset is firing to false each frame.
 		// Each time the user fires it will set this to true.
-		pl->isFiring = false;
+		pl->firedLastTick = pl->firedThisTick;
+		pl->firedThisTick = false;
+		pl->changedWeaponLastTick = pl->changedWeaponThisTick;
+		pl->changedWeaponThisTick = false;
 	}
 }
