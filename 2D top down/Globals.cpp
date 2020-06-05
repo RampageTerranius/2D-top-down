@@ -10,6 +10,8 @@ InputManager* iManager = new InputManager();
 
 int windowWidth = 640;
 int windowHeight = 480;
+int windowWidthDiv2 = windowWidth / 2;
+int windowHeightDiv2 = windowHeight / 2;
 
 int renderColorR = 20;
 int renderColorG = 20;

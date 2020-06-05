@@ -63,9 +63,12 @@ int main(int argc, char* argv[])
 
 		Render();		
 
-		int frameTicks = capTimer.GetTicks();
-		if (frameTicks < ticksPerFrame)
-			SDL_Delay(ticksPerFrame - frameTicks);
+		if (capFrameRate)
+		{
+			int frameTicks = capTimer.GetTicks();
+			if (frameTicks < ticksPerFrame)
+				SDL_Delay(ticksPerFrame - frameTicks);
+		}
 	}
 
 	// Shutdown the engine.

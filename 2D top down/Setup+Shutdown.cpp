@@ -68,6 +68,8 @@ bool SetupEngine()
 
 		const int WINDOW_WIDTH = windowWidth;
 		const int WINDOW_HEIGHT = windowHeight;
+		windowWidthDiv2 = windowWidth / 2;
+		windowHeightDiv2 = windowHeight / 2;
 		if (WINDOW_WIDTH < 640 || WINDOW_HEIGHT < 480)
 		{
 			debug.Log("Setup+Shutdown", "SetupEngine", "Invalid window width/height given. Window must be at least 640x480.");
@@ -98,10 +100,18 @@ bool SetupEngine()
 		sStr = std::stringstream();
 		sStr << ini.GetValue("Video", "Framerate", "30");
 		sStr >> i;
-		frameRate = i;
-		ticksPerFrame = 1000 / frameRate;
-
-		debug.Log("Setup+Shutdown", "SetupEngine", "Framerate set at " + std::to_string(frameRate));
+		frameRate = i;		
+		
+		if (i > 0)
+		{
+			ticksPerFrame = 1000 / frameRate;
+			debug.Log("Setup+Shutdown", "SetupEngine", "Framerate set at " + std::to_string(frameRate));
+		}
+		else
+		{
+			capFrameRate = false;			
+			debug.Log("Setup+Shutdown", "SetupEngine", "Framerate set to no limit");
+		}
 
 		// Get vsync settings.
 		sStr = std::stringstream();

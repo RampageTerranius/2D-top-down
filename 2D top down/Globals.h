@@ -22,6 +22,8 @@ extern InputManager* iManager;
 extern std::string programName;
 extern int windowWidth;
 extern int windowHeight;
+extern int windowWidthDiv2;
+extern int windowHeightDiv2;
 extern bool HardwareCursor;
 
 extern int renderColorR;

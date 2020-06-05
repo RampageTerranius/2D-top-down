@@ -20,8 +20,8 @@ bool Entity::Render()
 		rect.w = texture->Rect().w;
 		rect.h = texture->Rect().h;
 		// TODO: This does not reference where the entity exists, should be updated to reference that instead of middle of screen.
-		rect.x = static_cast<int> (round((windowWidth / 2) - (rect.w / 2)));
-		rect.y = static_cast<int> (round((windowHeight / 2) - (rect.h / 2)));
+		rect.x = static_cast<int> (round(windowWidthDiv2 - (rect.w / 2)));
+		rect.y = static_cast<int> (round(windowHeightDiv2 - (rect.h / 2)));
 
 		if (SDL_RenderCopyEx(mainRenderer, texture->Tex(), NULL, &rect, NULL, NULL, SDL_FLIP_NONE) >= 0)
 			return true;
