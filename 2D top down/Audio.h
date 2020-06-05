@@ -66,6 +66,6 @@ private:
 public:
 	void Cleanup();
 	Sound* GetSound(std::string name);
-	Sound* CreateSound(std::string fileLoc, std::string name);
+	Sound* CreateSound(std::string fileLoc, std::string name, bool isChunk);
 	void DeleteSound(std::string name);
 };

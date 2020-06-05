@@ -171,9 +171,14 @@ Sound* Sounds::GetSound(std::string name)
 	return nullptr;
 }
 
-Sound* Sounds::CreateSound(std::string fileLoc, std::string name)
+Sound* Sounds::CreateSound(std::string fileLoc, std::string name, bool isChunk)
 {
-	Sound* sound = new Sound();
+	Sound* sound = nullptr;
+	if (isChunk)
+		sound = new Chunk();
+	else
+		sound = new Music();
+
 	if (!sound->Load(fileLoc, name))
 	{
 		delete sound;

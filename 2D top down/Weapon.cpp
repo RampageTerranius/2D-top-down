@@ -16,6 +16,17 @@ Weapon::Weapon()
 	this->bulletType = ProjectileType::Bullet;
 	this->reloadType = ReloadType::Clip;
 	this->fireType = FireType::FullAuto;
+	this->fireSound = nullptr;
+	this->reloadSound = nullptr;
+}
+
+void Weapon::PlayFireSound()
+{
+	if (this->fireSound != nullptr)
+	{	
+		this->fireSound->Stop();
+		this->fireSound->Play();
+	}
 }
 
 void Weapons::AddWeapon(Weapon* weapon)

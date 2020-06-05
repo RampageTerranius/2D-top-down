@@ -49,6 +49,28 @@ bool SetupEngine()
 		return false;
 	}
 
+	// Load the audio files into memory
+	debug.Log("Setup+Shutdown", "SetupEngine", "Loading audio files...");
+
+	if (allSounds.CreateSound(GetEXEPath() + "\\Sound\\Rifle Fire.aiff", "Rifle Fire", true) == nullptr)
+	{
+		debug.Log("Setup+Shutdown", "SetupEngine", "Failed to load Rifle firing sound...");
+		return false;
+	}
+
+	if (allSounds.CreateSound(GetEXEPath() + "\\Sound\\Shotgun Fire.wav", "Shotgun Fire", true) == nullptr)
+	{
+		debug.Log("Setup+Shutdown", "SetupEngine", "Failed to load Shotgun firing sound...");
+		return false;
+	}
+
+	if (allSounds.CreateSound(GetEXEPath() + "\\Sound\\Pistol Fire.wav", "Pistol Fire", true) == nullptr)
+	{
+		debug.Log("Setup+Shutdown", "SetupEngine", "Failed to load Pistol firing sound...");
+		return false;
+	}
+
+
 	debug.Log("Setup+Shutdown", "SetupEngine", "Loading setting file...");
 
 	CSimpleIni ini;
@@ -167,14 +189,14 @@ bool SetupEngine()
 
 	debug.Log("Setup+Shutdown", "SetupEngine", "Loading textures...");	
 
-	allTextures.CreateTexture(GetEXEPath() + "\\Direction Marker.png", "DirMarker");
-	allTextures.CreateTexture(GetEXEPath() + "\\Direction Marker2.png", "DirMarker2");
-	allTextures.CreateTexture(GetEXEPath() + "\\Bullet.png", "Bullet");
-	allTextures.CreateTexture(GetEXEPath() + "\\Aim Marker Top.png", "AimMarkerTop");
-	allTextures.CreateTexture(GetEXEPath() + "\\Aim Marker Bottom.png", "AimMarkerBottom");
-	allTextures.CreateTexture(GetEXEPath() + "\\Aim Marker Left.png", "AimMarkerLeft");
-	allTextures.CreateTexture(GetEXEPath() + "\\Aim Marker Right.png", "AimMarkerRight");
-	allTextures.CreateTexture(GetEXEPath() + "\\Red Dot.png", "RedDot");
+	allTextures.CreateTexture(GetEXEPath() + "\\Images\\Direction Marker.png", "DirMarker");
+	allTextures.CreateTexture(GetEXEPath() + "\\Images\\Direction Marker2.png", "DirMarker2");
+	allTextures.CreateTexture(GetEXEPath() + "\\Images\\Bullet.png", "Bullet");
+	allTextures.CreateTexture(GetEXEPath() + "\\Images\\Aim Marker Top.png", "AimMarkerTop");
+	allTextures.CreateTexture(GetEXEPath() + "\\Images\\Aim Marker Bottom.png", "AimMarkerBottom");
+	allTextures.CreateTexture(GetEXEPath() + "\\Images\\Aim Marker Left.png", "AimMarkerLeft");
+	allTextures.CreateTexture(GetEXEPath() + "\\Images\\Aim Marker Right.png", "AimMarkerRight");
+	allTextures.CreateTexture(GetEXEPath() + "\\Images\\Red Dot.png", "RedDot");
 
 	if (allTextures.GetTexture("DirMarker") == nullptr || allTextures.GetTexture("Bullet") == nullptr || allTextures.GetTexture("AimMarkerTop") == nullptr || allTextures.GetTexture("AimMarkerBottom") == nullptr || allTextures.GetTexture("AimMarkerLeft") == nullptr || allTextures.GetTexture("AimMarkerRight") == nullptr || allTextures.GetTexture("RedDot") == nullptr)
 	{
@@ -182,7 +204,7 @@ bool SetupEngine()
 		return false;
 	}
 
-	if (!ttfWeapon.SetFont(GetEXEPath() + "\\pxl.ttf", 20) || !ttfAmmo.SetFont(GetEXEPath() + "\\pxl.ttf", 20) || !ttfFPS.SetFont(GetEXEPath() + "\\pxl.ttf", 20) || !ttfDodges.SetFont(GetEXEPath() + "\\pxl.ttf", 20))
+	if (!ttfWeapon.SetFont(GetEXEPath() + "\\Fonts\\pxl.ttf", 20) || !ttfAmmo.SetFont(GetEXEPath() + "\\Fonts\\pxl.ttf", 20) || !ttfFPS.SetFont(GetEXEPath() + "\\Fonts\\pxl.ttf", 20) || !ttfDodges.SetFont(GetEXEPath() + "\\Fonts\\pxl.ttf", 20))
 	{
 		debug.Log("Setup+Shutdown", "SetupEngine", "failed to load fonts");
 		return false;
@@ -232,7 +254,7 @@ bool SetupEngine()
 			{
 				int i = 0;
 				std::stringstream sStr;
-				sStr << ini.GetValue(entry.pItem, it->pItem, "0");;
+				sStr << ini.GetValue(entry.pItem, it->pItem, "0");
 				sStr >> i;
 				wep->projectileDistance = i;
 			}
@@ -240,7 +262,7 @@ bool SetupEngine()
 			{
 				float f = 0.0f;
 				std::stringstream sStr;
-				sStr << ini.GetValue(entry.pItem, it->pItem, "0");;
+				sStr << ini.GetValue(entry.pItem, it->pItem, "0");
 				sStr >> f;
 				wep->projectileSpeed = f;
 			}
@@ -248,7 +270,7 @@ bool SetupEngine()
 			{
 				int i = 0;
 				std::stringstream sStr;
-				sStr << ini.GetValue(entry.pItem, it->pItem, "0");;
+				sStr << ini.GetValue(entry.pItem, it->pItem, "0");
 				sStr >> i;
 				wep->fireRate = i;
 			}
@@ -256,7 +278,7 @@ bool SetupEngine()
 			{
 				int i = 0;
 				std::stringstream sStr;
-				sStr << ini.GetValue(entry.pItem, it->pItem, "0");;
+				sStr << ini.GetValue(entry.pItem, it->pItem, "0");
 				sStr >> i;
 				wep->reloadTime = i;
 			}
@@ -264,7 +286,7 @@ bool SetupEngine()
 			{
 				float f = 0.0f;
 				std::stringstream sStr;
-				sStr << ini.GetValue(entry.pItem, it->pItem, "0");;
+				sStr << ini.GetValue(entry.pItem, it->pItem, "0");
 				sStr >> f;
 				wep->deviation = f;
 			}
@@ -272,7 +294,7 @@ bool SetupEngine()
 			{
 				float f = 0.0f;
 				std::stringstream sStr;
-				sStr << ini.GetValue(entry.pItem, it->pItem, "0");;
+				sStr << ini.GetValue(entry.pItem, it->pItem, "0");
 				sStr >> f;
 				wep->maxDeviation = f;
 			}
@@ -280,7 +302,7 @@ bool SetupEngine()
 			{
 				float f = 0.0f;
 				std::stringstream sStr;
-				sStr << ini.GetValue(entry.pItem, it->pItem, "0");;
+				sStr << ini.GetValue(entry.pItem, it->pItem, "0");
 				sStr >> f;
 				wep->recoil = f;
 			}
@@ -288,7 +310,7 @@ bool SetupEngine()
 			{
 				float f = 0.0f;
 				std::stringstream sStr;
-				sStr << ini.GetValue(entry.pItem, it->pItem, "0");;
+				sStr << ini.GetValue(entry.pItem, it->pItem, "0");
 				sStr >> f;
 				wep->recoilControlRate = f;
 			}
@@ -296,7 +318,7 @@ bool SetupEngine()
 			{
 				int i = 0;
 				std::stringstream sStr;
-				sStr << ini.GetValue(entry.pItem, it->pItem, "0");;
+				sStr << ini.GetValue(entry.pItem, it->pItem, "0");
 				sStr >> i;
 				wep->bulletsPerShot = i;
 			}
@@ -304,7 +326,7 @@ bool SetupEngine()
 			{
 				int i = 0;
 				std::stringstream sStr;
-				sStr << ini.GetValue(entry.pItem, it->pItem, "0");;
+				sStr << ini.GetValue(entry.pItem, it->pItem, "0");
 				sStr >> i;
 				wep->totalAmmo = i;
 			}
@@ -312,7 +334,7 @@ bool SetupEngine()
 			{
 				int i = 0;
 				std::stringstream sStr;
-				sStr << ini.GetValue(entry.pItem, it->pItem, "0");;
+				sStr << ini.GetValue(entry.pItem, it->pItem, "0");
 				sStr >> i;
 				wep->fireType = static_cast<FireType> (i);
 			}
@@ -320,10 +342,14 @@ bool SetupEngine()
 			{
 				int i = 0;
 				std::stringstream sStr;
-				sStr << ini.GetValue(entry.pItem, it->pItem, "0");;
+				sStr << ini.GetValue(entry.pItem, it->pItem, "0");
 				sStr >> i;
 				wep->reloadType = static_cast<ReloadType> (i);
 			}
+			else if (str == "fireSound")			
+				wep->fireSound = allSounds.GetSound(ini.GetValue(entry.pItem, it->pItem, "NO SOUND"));	
+			else if (str == "reloadSound")
+				wep->reloadSound = allSounds.GetSound(ini.GetValue(entry.pItem, it->pItem, "NO SOUND"));
 		}
 
 		allWeapons.AddWeapon(wep);

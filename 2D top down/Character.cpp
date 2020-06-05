@@ -156,6 +156,8 @@ void Player::FireWeapon()
 					return;
 				}
 
+				this->weapon[this->selectedWeapon]->PlayFireSound();
+
 				if (this->reloadTimer == 0 && this->fireTimer == 0)
 				{
 					// Get the point of the player.
