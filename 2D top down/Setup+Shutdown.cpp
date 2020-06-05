@@ -86,14 +86,6 @@ bool SetupEngine()
 		else
 			debug.Log("Setup+Shutdown", "SetupEngine", "Fullscreen mode given unknown parameter");
 
-		sStr = std::stringstream();
-		sStr << ini.GetValue("Video", "Framerate", "30");
-		sStr >> i;
-		frameRate = i;
-		ticksPerFrame = 1000 / frameRate;
-
-		debug.Log("Setup+Shutdown", "SetupEngine", "Framerate set at " + std::to_string(frameRate));
-
 		Uint32 windowFlags = SDL_WINDOW_OPENGL;
 		
 		if (i == 1)
@@ -102,6 +94,14 @@ bool SetupEngine()
 		mainWindow = SDL_CreateWindow(programName.c_str(), 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, windowFlags);
 
 		mainSurface = SDL_GetWindowSurface(mainWindow);
+
+		sStr = std::stringstream();
+		sStr << ini.GetValue("Video", "Framerate", "30");
+		sStr >> i;
+		frameRate = i;
+		ticksPerFrame = 1000 / frameRate;
+
+		debug.Log("Setup+Shutdown", "SetupEngine", "Framerate set at " + std::to_string(frameRate));
 
 		// Get vsync settings.
 		sStr = std::stringstream();
