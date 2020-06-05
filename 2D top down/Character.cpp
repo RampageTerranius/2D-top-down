@@ -3,6 +3,7 @@
 #include "globals.h"
 #include "Math functions.h"
 #include "Vector2D.h"
+#include "Debug.h"
 
 Character::Character()
 {		

@@ -1,6 +1,7 @@
 #include "EventHandler.h"
 #include "Math functions.h"
 #include "Globals.h"
+#include "Debug.h"
 
 #include <SDL.h>
 

@@ -1,5 +1,6 @@
 #include "Weapon.h"
 #include "globals.h"
+#include "Debug.h"
 
 Weapon::Weapon()
 {

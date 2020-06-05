@@ -3,6 +3,7 @@
 #include "Globals.h"
 #include "Math functions.h"
 #include "Vector2D.h"
+#include "Debug.h"
 
 Entity::Entity()
 {

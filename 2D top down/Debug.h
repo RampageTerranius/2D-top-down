@@ -30,3 +30,5 @@ public:
 private:
 	std::vector<DebugMessage> msg;
 };
+
+extern Debug debug;

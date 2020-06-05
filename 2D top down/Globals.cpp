@@ -1,7 +1,5 @@
 #include "Globals.h"
 
-Debug debug = Debug();
-
 std::string programName = "Test";
 
 bool HardwareCursor = false;
@@ -26,6 +24,7 @@ Textures allTextures = Textures();
 Projectiles allProjectiles = Projectiles();
 Weapons allWeapons = Weapons();
 Players allPlayers = Players();
+Sounds allSounds = Sounds();
 
 Player* currentPlayer;
 SDL_Rect camera = {0, 0,};

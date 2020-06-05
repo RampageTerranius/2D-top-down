@@ -1,6 +1,7 @@
 #include "UI.h"
 
 #include "Globals.h"
+#include "Debug.h"
 
 bool UI::Render(int rotationAngle)
 {

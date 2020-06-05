@@ -2,8 +2,8 @@
 
 #include <SDL.h>
 #include <string>
-#include "Debug.h"
 #include "Entity.h"
+#include "Audio.h"
 #include "Map.h"
 #include "Texture.h"
 #include "TTF.h"
@@ -14,8 +14,6 @@
 #include "Timer.h"
 
 // Debugging stuff.
-extern Debug debug;
-
 extern InputManager* iManager;
 
 // General application settings.
@@ -43,6 +41,7 @@ extern Textures allTextures;
 extern Projectiles allProjectiles;
 extern Weapons allWeapons;
 extern Players allPlayers;
+extern Sounds allSounds;
 
 // Test Player.
 extern Player* currentPlayer;

@@ -2,6 +2,7 @@
 #include "Math functions.h"
 #include "Map Data Type.h"
 #include "globals.h"
+#include "Debug.h"
 
 void ProjectileLinkedList::PushBack(Projectile* data)
 {

@@ -2,6 +2,7 @@
 
 #include <SDL.h>
 #include <SDL_ttf.h>
+#include <SDL_mixer.h>
 #include <cstdlib>
 #include <ctime>
 #include <sstream>
@@ -10,6 +11,7 @@
 #include "Globals.h"
 #include "Texture.h"
 #include "MiscFunctions.h"
+#include "Debug.h"
 
 // Setup the engine, preparing everything required.
 bool SetupEngine()
@@ -23,7 +25,7 @@ bool SetupEngine()
 	if (SDL_Init(SDL_INIT_EVERYTHING) != 0)
 	{
 		std::string str = SDL_GetError();
-		debug.Log("Setup+Shutdown", "SetupEngine", "SDL failed to initialize" + str);
+		debug.Log("Setup+Shutdown", "SetupEngine", "SDL failed to initialize | " + str);
 		return false;
 	}
 
@@ -33,7 +35,17 @@ bool SetupEngine()
 	{
 		std::string str = SDL_GetError();
 
-		debug.Log("Setup+Shutdown", "SetupEngine", "TTF failed to initialize" + str);
+		debug.Log("Setup+Shutdown", "SetupEngine", "TTF failed to initialize | " + str);
+		return false;
+	}
+
+	debug.Log("Setup+Shutdown", "SetupEngine", "Initializing SDL_MIXER sub-routines...");
+
+	if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
+	{
+		std::string str = Mix_GetError();
+
+		debug.Log("Setup+Shutdown", "SetupEngine", "Mixer failed to initialize | " + str);
 		return false;
 	}
 
@@ -414,6 +426,8 @@ void ShutdownEngine()
 	debug.Log("Setup+Shutdown", "ShutdownEngine", "Shutting down engine...");
 	   
 	SDL_Quit();
+	Mix_Quit();
+	IMG_Quit();
 
 	// Destroy the main renderer before shutdown.
 	if (mainRenderer != nullptr)

@@ -1,6 +1,7 @@
 #include "Texture.h"
 
 #include "Globals.h"
+#include "Debug.h"
 
 Texture::Texture()
 {

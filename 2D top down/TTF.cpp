@@ -1,6 +1,6 @@
 #include "TTF.h"
 
-#include "Globals.h"
+#include "Debug.h"
 
 #include <string>
 
