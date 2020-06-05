@@ -214,7 +214,8 @@ void Projectiles::CreateProjectile(Vector2D start, Vector2D end, Weapon* weapon,
 
 	this->projectileList.PushBack(proj);
 
-	debug.Log("Projectiles", "CreateProjectile", "Created a Projectile start point x/y " + proj->start.ToString() + " going to: " + proj->target.ToString());
+	if (this->debugProjectiles)
+		debug.Log("Projectiles", "CreateProjectile", "Created a Projectile start point x/y " + proj->start.ToString() + " going to: " + proj->target.ToString() + " Deviation of: " + std::to_string(proj->Owner->weapon[proj->Owner->selectedWeapon]->deviation));
 }
 
 void Projectiles::DestroyProjectile(Projectile* proj)
@@ -222,10 +223,13 @@ void Projectiles::DestroyProjectile(Projectile* proj)
 	float x = proj->loc.x;
 	float y = proj->loc.y;
 
-	if (this->projectileList.Delete(proj))
-		debug.Log("Projectiles", "DestroyProjectile", "Deleted a projectile at " + std::to_string(x) + "/" + std::to_string(y));
-	else
-		debug.Log("Projectiles", "DestroyProjectile", "Failed to delete projectile!");
+	bool deleteResult = this->projectileList.Delete(proj);
+
+	if (this->debugProjectiles)
+		if (deleteResult)
+			debug.Log("Projectiles", "DestroyProjectile", "Deleted a projectile at " + std::to_string(x) + "/" + std::to_string(y));
+		else
+			debug.Log("Projectiles", "DestroyProjectile", "Failed to delete projectile!");
 }
 
 void Projectiles::DestroyAllProjectiles()

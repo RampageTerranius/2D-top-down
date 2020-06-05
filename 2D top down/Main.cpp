@@ -4,6 +4,38 @@
 
 #include <SDL.h>
 
+void CalculateFPS()
+{
+	Uint32 frametimesindex;
+	Uint32 getticks;
+	Uint32 count;
+
+	frametimesindex = totalFramesCounted % FRAME_TIMERS;
+
+	getticks = SDL_GetTicks();
+
+	frametimes[frametimesindex] = getticks - frametimelast;
+
+	frametimelast = getticks;
+
+	if (totalFramesCounted < FRAME_TIMERS)
+		count = totalFramesCounted;
+	else
+		count = FRAME_TIMERS;
+
+	totalFramesCounted++;
+
+	// add up all the values and divide to get the average frame time.
+	avgFPS = 0;
+	for (Uint32 i = 0; i < count; i++)
+		avgFPS += frametimes[i];	
+
+	avgFPS /= count;
+
+	// now to make it an actual frames per second value...
+	avgFPS = 1000.f / avgFPS;	
+}
+
 int main(int argc, char* argv[])
 {
 	// Run setup.
@@ -12,11 +44,7 @@ int main(int argc, char* argv[])
 	running = SetupEngine();	
 
 	std::vector<Command*> CommandList;
-
-	fpsTimer.Start();
-
-	int countedFrames = 0;
-
+	
 	while (running)
 	{		
 		capTimer.Start();
@@ -30,14 +58,10 @@ int main(int argc, char* argv[])
 		}
 
 		HandleEvents();
+		
+		CalculateFPS();
 
-		avgFPS = countedFrames / (fpsTimer.GetTicks() / 1000.f);
-		if (avgFPS > 2000000)		
-			avgFPS = 0;		
-
-		Render();
-
-		countedFrames++;
+		Render();		
 
 		int frameTicks = capTimer.GetTicks();
 		if (frameTicks < ticksPerFrame)

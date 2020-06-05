@@ -194,8 +194,6 @@ void Player::FireWeapon()
 					this->ammoLeft[this->selectedWeapon]--;
 
 					this->firedThisTick = true;
-
-					debug.Log("Character", "FireWeapon", "fired round. deviation of :" + std::to_string(calcDeviation));
 				}
 				// TODO: player tryed to fire while gun was reloading/between shots. make a sound or something to let the player know.
 			}

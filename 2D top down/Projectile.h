@@ -51,4 +51,5 @@ public:
 	void DestroyAllProjectiles();
 
 	ProjectileLinkedList projectileList;
+	bool debugProjectiles = false;
 };

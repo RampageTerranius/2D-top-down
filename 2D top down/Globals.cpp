@@ -42,3 +42,7 @@ TTF ttfDodges = TTF();
 Timer fpsTimer = Timer();
 Timer capTimer = Timer();
 float avgFPS = 0;
+
+Uint32 frametimes[FRAME_TIMERS];
+Uint32 frametimelast = SDL_GetTicks();
+Uint32 totalFramesCounted = 0;

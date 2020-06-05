@@ -58,6 +58,11 @@ extern TTF ttfAmmo;
 extern TTF ttfDodges;
 
 // Timers.
-extern Timer fpsTimer;
 extern Timer capTimer;
+
 extern float avgFPS;
+
+const int FRAME_TIMERS = 30;
+extern Uint32 frametimes[FRAME_TIMERS];
+extern Uint32 frametimelast;
+extern Uint32 totalFramesCounted;
