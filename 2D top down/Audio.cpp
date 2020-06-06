@@ -1,6 +1,9 @@
 #include "Audio.h"
 #include "Debug.h"
 
+const int CHANNEL_LIMIT = 64;
+std::vector<Chunk*> channelList;
+
 Sound::Sound()
 {
 	Clear();
@@ -106,15 +109,23 @@ Chunk::~Chunk()
 	Clear();
 }
 
+void OnChannelFinish(int channel)
+{
+	channelList[channel]->channel = -1;
+	channelList[channel] = nullptr;
+}
+
 void Chunk::Clear()
 {
 	name = "";
-	channel = 0;
+	channel = -1;
 	if (sound != nullptr)
 	{
 		Mix_FreeChunk(sound);
 		sound = nullptr;
 	}
+
+	Mix_ChannelFinished(OnChannelFinish);
 }
 
 bool Chunk::Load(std::string fileLoc, std::string name)
@@ -134,25 +145,35 @@ bool Chunk::Load(std::string fileLoc, std::string name)
 void Chunk::Play()
 {
 	channel = Mix_PlayChannel(-1, sound, 0);
+	if (channel >= 0 && channel < CHANNEL_LIMIT)
+		channelList[channel] = this;
 }
 
-// TODO: pause/unpause/halt sound chunks
-/*
 void Chunk::Pause()
-{
-	if (Mix_ChannelFinished)
-	Mix_Pause(channel);
+{	
+	if (channel >= 0)
+		Mix_Pause(channel);
 }
 
 void Chunk::Unpause()
 {
-	Mix_Resume(channel);
+	if (channel >= 0)
+		Mix_Resume(channel);
 }
 
 void Chunk::Stop()
 {
-	Mix_HaltChannel(channel);
-}*/
+	if (channel >= 0)
+		Mix_HaltChannel(channel);
+}
+
+Sounds::Sounds()
+{
+	channelList.clear();
+	channelList.resize(0);
+	channelList.reserve(CHANNEL_LIMIT);
+	channelList.resize(CHANNEL_LIMIT);
+}
 
 void Sounds::Cleanup()
 {

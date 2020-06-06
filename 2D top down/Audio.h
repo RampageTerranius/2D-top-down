@@ -49,13 +49,14 @@ public:
 	void Clear();
 	bool Load(std::string fileLoc, std::string name);
 	void Play();
-	/*void Pause();
+	void Pause();
 	void Unpause();
-	void Stop();*/	
+	void Stop();
+
+	int channel;
 
 private:
-	Mix_Chunk* sound;
-	int channel;
+	Mix_Chunk* sound;	
 };
 
 class Sounds
@@ -64,8 +65,9 @@ private:
 	std::vector<Sound*> soundList;
 
 public:
+	Sounds();
 	void Cleanup();
 	Sound* GetSound(std::string name);
 	Sound* CreateSound(std::string fileLoc, std::string name, bool isChunk);
-	void DeleteSound(std::string name);
+	void DeleteSound(std::string name);	
 };
