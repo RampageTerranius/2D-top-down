@@ -71,3 +71,5 @@ public:
 	Sound* CreateSound(std::string fileLoc, std::string name, bool isChunk);
 	void DeleteSound(std::string name);	
 };
+
+extern std::vector<Chunk*> channelList;

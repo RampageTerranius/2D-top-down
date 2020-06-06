@@ -1,7 +1,7 @@
 #include "Audio.h"
 #include "Debug.h"
 
-const int CHANNEL_LIMIT = 64;
+const int CHANNEL_LIMIT = 32;
 std::vector<Chunk*> channelList;
 
 Sound::Sound()
@@ -172,7 +172,7 @@ Sounds::Sounds()
 	channelList.clear();
 	channelList.resize(0);
 	channelList.reserve(CHANNEL_LIMIT);
-	channelList.resize(CHANNEL_LIMIT);
+	channelList.resize(CHANNEL_LIMIT);	
 }
 
 void Sounds::Cleanup()

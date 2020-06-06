@@ -154,9 +154,7 @@ void Player::FireWeapon()
 					this->reloadTimer = 0;
 					this->fireTimer = this->weapon[this->selectedWeapon]->fireRate;
 					return;
-				}
-
-				this->weapon[this->selectedWeapon]->PlayFireSound();
+				}				
 
 				if (this->reloadTimer == 0 && this->fireTimer == 0)
 				{
@@ -197,6 +195,8 @@ void Player::FireWeapon()
 					this->ammoLeft[this->selectedWeapon]--;
 
 					this->firedThisTick = true;
+
+					this->weapon[this->selectedWeapon]->PlayFireSound();
 				}
 				// TODO: player tryed to fire while gun was reloading/between shots. make a sound or something to let the player know.
 			}

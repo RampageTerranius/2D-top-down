@@ -49,6 +49,8 @@ bool SetupEngine()
 		return false;
 	}
 
+	Mix_AllocateChannels(32);
+
 	// Load the audio files into memory
 	debug.Log("Setup+Shutdown", "SetupEngine", "Loading audio files...");
 

@@ -23,10 +23,8 @@ Weapon::Weapon()
 void Weapon::PlayFireSound()
 {
 	if (this->fireSound != nullptr)
-	{	
-		this->fireSound->Stop();
 		this->fireSound->Play();
-	}
+	
 }
 
 void Weapons::AddWeapon(Weapon* weapon)
