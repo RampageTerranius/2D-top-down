@@ -72,6 +72,18 @@ bool SetupEngine()
 		return false;
 	}
 
+	if (allSounds.CreateSound(GetEXEPath() + "\\Sound\\Sniper Fire.wav", "Sniper Fire", true) == nullptr)
+	{
+		debug.Log("Setup+Shutdown", "SetupEngine", "Failed to load Sniper firing sound...");
+		return false;
+	}
+
+	if (allSounds.CreateSound(GetEXEPath() + "\\Sound\\Dodge.wav", "Dodge", true) == nullptr)
+	{
+		debug.Log("Setup+Shutdown", "SetupEngine", "Failed to load Dodge sound...");
+		return false;
+	}
+
 
 	debug.Log("Setup+Shutdown", "SetupEngine", "Loading setting file...");
 
@@ -471,7 +483,7 @@ void ShutdownEngine()
 
 	allWeapons.RemoveAllWeapons();
 	allPlayers.DeleteAllPlayers();
-	allProjectiles.DestroyAllProjectiles();	
+	allProjectiles.DestroyAllProjectiles();
 	allTextures.Cleanup();
 
 	debug.Log("Setup+Shutdown", "ShutdownEngine", "Shutdown completed");

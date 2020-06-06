@@ -263,6 +263,8 @@ void Player::Dodge()
 	this->currentMovementVel = this->dodgeVel;
 	this->dodgesLeft--;
 	this->dodgedThisTick = true;
+
+	allSounds.GetSound("Dodge")->Play();
 }
 
 void Player::AddWeapon(Weapon* wep)

@@ -81,6 +81,7 @@ void Weapons::RemoveAllWeapons()
 	debug.Log("Weapons", "RemoveAllWeapons", "Removed all weapons");
 }
 
+// Finds a weapon with teh given name and returns it.
 Weapon* Weapons::GetWeapon(std::string wepName)
 {
 	for (Weapon* wep : weaponList)
