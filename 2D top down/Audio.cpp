@@ -152,19 +152,22 @@ void Chunk::Play()
 void Chunk::Pause()
 {	
 	if (channel >= 0)
-		Mix_Pause(channel);
+		if (channelList[channel] != nullptr)
+			Mix_Pause(channel);
 }
 
 void Chunk::Unpause()
 {
 	if (channel >= 0)
-		Mix_Resume(channel);
+		if (channelList[channel] != nullptr)
+			Mix_Resume(channel);
 }
 
 void Chunk::Stop()
 {
 	if (channel >= 0)
-		Mix_HaltChannel(channel);
+		if (channelList[channel] != nullptr)
+			Mix_HaltChannel(channel);
 }
 
 Sounds::Sounds()
