@@ -17,6 +17,7 @@ class Weapon
 {
 public:
 	Weapon();
+	~Weapon();
 	void PlayFireSound();
 
 	std::string name;

@@ -20,11 +20,16 @@ Weapon::Weapon()
 	this->reloadSound = nullptr;
 }
 
+Weapon::~Weapon()
+{
+	this->fireSound = nullptr;
+	this->reloadSound = nullptr;
+}
+
 void Weapon::PlayFireSound()
 {
 	if (this->fireSound != nullptr)
-		this->fireSound->Play();
-	
+		this->fireSound->Play();	
 }
 
 void Weapons::AddWeapon(Weapon* weapon)

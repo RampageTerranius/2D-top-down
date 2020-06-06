@@ -481,6 +481,7 @@ void ShutdownEngine()
 	if (mainSurface != nullptr)
 		SDL_FreeSurface(mainSurface);
 
+	allSounds.Cleanup();
 	allWeapons.RemoveAllWeapons();
 	allPlayers.DeleteAllPlayers();
 	allProjectiles.DestroyAllProjectiles();
