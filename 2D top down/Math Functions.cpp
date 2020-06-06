@@ -1,6 +1,6 @@
 #include "Math functions.h"
 #include "Globals.h"
-#include "Mouse.h"
+#include "EventHandler.h"
 
 #include <SDL.h>
 
@@ -40,6 +40,8 @@ SDL_Point GetMapCoordFromCursor()
 	SDL_Point mapCoord = { 0, 0 };
 
 	// Convert mouse and camera into the location on the map we are pointing at.
+	SDL_Point mouse = iManager->GetMouseLocation();
+
 	mapCoord.x = mouse.x - camera.x;
 	mapCoord.y = mouse.y - camera.y;
 

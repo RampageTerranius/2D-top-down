@@ -11,8 +11,9 @@ public:
 	void MoveBy(float x, float y);
 
 	bool Render();
-	
-	float directionFacing;	
+	void MoveCameraToHere();
+
+	Vector2D directionFacing = { 0, 0 };
 };
 
 class Player : public Character
@@ -20,9 +21,9 @@ class Player : public Character
 public:
 	Player();
 
-	void MovePlayerAccordingToInput();
 	void FireWeapon();
 	void ReloadWeapon();
+	void Dodge();
 	void RenderAimer();
 	void AddWeapon(Weapon* wep);
 	void RemoveWeapon(int weaponIndex);
@@ -34,7 +35,12 @@ public:
 	int health;
 
 	float currentRecoil;
-	bool isFiring;
+	bool firedThisTick;
+	bool firedLastTick;
+	bool dodgedThisTick;
+	bool dodgedLastTick;
+	bool changedWeaponThisTick;
+	bool changedWeaponLastTick;
 
 	std::vector<Weapon*> weapon;
 	int selectedWeapon;

@@ -2,6 +2,7 @@
 
 #include "ProjectileType.h"
 #include "ReloadType.h"
+#include "Audio.h"
 
 #include <string>
 #include <vector>
@@ -12,11 +13,11 @@ enum class FireType
 	SemiAuto
 };
 
-// TODO: projectileDistance does not currently function.
 class Weapon
 {
 public:
 	Weapon();
+	void PlayFireSound();
 
 	std::string name;
 	int damage;
@@ -33,6 +34,8 @@ public:
 	ProjectileType bulletType;
 	ReloadType reloadType;
 	FireType fireType;
+	Sound* fireSound;
+	Sound* reloadSound;
 };
 
 class Weapons

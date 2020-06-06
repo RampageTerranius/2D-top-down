@@ -2,7 +2,6 @@
 
 #include "Projectile.h"
 #include "UI.h"
-#include "Mouse.h"
 #include "Globals.h"
 
 #include <math.h>
@@ -19,30 +18,32 @@ void Render()
 	// Render all projectiles.
 	allProjectiles.RenderAllProjectiles();
 
-	testPlayer->RenderAimer();
+	currentPlayer->RenderAimer();
 
 	// Render the ammo count.
-	if (testPlayer->weapon.size() <= 0)
+	if (currentPlayer->weapon.size() <= 0)
 		ttfAmmo.SetText(mainRenderer, "Ammo: 0");
-	else if (testPlayer->reloadTimer == 0)
-		ttfAmmo.SetText(mainRenderer, "Ammo: " + std::to_string(testPlayer->ammoLeft[testPlayer->selectedWeapon]));
+	else if (currentPlayer->reloadTimer == 0)
+		ttfAmmo.SetText(mainRenderer, "Ammo: " + std::to_string(currentPlayer->ammoLeft[currentPlayer->selectedWeapon]));
 	else
-		ttfAmmo.SetText(mainRenderer, "Ammo: " + std::to_string(testPlayer->ammoLeft[testPlayer->selectedWeapon]) + " Reloading");
+		ttfAmmo.SetText(mainRenderer, "Ammo: " + std::to_string(currentPlayer->ammoLeft[currentPlayer->selectedWeapon]) + " Reloading");
 
 	ttfAmmo.Draw(mainRenderer, 5, windowHeight - 25);
 
 	// Render the weapon name.
-	if (testPlayer->weapon.size() > 0)
-		ttfWeapon.SetText(mainRenderer, "Weapon: " + testPlayer->weapon[testPlayer->selectedWeapon]->name);
+	if (currentPlayer->weapon.size() > 0)
+		ttfWeapon.SetText(mainRenderer, "Weapon: " + currentPlayer->weapon[currentPlayer->selectedWeapon]->name);
 	else
 		ttfWeapon.SetText(mainRenderer, "Weapon: Unarmed");
 
 	ttfWeapon.Draw(mainRenderer, 5, windowHeight - 50);
 
 	// Render the dodges count.
-	ttfDodges.SetText(mainRenderer, "Dodges: " + std::to_string(testPlayer->dodgesLeft));
-
+	ttfDodges.SetText(mainRenderer, "Dodges: " + std::to_string(currentPlayer->dodgesLeft));
 	ttfDodges.Draw(mainRenderer, 5, windowHeight - 75);
+
+	ttfFPS.SetText(mainRenderer, (std::to_string(static_cast<int> (round(avgFPS)))));
+	ttfFPS.Draw(mainRenderer, windowWidth - 25, windowHeight - 25);
 	
 	SDL_RenderPresent(mainRenderer);
 }

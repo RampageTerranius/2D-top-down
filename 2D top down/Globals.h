@@ -2,22 +2,26 @@
 
 #include <SDL.h>
 #include <string>
-#include "Debug.h"
 #include "Entity.h"
+#include "Audio.h"
 #include "Map.h"
 #include "Texture.h"
 #include "TTF.h"
 #include "Character.h"
 #include "Projectile.h"
 #include "Weapon.h"
+#include "EventHandler.h"
+#include "Timer.h"
 
 // Debugging stuff.
-extern Debug debug;
+extern InputManager* iManager;
 
 // General application settings.
 extern std::string programName;
 extern int windowWidth;
 extern int windowHeight;
+extern int windowWidthDiv2;
+extern int windowHeightDiv2;
 extern bool HardwareCursor;
 
 extern int renderColorR;
@@ -31,26 +35,35 @@ extern SDL_Renderer* mainRenderer;
 extern SDL_Surface* mainSurface;
 
 // Other stuff.
-extern bool running;
 
 // Lists.
 extern Textures allTextures;
 extern Projectiles allProjectiles;
 extern Weapons allWeapons;
 extern Players allPlayers;
+extern Sounds allSounds;
 
 // Test Player.
-extern Player* testPlayer;
+extern Player* currentPlayer;
 extern SDL_Rect camera;
 
-// Map data;
-extern Map map;
-
-extern int baseWallHealth;
-extern int projectileCalcsPerTick;
+// Frame rate.
+extern int frameRate;
+extern int ticksPerFrame;
+extern bool capFrameRate;
 
 // TTF Fonts.
 extern TTF ttfFPS;
 extern TTF ttfWeapon;
 extern TTF ttfAmmo;
 extern TTF ttfDodges;
+
+// Timers.
+extern Timer capTimer;
+
+extern float avgFPS;
+
+const int FRAME_TIMERS = 30;
+extern Uint32 frametimes[FRAME_TIMERS];
+extern Uint32 frametimelast;
+extern Uint32 totalFramesCounted;

@@ -1,16 +1,15 @@
 #include "Character.h"
 #include "UI.h"
-#include "Mouse.h"
 #include "globals.h"
 #include "Math functions.h"
+#include "Vector2D.h"
+#include "Debug.h"
 
 Character::Character()
-{	
-	this->directionFacing = 0;	
+{		
 	this->ID = 0;	
-	this->texture = nullptr;	
-	this->xLoc = 0;
-	this->yLoc = 0;
+	this->texture = nullptr;
+	this->directionFacing = Vector2D(0, 0);
 }
 
 bool Character::Render()
@@ -21,10 +20,21 @@ bool Character::Render()
 
 		rect.w = texture->Rect().w;
 		rect.h = texture->Rect().h;
-		rect.x = static_cast<int> (round((windowWidth / 2) - (rect.w / 2)));
-		rect.y = static_cast<int> (round((windowHeight / 2) - (rect.h / 2)));
 
-		if (SDL_RenderCopyEx(mainRenderer, texture->Tex(), NULL, &rect, directionFacing + 90.0, NULL, SDL_FLIP_NONE) >= 0)
+		SDL_Point charPoint{ static_cast <int> (round(this->loc.x)), static_cast <int> (round(this->loc.y)) };
+
+		SDL_Point mapPoint = GetScreenCoordFromMapPoint(charPoint);
+
+		rect.x = static_cast<int> (mapPoint.x - (rect.w / 2));
+		rect.y = static_cast<int> (mapPoint.y - (rect.h / 2));
+
+		// TODO: modify this code to help keep rendering quick and fast
+		// Probably best to make this check if its in range of the camera currenty
+		/*if (!(rect.x >= (0 - rect.w) && rect.x < windowWidth))
+			if (!(rect.y >= (0 - rect.h) && rect.y < windowHeight))
+				return false;*/
+
+		if (SDL_RenderCopyEx(mainRenderer, texture->Tex(), NULL, &rect, GetAngleAsDegrees(this->loc.x, this->loc.y, this->directionFacing.x, this->directionFacing.y) + 90, NULL, SDL_FLIP_NONE) >= 0)
 			return true;
 	}
 
@@ -33,15 +43,15 @@ bool Character::Render()
 	return false;
 }
 
-// Move the character from its point of origin by the given X/Y whiel also checking for collision with walls etc.
+// Move the character from its point of origin by the given X/Y while also checking for collision with walls etc.
 void Character::MoveBy(float x, float y)
 {
-	float tempX = xLoc + x;
-	float tempY = yLoc + y;
+	float tempX = this->loc.x + x;
+	float tempY = this->loc.y + y;
 
 	int pointsToMove = 0;
 
-	std::vector<SDL_Point> points = GetAllMapDataBetweenPoints(static_cast<int> (round(xLoc)), static_cast<int> (round(yLoc)), static_cast<int> (round(tempX)), static_cast<int> (round(tempY)));
+	std::vector<SDL_Point> points = GetAllMapDataBetweenPoints(static_cast<int> (round(this->loc.x)), static_cast<int> (round(this->loc.y)), static_cast<int> (round(tempX)), static_cast<int> (round(tempY)));
 
 	// We need to NOT check the first point as the first point is the player.
 	bool firstPoint = true;
@@ -65,19 +75,27 @@ void Character::MoveBy(float x, float y)
 	// Move the user and
 	if (pointsToMove > 0)
 	{
-		this->xLoc = (xLoc + ((x / points.size()) * pointsToMove));
-		this->yLoc = (yLoc + ((y / points.size()) * pointsToMove));
+		this->loc.x = (loc.x + ((x / points.size()) * pointsToMove));
+		this->loc.y = (this->loc.y + ((y / points.size()) * pointsToMove));
 
-		if (this->xLoc <= 0)
-			this->xLoc = 0;
-		else if (this->xLoc >= static_cast<float> (map.GetSizeX()))
-			this->xLoc = static_cast<float> (map.GetSizeX() - 1);
+		if (this->loc.x <= 0)
+			this->loc.x = 0;
+		else if (this->loc.x >= static_cast<float> (map.GetSizeX()))
+			this->loc.x = static_cast<float> (map.GetSizeX() - 1);
 
-		if (this->yLoc <= 0)
-			this->yLoc = 0;
-		if (this->yLoc >= static_cast<float> (map.GetSizeY()))
-			this->yLoc = static_cast<float> (map.GetSizeY() - 1);
+		if (this->loc.y <= 0)
+			this->loc.y = 0;
+		else if (this->loc.y >= static_cast<float> (map.GetSizeY()))
+			this->loc.y = static_cast<float> (map.GetSizeY() - 1);
 	}
+}
+
+void Character::MoveCameraToHere()
+{
+	camera.x = static_cast<int> (windowWidthDiv2 - round(this->loc.x));
+	camera.w = map.GetSizeX();
+	camera.y = static_cast<int> (windowHeightDiv2 - round(this->loc.y));
+	camera.h = map.GetSizeY();
 }
 
 Player::Player()
@@ -89,7 +107,12 @@ Player::Player()
 	this->health = 0;
 
 	this->currentRecoil = 0;
-	this->isFiring = 0;
+
+	this->firedThisTick = false;
+	this->firedLastTick = false;
+	this->changedWeaponThisTick = false;
+	this->changedWeaponLastTick = false;
+	
 
 	this->weapon.clear();
 	this->ammoLeft.clear();
@@ -111,39 +134,17 @@ Player::Player()
 	this->dodgeChargeTimer = 0;
 }
 
-// Logic for determining how the player is moving, refer to EventHandle for how xVel and yVel is determined.
-void Player::MovePlayerAccordingToInput()
-{	
-	switch (xVel)
-	{
-	case -1:
-		MoveBy(-this->currentMovementVel, 0);
-		break;
-	case 1:
-		MoveBy(this->currentMovementVel, 0);
-		break;
-	}
-
-	switch (yVel)
-	{
-	case -1:
-		MoveBy(0, -this->currentMovementVel);
-		break;
-	case 1:
-		MoveBy(0, this->currentMovementVel);
-		break;
-	}
-
-	// TODO: camera is currently calculating ALL players, this will need to be updated in the future.
-	camera.x = static_cast<int> ((windowWidth/2) - testPlayer->xLoc);
-	camera.w = map.GetSizeX();
-	camera.y = static_cast<int> ((windowHeight/2) - testPlayer->yLoc);
-	camera.h = map.GetSizeY();
-}
-
 // Logic for the player firing their weapon.
 void Player::FireWeapon()
 {
+	// If the user is holding the fire button check if we can continue to shoot.
+	if (this->weapon[this->selectedWeapon]->fireType == FireType::SemiAuto)
+		if (this->firedLastTick)
+		{
+			this->firedThisTick = true;
+			return;
+		}
+
 	if (this->weapon.size() > 0)
 		if (this->weapon[this->selectedWeapon] != nullptr)
 			if (this->ammoLeft[this->selectedWeapon] > 0)
@@ -153,14 +154,12 @@ void Player::FireWeapon()
 					this->reloadTimer = 0;
 					this->fireTimer = this->weapon[this->selectedWeapon]->fireRate;
 					return;
-				}
+				}				
 
 				if (this->reloadTimer == 0 && this->fireTimer == 0)
 				{
 					// Get the point of the player.
-					SDL_Point plPoint;
-					plPoint.x = static_cast<int> (round(testPlayer->xLoc));
-					plPoint.y = static_cast<int> (round(testPlayer->yLoc));
+					Vector2D plPoint{ round(this->loc.x), round(this->loc.y) };
 
 					int tempProjectilesToLaunch = this->weapon[this->selectedWeapon]->bulletsPerShot;
 
@@ -168,7 +167,9 @@ void Player::FireWeapon()
 
 					while (tempProjectilesToLaunch > 0)
 					{
-						SDL_Point aimLoc = GetMapCoordFromCursor();
+						SDL_Point tempPoint = GetMapCoordFromCursor();
+
+						Vector2D aimLoc = Vector2D(static_cast <float> (tempPoint.x), static_cast <float>  (tempPoint.y) );
 
 						// Calculate deviation/recoil etc.
 						calcDeviation = this->weapon[this->selectedWeapon]->deviation + currentRecoil;
@@ -183,9 +184,7 @@ void Player::FireWeapon()
 						allProjectiles.CreateProjectile(plPoint, aimLoc, this->weapon[this->selectedWeapon], this);
 
 						tempProjectilesToLaunch--;
-					}
-
-					debug.Log("Character", "FireWeapon", "fired round. deviation of :" + std::to_string(calcDeviation));
+					}					
 
 					this->currentRecoil += this->weapon[this->selectedWeapon]->recoil;
 					if (currentRecoil > this->weapon[this->selectedWeapon]->maxDeviation)
@@ -194,6 +193,10 @@ void Player::FireWeapon()
 					this->fireTimer = this->weapon[this->selectedWeapon]->fireRate;
 
 					this->ammoLeft[this->selectedWeapon]--;
+
+					this->firedThisTick = true;
+
+					this->weapon[this->selectedWeapon]->PlayFireSound();
 				}
 				// TODO: player tryed to fire while gun was reloading/between shots. make a sound or something to let the player know.
 			}
@@ -207,34 +210,61 @@ void Player::RenderAimer()
 	UI aimer = UI();
 
 	// TODO: bottom and right aimer are 1 pixel off and need to be minused by 1, fix this.
+	
+	SDL_Point mouse = iManager->GetMouseLocation();
+
+
 	if (this->weapon.size() > 0)
-		if (this->currentRecoil + this->weapon[this->selectedWeapon]->deviation > 0)
+	{
+		float tempRecoil = (this->currentRecoil + this->weapon[this->selectedWeapon]->deviation) / 2;
+		if (((this->currentRecoil + this->weapon[this->selectedWeapon]->deviation) / 2) > 0)
 		{
-			aimer.texture = allTextures.GetTexture("AimMarkerTop");
-			aimer.xLoc = static_cast<float> (mouse.x);
-			aimer.yLoc = (static_cast<float> (mouse.y) - ((this->currentRecoil + this->weapon[this->selectedWeapon]->deviation) / 2)) - static_cast<float> (aimer.texture->Rect().h);
-			aimer.Render(0);
+		aimer.texture = allTextures.GetTexture("AimMarkerTop");
+		aimer.loc.x = static_cast<float> (mouse.x);
+		aimer.loc.y = static_cast<float> (mouse.y) - tempRecoil - static_cast<float> (aimer.texture->Rect().h);
+		aimer.Render(0);
 
-			aimer.texture = allTextures.GetTexture("AimMarkerBottom");
-			aimer.xLoc = static_cast<float> (mouse.x);
-			aimer.yLoc = (static_cast<float> (mouse.y) + ((this->currentRecoil + this->weapon[this->selectedWeapon]->deviation) / 2)) + static_cast<float> (aimer.texture->Rect().h) - 1;
-			aimer.Render(0);
+		aimer.texture = allTextures.GetTexture("AimMarkerBottom");
+		aimer.loc.x = static_cast<float> (mouse.x);
+		aimer.loc.y = static_cast<float> (mouse.y) + tempRecoil + static_cast<float> (aimer.texture->Rect().h) - 1;
+		aimer.Render(0);
 
-			aimer.texture = allTextures.GetTexture("AimMarkerLeft");
-			aimer.xLoc = (static_cast<float> (mouse.x) - ((this->currentRecoil + this->weapon[this->selectedWeapon]->deviation) / 2)) - static_cast<float> (aimer.texture->Rect().w);
-			aimer.yLoc = static_cast<float> (mouse.y);
-			aimer.Render(0);
+		aimer.texture = allTextures.GetTexture("AimMarkerLeft");
+		aimer.loc.x = static_cast<float> (mouse.x) - tempRecoil - static_cast<float> (aimer.texture->Rect().w);
+		aimer.loc.y = static_cast<float> (mouse.y);
+		aimer.Render(0);
 
-			aimer.texture = allTextures.GetTexture("AimMarkerRight");
-			aimer.xLoc = (static_cast<float> (mouse.x) + ((this->currentRecoil + this->weapon[this->selectedWeapon]->deviation) / 2)) + static_cast<float> (aimer.texture->Rect().w) - 1;
-			aimer.yLoc = static_cast<float> (mouse.y);
-			aimer.Render(0);
+		aimer.texture = allTextures.GetTexture("AimMarkerRight");
+		aimer.loc.x = static_cast<float> (mouse.x) + tempRecoil + static_cast<float> (aimer.texture->Rect().w) - 1;
+		aimer.loc.y = static_cast<float> (mouse.y);
+		aimer.Render(0);
 		}
+	}
 
 	aimer.texture = allTextures.GetTexture("RedDot");
-	aimer.xLoc = static_cast<float> (mouse.x);
-	aimer.yLoc = static_cast<float> (mouse.y);
+	aimer.loc.x = static_cast<float> (mouse.x);
+	aimer.loc.y = static_cast<float> (mouse.y);
 	aimer.Render(0);
+}
+
+void Player::Dodge()
+{
+	// Stop palyer from dodging if they have no dodge charges.
+	if (this->dodgesLeft <= 0)
+		return;
+
+	// Player must let go of key before they can dodge again.
+	if (this->dodgedLastTick)
+	{
+		this->dodgedThisTick = true;
+		return;
+	}
+
+	this->currentMovementVel = this->dodgeVel;
+	this->dodgesLeft--;
+	this->dodgedThisTick = true;
+
+	allSounds.GetSound("Dodge")->Play();
 }
 
 void Player::AddWeapon(Weapon* wep)
@@ -251,6 +281,13 @@ void Player::RemoveWeapon(int weaponIndex)
 
 void Player::SwitchToNextWeapon()
 {
+	// If the user is holding the button stop it from continuously cycling weapons.
+	if (this->changedWeaponLastTick)
+	{
+		this->changedWeaponThisTick = true;
+		return;
+	}
+
 	if (this->weapon.size() > 0)
 	{
 		this->selectedWeapon++;
@@ -259,11 +296,20 @@ void Player::SwitchToNextWeapon()
 
 		this->fireTimer = this->weapon[this->selectedWeapon]->fireRate;
 		this->reloadTimer = 0;
+
+		this->changedWeaponThisTick = true;
 	}
 }
 
 void Player::SwitchToLastWeapon()
 {
+	// If the user is holding the button stop it from continuously cycling weapons.
+	if (this->changedWeaponLastTick)
+	{
+		this->changedWeaponThisTick = true;
+		return;
+	}
+
 	if (this->weapon.size() > 0)
 	{
 		this->selectedWeapon--;
@@ -272,6 +318,8 @@ void Player::SwitchToLastWeapon()
 
 		this->fireTimer = this->weapon[this->selectedWeapon]->fireRate;
 		this->reloadTimer = 0;
+
+		this->changedWeaponThisTick = true;
 	}
 }
 
@@ -279,18 +327,19 @@ void Player::SwitchToLastWeapon()
 void Player::ReloadWeapon()
 {
 	if (this->weapon.size() > 0)
-		if (this->reloadTimer == 0)
-		{
-			this->reloadTimer = this->weapon[this->selectedWeapon]->reloadTime;
-			this->fireTimer = this->weapon[this->selectedWeapon]->fireRate;
-		}
+		if (this->ammoLeft[this->selectedWeapon] < this->weapon[this->selectedWeapon]->totalAmmo)
+			if (this->reloadTimer == 0)
+			{
+				this->reloadTimer = this->weapon[this->selectedWeapon]->reloadTime;
+				this->fireTimer = this->weapon[this->selectedWeapon]->fireRate;
+			}
 }
 
 Player* Players::CreatePlayer(std::string playerName)
 {
 	Player* pl = new Player();
 
-	pl->texture = allTextures.GetTexture("DirMarker");
+	pl->name = playerName;
 
 	this->playerList.push_back(pl);
 
@@ -323,11 +372,11 @@ void Players::DeleteAllPlayers()
 {
 	int i = 0;
 
-	for (Player* pl : playerList)
+	for (int i = 0; i < playerList.size(); i++)
 	{
-		playerList.erase(playerList.begin() + i);
+		Player* pl = playerList[i];
+		playerList.erase(playerList.begin());
 		delete pl;
-		i++;
 	}
 
 	debug.Log("Players", "DeleteAllPlayers", "Deleted all players");
@@ -383,9 +432,6 @@ void Players::HandlePlayerEvents()
 
 			if (pl->currentRecoil < 0)
 				pl->currentRecoil = 0;
-
-			if (pl->isFiring)
-				pl->currentRecoil = pl->currentRecoil;
 		}
 
 		// dodging logic.
@@ -406,5 +452,14 @@ void Players::HandlePlayerEvents()
 				pl->dodgeChargeTimer = 0;
 			}
 		}
+
+		// Reset is firing to false each frame.
+		// Each time the user fires it will set this to true.
+		pl->firedLastTick = pl->firedThisTick;
+		pl->firedThisTick = false;
+		pl->changedWeaponLastTick = pl->changedWeaponThisTick;
+		pl->changedWeaponThisTick = false;
+		pl->dodgedLastTick = pl->dodgedThisTick;
+		pl->dodgedThisTick = false;
 	}
 }

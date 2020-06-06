@@ -1,5 +1,7 @@
 #include "Debug.h"
 
+Debug debug = Debug();
+
 DebugMessage::DebugMessage(std::string fileName, std::string functionName, std::string coderMessage)
 {
 	this->fileName = fileName;
