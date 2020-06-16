@@ -21,8 +21,8 @@ void HandleEvents()
 
 	SDL_Point point = GetMapCoordFromCursor();
 
-	currentPlayer->directionFacing.x = static_cast <float> (point.x);
-	currentPlayer->directionFacing.y = static_cast <float> (point.y);
+	currentPlayer->target.x = static_cast <float> (point.x);
+	currentPlayer->target.y = static_cast <float> (point.y);
 }
 
 InputManager::InputManager()

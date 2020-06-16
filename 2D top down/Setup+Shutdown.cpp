@@ -374,14 +374,14 @@ bool SetupEngine()
 
 	currentPlayer = allPlayers.GetPlayer("Player1");
 	currentPlayer->texture = allTextures.GetTexture("DirMarker");
-	currentPlayer->loc.x = round(static_cast<float> ((map.GetSizeX() - 1) / 2));
-	currentPlayer->loc.y = round(static_cast<float> ((map.GetSizeY() - 1) / 2));
+	currentPlayer->location.x = round(static_cast<float> ((map.GetSizeX() - 1) / 2));
+	currentPlayer->location.y = round(static_cast<float> ((map.GetSizeY() - 1) / 2));
 
 	
 	Player* tempPlayer = allPlayers.GetPlayer("Player2");
 	tempPlayer->texture = allTextures.GetTexture("DirMarker2");
-	tempPlayer->loc.x = round(static_cast<float> (map.GetSizeX() - 50));
-	tempPlayer->loc.y = round(static_cast<float> (map.GetSizeY() - 50));
+	tempPlayer->location.x = round(static_cast<float> (map.GetSizeX() - 50));
+	tempPlayer->location.y = round(static_cast<float> (map.GetSizeY() - 50));
 	
 
 	for (auto& wep : allWeapons.weaponList)
@@ -465,27 +465,29 @@ void ShutdownEngine()
 {
 	debug.Log("Setup+Shutdown", "ShutdownEngine", "Shutting down engine...");
 	   
-	SDL_Quit();
-	Mix_Quit();
-	IMG_Quit();
-
 	// Destroy the main renderer before shutdown.
 	if (mainRenderer != nullptr)
 		SDL_DestroyRenderer(mainRenderer);
-
-	// Destroy the main window before shutdown.
-	if (mainWindow != nullptr)
-		SDL_DestroyWindow(mainWindow);
 
 	// Destroy the surface used for drawing particles.
 	if (mainSurface != nullptr)
 		SDL_FreeSurface(mainSurface);
 
-	allSounds.Cleanup();
+	// Destroy the main window before shutdown.
+	if (mainWindow != nullptr)
+		SDL_DestroyWindow(mainWindow);
+	
+	// Clear out all the arrays of data.
 	allWeapons.RemoveAllWeapons();
 	allPlayers.DeleteAllPlayers();
 	allProjectiles.DestroyAllProjectiles();
 	allTextures.Cleanup();
+	allSounds.Cleanup();
+
+	// Shutdown SDL.	
+	Mix_Quit();
+	IMG_Quit();
+	SDL_Quit();
 
 	debug.Log("Setup+Shutdown", "ShutdownEngine", "Shutdown completed");
 }

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Character.h"
+#include "Entity.h"
 #include "Math functions.h"
 #include "Map.h"
 

@@ -126,12 +126,13 @@ Projectile::Projectile()
 	this->target = Vector2D{ 0, 0 };
 	this->start = Vector2D{ 0, 0 };
 	this->maxDistance = 0;
+	this->velocity = 0;
 }
 
 bool Projectile::CalcProjectile()
 {	
-	float oldXLoc = this->loc.x;
-	float oldYLoc = this->loc.y;
+	float oldXLoc = this->location.x;
+	float oldYLoc = this->location.y;
 
 	float distance = sqrt(pow(this->target.x - this->start.x, 2) + pow(this->target.y - this->start.y, 2));
 	if (distance > this->maxDistance)
@@ -141,11 +142,11 @@ bool Projectile::CalcProjectile()
 	diffVec.Normalize();
 	diffVec.Multiply(this->velocity);
 
-	this->loc.x += diffVec.x;
-	this->loc.y += diffVec.y; 
+	this->location.x += diffVec.x;
+	this->location.y += diffVec.y;
 
 	// Get all points we have passed and cause damage as needed.
-	std::vector<SDL_Point> points = GetAllMapDataBetweenPoints(static_cast<int> (oldXLoc), static_cast<int> (oldYLoc), static_cast<int> (this->loc.x), static_cast<int> (this->loc.y));
+	std::vector<SDL_Point> points = GetAllMapDataBetweenPoints(static_cast<int> (oldXLoc), static_cast<int> (oldYLoc), static_cast<int> (this->location.x), static_cast<int> (this->location.y));
 
 	if (points.size() > 0)
 		for (auto& point : points)
@@ -181,13 +182,13 @@ bool Projectile::CalcProjectile()
 		}
 
 	// Check if bullet has hit the edge of the map.
-	if (this->loc.x < 0)
+	if (this->location.x < 0)
 		return false;
-	else if (this->loc.y < 0)
+	else if (this->location.y < 0)
 		return false;
-	else if (this->loc.x >= map.GetSizeX())
+	else if (this->location.x >= map.GetSizeX())
 		return false;
-	else if (this->loc.y >= map.GetSizeY())
+	else if (this->location.y >= map.GetSizeY())
 		return false;
 
 	return true;
@@ -199,10 +200,10 @@ void Projectiles::CreateProjectile(Vector2D start, Vector2D end, Weapon* weapon,
 
 	proj->Owner = owner;
 
-	proj->loc = start;
+	proj->location = start;
 
 	// Get the start and ending points.
-	proj->start = proj->loc;
+	proj->start = proj->location;
 	proj->target = end;
 
 	proj->texture = allTextures.GetTexture("Bullet");
@@ -221,8 +222,8 @@ void Projectiles::CreateProjectile(Vector2D start, Vector2D end, Weapon* weapon,
 
 void Projectiles::DestroyProjectile(Projectile* proj)
 {
-	float x = proj->loc.x;
-	float y = proj->loc.y;
+	float x = proj->location.x;
+	float y = proj->location.y;
 
 	bool deleteResult = this->projectileList.Delete(proj);
 

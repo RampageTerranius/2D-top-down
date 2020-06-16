@@ -7,7 +7,6 @@
 #include "Map.h"
 #include "Texture.h"
 #include "TTF.h"
-#include "Character.h"
 #include "Projectile.h"
 #include "Weapon.h"
 #include "EventHandler.h"

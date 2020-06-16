@@ -3,12 +3,11 @@
 #include "Entity.h"
 #include "Weapon.h"
 #include "ProjectileType.h"
-#include "Character.h"
 #include "Vector2D.h"
 
 #include <vector>
 
-class Projectile : public Object
+class Projectile : public Entity
 {
 public:
 	Projectile();
@@ -19,8 +18,9 @@ public:
 	int damage;
 	int maxDistance;
 	Player* Owner;
-	Vector2D target = Vector2D{ 0, 0 };;
-	Vector2D start = Vector2D{ 0, 0 };;
+	Vector2D target = Vector2D{ 0, 0 };
+	Vector2D start = Vector2D{ 0, 0 };
+	float velocity;
 
 	Projectile* last = nullptr;
 	Projectile* next = nullptr;
