@@ -48,7 +48,7 @@ bool Entity::Render()
 
 void Entity::CalculateDirectionFacing()
 {
-	this->directionFacing = GetAngleAsDegrees(this->location.x, this->location.y, this->target.x, this->target.y);
+	this->directionFacing = static_cast <float> (GetAngleAsDegrees(this->location.x, this->location.y, this->target.x, this->target.y));
 }
 
 // Move the entity from its point of origin by the given X/Y.
@@ -178,7 +178,7 @@ Player::Player()
 
 void Player::CalculateDirectionFacing()
 {
-	this->directionFacing = GetAngleAsDegrees(this->location.x, this->location.y, this->target.x, this->target.y);
+	this->directionFacing = static_cast <float> (GetAngleAsDegrees(this->location.x, this->location.y, this->target.x, this->target.y));
 	this->directionFacing += 90;
 }
 
@@ -293,6 +293,31 @@ void Player::RenderAimer()
 	aimer.location.x = static_cast<float> (mouse.x);
 	aimer.location.y = static_cast<float> (mouse.y);
 	aimer.Render(0);
+}
+
+void Player::DrawUIForThisPlayer()
+{
+	// Render the ammo count.
+	if (this->weapon.size() <= 0)
+		ttfAmmo.SetText(mainRenderer, "Ammo: 0");
+	else if (this->reloadTimer == 0)
+		ttfAmmo.SetText(mainRenderer, "Ammo: " + std::to_string(this->ammoLeft[this->selectedWeapon]));
+	else
+		ttfAmmo.SetText(mainRenderer, "Ammo: " + std::to_string(this->ammoLeft[this->selectedWeapon]) + " Reloading");
+
+	ttfAmmo.Draw(mainRenderer, 5, windowHeight - 25);
+
+	// Render the weapon name.
+	if (this->weapon.size() > 0)
+		ttfWeapon.SetText(mainRenderer, "Weapon: " + this->weapon[this->selectedWeapon]->name);
+	else
+		ttfWeapon.SetText(mainRenderer, "Weapon: Unarmed");
+
+	ttfWeapon.Draw(mainRenderer, 5, windowHeight - 50);
+
+	// Render the dodges count.
+	ttfDodges.SetText(mainRenderer, "Dodges: " + std::to_string(this->dodgesLeft));
+	ttfDodges.Draw(mainRenderer, 5, windowHeight - 75);	
 }
 
 void Player::Dodge()

@@ -38,6 +38,7 @@ public:
 	void ReloadWeapon();
 	void Dodge();
 	void RenderAimer();
+	void DrawUIForThisPlayer();
 	void AddWeapon(Weapon* wep);
 	void RemoveWeapon(int weaponIndex);
 	void SwitchToNextWeapon();

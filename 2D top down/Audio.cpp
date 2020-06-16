@@ -11,7 +11,7 @@ Sound::Sound()
 
 void Sound::Clear()
 {
-	name = "";
+	this->name = "";
 }
 
 bool Sound::Load(std::string fileLoc, std::string name)
@@ -52,18 +52,18 @@ Music::~Music()
 
 void Music::Clear()
 {
-	name = "";
-	if (sound != nullptr)
+	this->name = "";
+	if (this->sound != nullptr)
 	{
-		Mix_FreeMusic(sound);
-		sound = nullptr;
+		Mix_FreeMusic(this->sound);
+		this->sound = nullptr;
 	}
 }
 
 bool Music::Load(std::string fileLoc, std::string name)
 {
-	sound = Mix_LoadMUS(fileLoc.c_str());
-	if (sound != nullptr)
+	this->sound = Mix_LoadMUS(fileLoc.c_str());
+	if (this->sound != nullptr)
 	{
 		this->name = name;
 		return true;
@@ -77,7 +77,7 @@ bool Music::Load(std::string fileLoc, std::string name)
 void Music::Play()
 {
 	if (Mix_PlayingMusic() == 0)
-		Mix_PlayMusic(sound, -1);
+		Mix_PlayMusic(this->sound, -1);
 	else if (Mix_PausedMusic() == 1)
 		Unpause();
 	else
@@ -117,12 +117,12 @@ void OnChannelFinish(int channel)
 
 void Chunk::Clear()
 {
-	name = "";
-	channel = -1;
-	if (sound != nullptr)
+	this->name = "";
+	this->channel = -1;
+	if (this->sound != nullptr)
 	{
-		Mix_FreeChunk(sound);
-		sound = nullptr;
+		Mix_FreeChunk(this->sound);
+		this->sound = nullptr;
 	}
 
 	Mix_ChannelFinished(OnChannelFinish);
@@ -144,30 +144,31 @@ bool Chunk::Load(std::string fileLoc, std::string name)
 
 void Chunk::Play()
 {
-	channel = Mix_PlayChannel(-1, sound, 0);
-	if (channel >= 0 && channel < CHANNEL_LIMIT)
-		channelList[channel] = this;
+	if (channelList[channel])
+	this->channel = Mix_PlayChannel(-1, this->sound, 0);
+	if (this->channel >= 0 && this->channel < CHANNEL_LIMIT)
+		channelList[this->channel] = this;
 }
 
 void Chunk::Pause()
 {	
-	if (channel >= 0)
-		if (channelList[channel] != nullptr)
-			Mix_Pause(channel);
+	if (this->channel >= 0)
+		if (channelList[this->channel] != nullptr)
+			Mix_Pause(this->channel);
 }
 
 void Chunk::Unpause()
 {
-	if (channel >= 0)
-		if (channelList[channel] != nullptr)
-			Mix_Resume(channel);
+	if (this->channel >= 0)
+		if (channelList[this->channel] != nullptr)
+			Mix_Resume(this->channel);
 }
 
 void Chunk::Stop()
 {
-	if (channel >= 0)
-		if (channelList[channel] != nullptr)
-			Mix_HaltChannel(channel);
+	if (this->channel >= 0)
+		if (channelList[this->channel] != nullptr)
+			Mix_HaltChannel(this->channel);
 }
 
 Sounds::Sounds()
