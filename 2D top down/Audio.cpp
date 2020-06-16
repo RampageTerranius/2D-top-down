@@ -143,8 +143,7 @@ bool Chunk::Load(std::string fileLoc, std::string name)
 }
 
 void Chunk::Play()
-{
-	if (channelList[channel])
+{	
 	this->channel = Mix_PlayChannel(-1, this->sound, 0);
 	if (this->channel >= 0 && this->channel < CHANNEL_LIMIT)
 		channelList[this->channel] = this;
