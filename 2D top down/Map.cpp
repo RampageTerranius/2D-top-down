@@ -7,7 +7,6 @@ Map map = Map(1000, 1000);
 
 int baseWallHealth = 1;
 
-
 // Basic constructor for automatically creating the map at the given size.
 Map::Map(int newSizeX, int newSizeY)
 {

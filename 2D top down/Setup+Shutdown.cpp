@@ -487,6 +487,7 @@ void ShutdownEngine()
 	// Shutdown SDL.	
 	Mix_Quit();
 	IMG_Quit();
+	TTF_Quit();
 	SDL_Quit();
 
 	debug.Log("Setup+Shutdown", "ShutdownEngine", "Shutdown completed");
