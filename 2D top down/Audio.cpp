@@ -52,7 +52,7 @@ Music::~Music()
 
 void Music::Clear()
 {
-	this->name = "";
+	this->name = "";	
 	if (this->sound != nullptr)
 	{
 		Mix_FreeMusic(this->sound);
@@ -119,6 +119,7 @@ void Chunk::Clear()
 {
 	this->name = "";
 	this->channel = -1;
+	this->allowOverlayingSound = true;
 	if (this->sound != nullptr)
 	{
 		Mix_FreeChunk(this->sound);
@@ -144,9 +145,13 @@ bool Chunk::Load(std::string fileLoc, std::string name)
 
 void Chunk::Play()
 {	
+	if (!this->allowOverlayingSound)
+		if (this->channel == -1)
+			return;
+
 	this->channel = Mix_PlayChannel(-1, this->sound, 0);
 	if (this->channel >= 0 && this->channel < CHANNEL_LIMIT)
-		channelList[this->channel] = this;
+		channelList[this->channel] = this;	
 }
 
 void Chunk::Pause()

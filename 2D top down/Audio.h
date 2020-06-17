@@ -54,6 +54,7 @@ public:
 	void Stop();
 
 	int channel;
+	bool allowOverlayingSound;
 
 private:
 	Mix_Chunk* sound;	
