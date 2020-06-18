@@ -305,7 +305,7 @@ void Player::DrawUIForThisPlayer()
 	else
 		ttfAmmo.SetText(mainRenderer, "Ammo: " + std::to_string(this->ammoLeft[this->selectedWeapon]) + " Reloading");
 
-	ttfAmmo.Draw(mainRenderer, 5, windowHeight - 25);
+	ttfAmmo.Draw(mainRenderer, 5, windowHeight - 25, false);
 
 	// Render the weapon name.
 	if (this->weapon.size() > 0)
@@ -313,11 +313,11 @@ void Player::DrawUIForThisPlayer()
 	else
 		ttfWeapon.SetText(mainRenderer, "Weapon: Unarmed");
 
-	ttfWeapon.Draw(mainRenderer, 5, windowHeight - 50);
+	ttfWeapon.Draw(mainRenderer, 5, windowHeight - 50, false);
 
 	// Render the dodges count.
 	ttfDodges.SetText(mainRenderer, "Dodges: " + std::to_string(this->dodgesLeft));
-	ttfDodges.Draw(mainRenderer, 5, windowHeight - 75);	
+	ttfDodges.Draw(mainRenderer, 5, windowHeight - 75, false);
 }
 
 void Player::Dodge()

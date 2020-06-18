@@ -14,7 +14,7 @@ public:
 	bool SetFont(std::string fontLocation, int size);
 	void SetColor(int r, int g, int b);
 	void SetText(SDL_Renderer* renderer, std::string newText);
-	void Draw(SDL_Renderer* renderer, int x, int y);
+	void Draw(SDL_Renderer* renderer, int x, int y, bool centerImage);
 
 private:
 	std::string text;
