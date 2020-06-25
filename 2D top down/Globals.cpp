@@ -34,10 +34,10 @@ int frameRate = 60;
 int ticksPerFrame = 1000 / frameRate;
 bool capFrameRate = true;
 
-TTF ttfFPS = TTF();
-TTF ttfWeapon = TTF();
-TTF ttfAmmo = TTF();
-TTF ttfDodges = TTF();
+TTF ttfFPS = TTF(nullptr);
+TTF ttfWeapon = TTF(nullptr);
+TTF ttfAmmo = TTF(nullptr);
+TTF ttfDodges = TTF(nullptr);
 
 // Timers.
 Timer fpsTimer = Timer();

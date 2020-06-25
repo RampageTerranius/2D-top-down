@@ -299,25 +299,25 @@ void Player::DrawUIForThisPlayer()
 {
 	// Render the ammo count.
 	if (this->weapon.size() <= 0)
-		ttfAmmo.SetText(mainRenderer, "Ammo: 0");
+		ttfAmmo.SetText("Ammo: 0");
 	else if (this->reloadTimer == 0)
-		ttfAmmo.SetText(mainRenderer, "Ammo: " + std::to_string(this->ammoLeft[this->selectedWeapon]));
+		ttfAmmo.SetText("Ammo: " + std::to_string(this->ammoLeft[this->selectedWeapon]));
 	else
-		ttfAmmo.SetText(mainRenderer, "Ammo: " + std::to_string(this->ammoLeft[this->selectedWeapon]) + " Reloading");
+		ttfAmmo.SetText("Ammo: " + std::to_string(this->ammoLeft[this->selectedWeapon]) + " Reloading");
 
-	ttfAmmo.Draw(mainRenderer, 5, windowHeight - 25, false);
+	ttfAmmo.Draw();
 
 	// Render the weapon name.
 	if (this->weapon.size() > 0)
-		ttfWeapon.SetText(mainRenderer, "Weapon: " + this->weapon[this->selectedWeapon]->name);
+		ttfWeapon.SetText("Weapon: " + this->weapon[this->selectedWeapon]->name);
 	else
-		ttfWeapon.SetText(mainRenderer, "Weapon: Unarmed");
+		ttfWeapon.SetText("Weapon: Unarmed");
 
-	ttfWeapon.Draw(mainRenderer, 5, windowHeight - 50, false);
+	ttfWeapon.Draw();
 
 	// Render the dodges count.
-	ttfDodges.SetText(mainRenderer, "Dodges: " + std::to_string(this->dodgesLeft));
-	ttfDodges.Draw(mainRenderer, 5, windowHeight - 75, false);
+	ttfDodges.SetText("Dodges: " + std::to_string(this->dodgesLeft));
+	ttfDodges.Draw();	
 }
 
 void Player::Dodge()

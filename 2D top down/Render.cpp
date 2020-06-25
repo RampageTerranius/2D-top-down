@@ -21,8 +21,8 @@ void Render()
 	currentPlayer->RenderAimer();
 	currentPlayer->DrawUIForThisPlayer();
 
-	ttfFPS.SetText(mainRenderer, (std::to_string(static_cast<int> (round(avgFPS)))));
-	ttfFPS.Draw(mainRenderer, windowWidth - 25, windowHeight - 25, false);
+	ttfFPS.SetText((std::to_string(static_cast<int> (round(avgFPS)))));
+	ttfFPS.Draw();
 	
 	SDL_RenderPresent(mainRenderer);
 }

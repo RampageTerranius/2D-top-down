@@ -218,6 +218,12 @@ bool SetupEngine()
 		return false;
 	}
 
+	// TTF setup.
+	ttfFPS = TTF(mainRenderer);
+	ttfAmmo = TTF(mainRenderer);
+	ttfWeapon = TTF(mainRenderer);
+	ttfDodges = TTF(mainRenderer);
+
 	if (!ttfWeapon.SetFont(GetEXEPath() + "\\Fonts\\pxl.ttf", 20) || !ttfAmmo.SetFont(GetEXEPath() + "\\Fonts\\pxl.ttf", 20) || !ttfFPS.SetFont(GetEXEPath() + "\\Fonts\\pxl.ttf", 20) || !ttfDodges.SetFont(GetEXEPath() + "\\Fonts\\pxl.ttf", 20))
 	{
 		debug.Log("Setup+Shutdown", "SetupEngine", "failed to load fonts");
@@ -228,6 +234,15 @@ bool SetupEngine()
 	ttfAmmo.SetColor(255, 255, 0);
 	ttfWeapon.SetColor(255, 255, 0);
 	ttfDodges.SetColor(255, 255, 0);
+	ttfAmmo.x = 5;
+	ttfAmmo.y = windowHeight - 25;
+	ttfWeapon.x = 5;
+	ttfWeapon.y = windowHeight - 50;
+	ttfDodges.x = 5;
+	ttfDodges.y = windowHeight - 75;
+	ttfFPS.x = windowWidth - 25;
+	ttfFPS.y = windowHeight - 25;
+	
 
 	debug.Log("Setup+Shutdown", "SetupEngine", "Loading weapon file...");
 
